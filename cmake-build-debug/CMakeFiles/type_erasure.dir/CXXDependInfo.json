@@ -1,0 +1,18 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "C:/Users/Herman/CLionProjects/type_erasure/cmake-build-debug",
+	"dir-cur-src" : "C:/Users/Herman/CLionProjects/type_erasure",
+	"dir-top-bld" : "C:/Users/Herman/CLionProjects/type_erasure/cmake-build-debug",
+	"dir-top-src" : "C:/Users/Herman/CLionProjects/type_erasure",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : [],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "C:/Users/Herman/CLionProjects/type_erasure/cmake-build-debug/CMakeFiles/type_erasure.dir"
+}
