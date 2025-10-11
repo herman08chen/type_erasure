@@ -64,7 +64,22 @@ build CMakeFiles/type_erasure.dir/main.cpp.obj: CXX_COMPILER__type_erasure_scann
   OBJECT_FILE_DIR = CMakeFiles\type_erasure.dir
   dyndep = CMakeFiles/type_erasure.dir/CXX.dd
 
-build CMakeFiles/type_erasure.dir/CXX.dd | C$:/Users/Herman/CLionProjects/type_erasure/cmake-build-debug/CMakeFiles/type_erasure.dir/CXXModules.json CMakeFiles/type_erasure.dir/main.cpp.obj.modmap: CXX_DYNDEP__type_erasure_Debug CMakeFiles/type_erasure.dir/main.cpp.obj.ddi | C$:/Users/Herman/CLionProjects/type_erasure/cmake-build-debug/CMakeFiles/type_erasure.dir/CXXDependInfo.json
+build CMakeFiles/type_erasure.dir/smartptr_te.cpp.obj.ddi: CXX_SCAN__type_erasure_Debug C$:/Users/Herman/CLionProjects/type_erasure/smartptr_te.cpp || cmake_object_order_depends_target_type_erasure
+  DEP_FILE = CMakeFiles\type_erasure.dir\smartptr_te.cpp.obj.ddi.d
+  DYNDEP_INTERMEDIATE_FILE = CMakeFiles\type_erasure.dir\smartptr_te.cpp.obj.ddi
+  FLAGS = -O3 -g -std=gnu++23 -fdiagnostics-color=always
+  OBJ_FILE = CMakeFiles\type_erasure.dir\smartptr_te.cpp.obj
+  PREPROCESSED_OUTPUT_FILE = CMakeFiles\type_erasure.dir\smartptr_te.cpp.obj.ddi.i
+
+build CMakeFiles/type_erasure.dir/smartptr_te.cpp.obj: CXX_COMPILER__type_erasure_scanned_Debug C$:/Users/Herman/CLionProjects/type_erasure/smartptr_te.cpp | CMakeFiles/type_erasure.dir/smartptr_te.cpp.obj.modmap || cmake_object_order_depends_target_type_erasure CMakeFiles/type_erasure.dir/CXX.dd
+  DEP_FILE = CMakeFiles\type_erasure.dir\smartptr_te.cpp.obj.d
+  DYNDEP_MODULE_MAP_FILE = CMakeFiles\type_erasure.dir\smartptr_te.cpp.obj.modmap
+  FLAGS = -O3 -g -std=gnu++23 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\type_erasure.dir
+  OBJECT_FILE_DIR = CMakeFiles\type_erasure.dir
+  dyndep = CMakeFiles/type_erasure.dir/CXX.dd
+
+build CMakeFiles/type_erasure.dir/CXX.dd | C$:/Users/Herman/CLionProjects/type_erasure/cmake-build-debug/CMakeFiles/type_erasure.dir/CXXModules.json CMakeFiles/type_erasure.dir/main.cpp.obj.modmap CMakeFiles/type_erasure.dir/smartptr_te.cpp.obj.modmap: CXX_DYNDEP__type_erasure_Debug CMakeFiles/type_erasure.dir/main.cpp.obj.ddi CMakeFiles/type_erasure.dir/smartptr_te.cpp.obj.ddi | C$:/Users/Herman/CLionProjects/type_erasure/cmake-build-debug/CMakeFiles/type_erasure.dir/CXXDependInfo.json
 
 
 # =============================================================================
@@ -74,7 +89,7 @@ build CMakeFiles/type_erasure.dir/CXX.dd | C$:/Users/Herman/CLionProjects/type_e
 #############################################
 # Link the executable type_erasure.exe
 
-build type_erasure.exe: CXX_EXECUTABLE_LINKER__type_erasure_Debug CMakeFiles/type_erasure.dir/main.cpp.obj
+build type_erasure.exe: CXX_EXECUTABLE_LINKER__type_erasure_Debug CMakeFiles/type_erasure.dir/main.cpp.obj CMakeFiles/type_erasure.dir/smartptr_te.cpp.obj
   FLAGS = -O3 -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\type_erasure.dir

@@ -91409,162 +91409,11204 @@ uninitialized_value_construct_n(_ExecutionPolicy&& __exec, _ForwardIterator __fi
 }
 # 172 "C:/mingw64/include/c++/14.1.0/memory" 2 3
 # 5 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp" 2
+# 1 "C:/mingw64/include/c++/14.1.0/chrono" 1 3
+# 33 "C:/mingw64/include/c++/14.1.0/chrono" 3
+       
+# 34 "C:/mingw64/include/c++/14.1.0/chrono" 3
 
 
-# 6 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp"
-template<class T, class vtable_t, std::size_t _size = 24, std::size_t _alignment = 8>
-class local_buffer_t {
-    static constexpr std::size_t buffer_size = _size - sizeof(T*);
-    static constexpr std::ptrdiff_t one = 1;
-    static constexpr std::ptrdiff_t not_one = ~one;
 
-    T* _ptr;
-    alignas(_alignment) std::byte _buffer[buffer_size];
 
-    template<class Deleter>
-    struct state_0_t {
-        union {
-            [[no_unique_address]] Deleter d;
-            const std::byte padding[buffer_size - sizeof(vtable_t*)];
+
+
+
+# 1 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 1 3
+# 33 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+       
+# 34 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+
+
+
+# 1 "C:/mingw64/include/c++/14.1.0/ratio" 1 3
+# 33 "C:/mingw64/include/c++/14.1.0/ratio" 3
+       
+# 34 "C:/mingw64/include/c++/14.1.0/ratio" 3
+# 43 "C:/mingw64/include/c++/14.1.0/ratio" 3
+# 1 "C:/mingw64/include/c++/14.1.0/bits/version.h" 1 3
+# 47 "C:/mingw64/include/c++/14.1.0/bits/version.h" 3
+       
+# 48 "C:/mingw64/include/c++/14.1.0/bits/version.h" 3
+# 44 "C:/mingw64/include/c++/14.1.0/ratio" 2 3
+
+namespace std
+{
+
+# 59 "C:/mingw64/include/c++/14.1.0/ratio" 3
+  template<intmax_t _Pn>
+    struct __static_sign
+    : integral_constant<intmax_t, (_Pn < 0) ? -1 : 1>
+    { };
+
+  template<intmax_t _Pn>
+    struct __static_abs
+    : integral_constant<intmax_t, _Pn * __static_sign<_Pn>::value>
+    { };
+
+  template<intmax_t _Pn, intmax_t _Qn>
+    struct __static_gcd
+    : __static_gcd<_Qn, (_Pn % _Qn)>
+    { };
+
+  template<intmax_t _Pn>
+    struct __static_gcd<_Pn, 0>
+    : integral_constant<intmax_t, __static_abs<_Pn>::value>
+    { };
+
+  template<intmax_t _Qn>
+    struct __static_gcd<0, _Qn>
+    : integral_constant<intmax_t, __static_abs<_Qn>::value>
+    { };
+
+
+
+
+
+
+
+  template<intmax_t _Pn, intmax_t _Qn>
+    struct __safe_multiply
+    {
+    private:
+      static const uintmax_t __c = uintmax_t(1) << (sizeof(intmax_t) * 4);
+
+      static const uintmax_t __a0 = __static_abs<_Pn>::value % __c;
+      static const uintmax_t __a1 = __static_abs<_Pn>::value / __c;
+      static const uintmax_t __b0 = __static_abs<_Qn>::value % __c;
+      static const uintmax_t __b1 = __static_abs<_Qn>::value / __c;
+
+      static_assert(__a1 == 0 || __b1 == 0,
+      "overflow in multiplication");
+      static_assert(__a0 * __b1 + __b0 * __a1 < (__c >> 1),
+      "overflow in multiplication");
+      static_assert(__b0 * __a0 <= 0x7fffffffffffffffLL,
+      "overflow in multiplication");
+      static_assert((__a0 * __b1 + __b0 * __a1) * __c
+      <= 0x7fffffffffffffffLL - __b0 * __a0,
+      "overflow in multiplication");
+
+    public:
+      static const intmax_t value = _Pn * _Qn;
+    };
+
+
+
+  template<uintmax_t __hi1, uintmax_t __lo1, uintmax_t __hi2, uintmax_t __lo2>
+    struct __big_less
+    : integral_constant<bool, (__hi1 < __hi2
+          || (__hi1 == __hi2 && __lo1 < __lo2))>
+    { };
+
+  template<uintmax_t __hi1, uintmax_t __lo1, uintmax_t __hi2, uintmax_t __lo2>
+    struct __big_add
+    {
+      static constexpr uintmax_t __lo = __lo1 + __lo2;
+      static constexpr uintmax_t __hi = (__hi1 + __hi2 +
+      (__lo1 + __lo2 < __lo1));
+    };
+
+
+  template<uintmax_t __hi1, uintmax_t __lo1, uintmax_t __hi2, uintmax_t __lo2>
+    struct __big_sub
+    {
+      static_assert(!__big_less<__hi1, __lo1, __hi2, __lo2>::value,
+      "Internal library error");
+      static constexpr uintmax_t __lo = __lo1 - __lo2;
+      static constexpr uintmax_t __hi = (__hi1 - __hi2 -
+      (__lo1 < __lo2));
+    };
+
+
+  template<uintmax_t __x, uintmax_t __y>
+    struct __big_mul
+    {
+    private:
+      static constexpr uintmax_t __c = uintmax_t(1) << (sizeof(intmax_t) * 4);
+      static constexpr uintmax_t __x0 = __x % __c;
+      static constexpr uintmax_t __x1 = __x / __c;
+      static constexpr uintmax_t __y0 = __y % __c;
+      static constexpr uintmax_t __y1 = __y / __c;
+      static constexpr uintmax_t __x0y0 = __x0 * __y0;
+      static constexpr uintmax_t __x0y1 = __x0 * __y1;
+      static constexpr uintmax_t __x1y0 = __x1 * __y0;
+      static constexpr uintmax_t __x1y1 = __x1 * __y1;
+      static constexpr uintmax_t __mix = __x0y1 + __x1y0;
+      static constexpr uintmax_t __mix_lo = __mix * __c;
+      static constexpr uintmax_t __mix_hi
+      = __mix / __c + ((__mix < __x0y1) ? __c : 0);
+      typedef __big_add<__mix_hi, __mix_lo, __x1y1, __x0y0> _Res;
+    public:
+      static constexpr uintmax_t __hi = _Res::__hi;
+      static constexpr uintmax_t __lo = _Res::__lo;
+    };
+
+
+
+  template<uintmax_t __n1, uintmax_t __n0, uintmax_t __d>
+    struct __big_div_impl
+    {
+    private:
+      static_assert(__d >= (uintmax_t(1) << (sizeof(intmax_t) * 8 - 1)),
+      "Internal library error");
+      static_assert(__n1 < __d, "Internal library error");
+      static constexpr uintmax_t __c = uintmax_t(1) << (sizeof(intmax_t) * 4);
+      static constexpr uintmax_t __d1 = __d / __c;
+      static constexpr uintmax_t __d0 = __d % __c;
+
+      static constexpr uintmax_t __q1x = __n1 / __d1;
+      static constexpr uintmax_t __r1x = __n1 % __d1;
+      static constexpr uintmax_t __m = __q1x * __d0;
+      static constexpr uintmax_t __r1y = __r1x * __c + __n0 / __c;
+      static constexpr uintmax_t __r1z = __r1y + __d;
+      static constexpr uintmax_t __r1
+      = ((__r1y < __m) ? ((__r1z >= __d) && (__r1z < __m))
+  ? (__r1z + __d) : __r1z : __r1y) - __m;
+      static constexpr uintmax_t __q1
+      = __q1x - ((__r1y < __m)
+   ? ((__r1z >= __d) && (__r1z < __m)) ? 2 : 1 : 0);
+      static constexpr uintmax_t __q0x = __r1 / __d1;
+      static constexpr uintmax_t __r0x = __r1 % __d1;
+      static constexpr uintmax_t __n = __q0x * __d0;
+      static constexpr uintmax_t __r0y = __r0x * __c + __n0 % __c;
+      static constexpr uintmax_t __r0z = __r0y + __d;
+      static constexpr uintmax_t __r0
+      = ((__r0y < __n) ? ((__r0z >= __d) && (__r0z < __n))
+  ? (__r0z + __d) : __r0z : __r0y) - __n;
+      static constexpr uintmax_t __q0
+      = __q0x - ((__r0y < __n) ? ((__r0z >= __d)
+      && (__r0z < __n)) ? 2 : 1 : 0);
+
+    public:
+      static constexpr uintmax_t __quot = __q1 * __c + __q0;
+      static constexpr uintmax_t __rem = __r0;
+
+    private:
+      typedef __big_mul<__quot, __d> _Prod;
+      typedef __big_add<_Prod::__hi, _Prod::__lo, 0, __rem> _Sum;
+      static_assert(_Sum::__hi == __n1 && _Sum::__lo == __n0,
+      "Internal library error");
+  };
+
+  template<uintmax_t __n1, uintmax_t __n0, uintmax_t __d>
+    struct __big_div
+    {
+    private:
+      static_assert(__d != 0, "Internal library error");
+      static_assert(sizeof (uintmax_t) == sizeof (unsigned long long),
+      "This library calls __builtin_clzll on uintmax_t, which "
+      "is unsafe on your platform. Please complain to "
+      "http://gcc.gnu.org/bugzilla/");
+      static constexpr int __shift = __builtin_clzll(__d);
+      static constexpr int __coshift_ = sizeof(uintmax_t) * 8 - __shift;
+      static constexpr int __coshift = (__shift != 0) ? __coshift_ : 0;
+      static constexpr uintmax_t __c1 = uintmax_t(1) << __shift;
+      static constexpr uintmax_t __c2 = uintmax_t(1) << __coshift;
+      static constexpr uintmax_t __new_d = __d * __c1;
+      static constexpr uintmax_t __new_n0 = __n0 * __c1;
+      static constexpr uintmax_t __n1_shifted = (__n1 % __d) * __c1;
+      static constexpr uintmax_t __n0_top = (__shift != 0) ? (__n0 / __c2) : 0;
+      static constexpr uintmax_t __new_n1 = __n1_shifted + __n0_top;
+      typedef __big_div_impl<__new_n1, __new_n0, __new_d> _Res;
+
+    public:
+      static constexpr uintmax_t __quot_hi = __n1 / __d;
+      static constexpr uintmax_t __quot_lo = _Res::__quot;
+      static constexpr uintmax_t __rem = _Res::__rem / __c1;
+
+    private:
+      typedef __big_mul<__quot_lo, __d> _P0;
+      typedef __big_mul<__quot_hi, __d> _P1;
+      typedef __big_add<_P0::__hi, _P0::__lo, _P1::__lo, __rem> _Sum;
+
+      static_assert(_P1::__hi == 0, "Internal library error");
+      static_assert(_Sum::__hi >= _P0::__hi, "Internal library error");
+
+      static_assert(_Sum::__hi == __n1 && _Sum::__lo == __n0,
+      "Internal library error");
+      static_assert(__rem < __d, "Internal library error");
+    };
+# 268 "C:/mingw64/include/c++/14.1.0/ratio" 3
+  template<intmax_t _Num, intmax_t _Den = 1>
+    struct ratio
+    {
+      static_assert(_Den != 0, "denominator cannot be zero");
+      static_assert(_Num >= -0x7fffffffffffffffLL && _Den >= -0x7fffffffffffffffLL,
+      "out of range");
+
+
+      static constexpr intmax_t num =
+        _Num * __static_sign<_Den>::value / __static_gcd<_Num, _Den>::value;
+
+      static constexpr intmax_t den =
+        __static_abs<_Den>::value / __static_gcd<_Num, _Den>::value;
+
+      typedef ratio<num, den> type;
+    };
+# 295 "C:/mingw64/include/c++/14.1.0/ratio" 3
+  template<typename _Tp>
+    struct __is_ratio
+    : std::false_type
+    { };
+
+  template<intmax_t _Num, intmax_t _Den>
+    struct __is_ratio<ratio<_Num, _Den>>
+    : std::true_type
+    { };
+
+
+  template<typename _Tp>
+    constexpr bool __is_ratio_v = false;
+  template<intmax_t _Num, intmax_t _Den>
+    constexpr bool __is_ratio_v<ratio<_Num, _Den>> = true;
+
+
+  template<typename _R1, typename _R2>
+    constexpr bool
+    __are_both_ratios() noexcept
+    {
+
+      if constexpr (__is_ratio_v<_R1>)
+ if constexpr (__is_ratio_v<_R2>)
+   return true;
+      return false;
+
+
+
+    }
+
+  template<typename _R1, typename _R2>
+    struct __ratio_multiply
+    {
+      static_assert(std::__are_both_ratios<_R1, _R2>(),
+      "both template arguments must be a std::ratio");
+
+    private:
+      static const intmax_t __gcd1 =
+        __static_gcd<_R1::num, _R2::den>::value;
+      static const intmax_t __gcd2 =
+        __static_gcd<_R2::num, _R1::den>::value;
+
+    public:
+      typedef ratio<
+        __safe_multiply<(_R1::num / __gcd1),
+                        (_R2::num / __gcd2)>::value,
+        __safe_multiply<(_R1::den / __gcd2),
+                        (_R2::den / __gcd1)>::value> type;
+
+      static constexpr intmax_t num = type::num;
+      static constexpr intmax_t den = type::den;
+    };
+# 360 "C:/mingw64/include/c++/14.1.0/ratio" 3
+  template<typename _R1, typename _R2>
+    using ratio_multiply = typename __ratio_multiply<_R1, _R2>::type;
+
+
+
+  template<typename _R1, typename _R2>
+    struct __ratio_divide
+    {
+      static_assert(_R2::num != 0, "division by 0");
+
+      typedef typename __ratio_multiply<
+        _R1,
+        ratio<_R2::den, _R2::num>>::type type;
+
+      static constexpr intmax_t num = type::num;
+      static constexpr intmax_t den = type::den;
+    };
+# 389 "C:/mingw64/include/c++/14.1.0/ratio" 3
+  template<typename _R1, typename _R2>
+    using ratio_divide = typename __ratio_divide<_R1, _R2>::type;
+
+
+  template<typename _R1, typename _R2>
+    struct ratio_equal
+    : integral_constant<bool, _R1::num == _R2::num && _R1::den == _R2::den>
+    {
+      static_assert(std::__are_both_ratios<_R1, _R2>(),
+      "both template arguments must be a std::ratio");
+    };
+
+
+  template<typename _R1, typename _R2>
+    struct ratio_not_equal
+    : integral_constant<bool, !ratio_equal<_R1, _R2>::value>
+    { };
+
+
+
+
+  template<typename _R1, typename _R2,
+           typename _Left = __big_mul<_R1::num,_R2::den>,
+           typename _Right = __big_mul<_R2::num,_R1::den> >
+    struct __ratio_less_impl_1
+    : integral_constant<bool, __big_less<_Left::__hi, _Left::__lo,
+           _Right::__hi, _Right::__lo>::value>
+    { };
+
+  template<typename _R1, typename _R2,
+    bool = (_R1::num == 0 || _R2::num == 0
+     || (__static_sign<_R1::num>::value
+         != __static_sign<_R2::num>::value)),
+    bool = (__static_sign<_R1::num>::value == -1
+     && __static_sign<_R2::num>::value == -1)>
+    struct __ratio_less_impl
+    : __ratio_less_impl_1<_R1, _R2>::type
+    { };
+
+  template<typename _R1, typename _R2>
+    struct __ratio_less_impl<_R1, _R2, true, false>
+    : integral_constant<bool, _R1::num < _R2::num>
+    { };
+
+  template<typename _R1, typename _R2>
+    struct __ratio_less_impl<_R1, _R2, false, true>
+    : __ratio_less_impl_1<ratio<-_R2::num, _R2::den>,
+           ratio<-_R1::num, _R1::den> >::type
+    { };
+
+
+
+
+  template<typename _R1, typename _R2>
+    struct ratio_less
+    : __ratio_less_impl<_R1, _R2>::type
+    {
+      static_assert(std::__are_both_ratios<_R1, _R2>(),
+      "both template arguments must be a std::ratio");
+    };
+
+
+  template<typename _R1, typename _R2>
+    struct ratio_less_equal
+    : integral_constant<bool, !ratio_less<_R2, _R1>::value>
+    { };
+
+
+  template<typename _R1, typename _R2>
+    struct ratio_greater
+    : integral_constant<bool, ratio_less<_R2, _R1>::value>
+    { };
+
+
+  template<typename _R1, typename _R2>
+    struct ratio_greater_equal
+    : integral_constant<bool, !ratio_less<_R1, _R2>::value>
+    { };
+
+
+  template <typename _R1, typename _R2>
+    inline constexpr bool ratio_equal_v = ratio_equal<_R1, _R2>::value;
+  template <typename _R1, typename _R2>
+    inline constexpr bool ratio_not_equal_v = ratio_not_equal<_R1, _R2>::value;
+  template <typename _R1, typename _R2>
+    inline constexpr bool ratio_less_v = ratio_less<_R1, _R2>::value;
+  template <typename _R1, typename _R2>
+    inline constexpr bool ratio_less_equal_v
+      = ratio_less_equal<_R1, _R2>::value;
+  template <typename _R1, typename _R2>
+    inline constexpr bool ratio_greater_v = ratio_greater<_R1, _R2>::value;
+  template <typename _R1, typename _R2>
+    inline constexpr bool ratio_greater_equal_v
+      = ratio_greater_equal<_R1, _R2>::value;
+
+
+
+
+  template<typename _R1, typename _R2,
+      bool = (_R1::num >= 0),
+      bool = (_R2::num >= 0),
+      bool = ratio_less<ratio<__static_abs<_R1::num>::value, _R1::den>,
+        ratio<__static_abs<_R2::num>::value, _R2::den> >::value>
+    struct __ratio_add_impl
+    {
+    private:
+      typedef typename __ratio_add_impl<
+        ratio<-_R1::num, _R1::den>,
+        ratio<-_R2::num, _R2::den> >::type __t;
+    public:
+      typedef ratio<-__t::num, __t::den> type;
+    };
+
+
+  template<typename _R1, typename _R2, bool __b>
+    struct __ratio_add_impl<_R1, _R2, true, true, __b>
+    {
+    private:
+      static constexpr uintmax_t __g = __static_gcd<_R1::den, _R2::den>::value;
+      static constexpr uintmax_t __d2 = _R2::den / __g;
+      typedef __big_mul<_R1::den, __d2> __d;
+      typedef __big_mul<_R1::num, _R2::den / __g> __x;
+      typedef __big_mul<_R2::num, _R1::den / __g> __y;
+      typedef __big_add<__x::__hi, __x::__lo, __y::__hi, __y::__lo> __n;
+      static_assert(__n::__hi >= __x::__hi, "Internal library error");
+      typedef __big_div<__n::__hi, __n::__lo, __g> __ng;
+      static constexpr uintmax_t __g2 = __static_gcd<__ng::__rem, __g>::value;
+      typedef __big_div<__n::__hi, __n::__lo, __g2> __n_final;
+      static_assert(__n_final::__rem == 0, "Internal library error");
+      static_assert(__n_final::__quot_hi == 0 &&
+        __n_final::__quot_lo <= 0x7fffffffffffffffLL, "overflow in addition");
+      typedef __big_mul<_R1::den / __g2, __d2> __d_final;
+      static_assert(__d_final::__hi == 0 &&
+        __d_final::__lo <= 0x7fffffffffffffffLL, "overflow in addition");
+    public:
+      typedef ratio<__n_final::__quot_lo, __d_final::__lo> type;
+    };
+
+  template<typename _R1, typename _R2>
+    struct __ratio_add_impl<_R1, _R2, false, true, true>
+    : __ratio_add_impl<_R2, _R1>
+    { };
+
+
+  template<typename _R1, typename _R2>
+    struct __ratio_add_impl<_R1, _R2, true, false, false>
+    {
+    private:
+      static constexpr uintmax_t __g = __static_gcd<_R1::den, _R2::den>::value;
+      static constexpr uintmax_t __d2 = _R2::den / __g;
+      typedef __big_mul<_R1::den, __d2> __d;
+      typedef __big_mul<_R1::num, _R2::den / __g> __x;
+      typedef __big_mul<-_R2::num, _R1::den / __g> __y;
+      typedef __big_sub<__x::__hi, __x::__lo, __y::__hi, __y::__lo> __n;
+      typedef __big_div<__n::__hi, __n::__lo, __g> __ng;
+      static constexpr uintmax_t __g2 = __static_gcd<__ng::__rem, __g>::value;
+      typedef __big_div<__n::__hi, __n::__lo, __g2> __n_final;
+      static_assert(__n_final::__rem == 0, "Internal library error");
+      static_assert(__n_final::__quot_hi == 0 &&
+        __n_final::__quot_lo <= 0x7fffffffffffffffLL, "overflow in addition");
+      typedef __big_mul<_R1::den / __g2, __d2> __d_final;
+      static_assert(__d_final::__hi == 0 &&
+        __d_final::__lo <= 0x7fffffffffffffffLL, "overflow in addition");
+    public:
+      typedef ratio<__n_final::__quot_lo, __d_final::__lo> type;
+    };
+
+  template<typename _R1, typename _R2>
+    struct __ratio_add
+    {
+      static_assert(std::__are_both_ratios<_R1, _R2>(),
+      "both template arguments must be a std::ratio");
+
+      typedef typename __ratio_add_impl<_R1, _R2>::type type;
+      static constexpr intmax_t num = type::num;
+      static constexpr intmax_t den = type::den;
+    };
+# 578 "C:/mingw64/include/c++/14.1.0/ratio" 3
+  template<typename _R1, typename _R2>
+    using ratio_add = typename __ratio_add<_R1, _R2>::type;
+
+
+
+  template<typename _R1, typename _R2>
+    struct __ratio_subtract
+    {
+      typedef typename __ratio_add<
+        _R1,
+        ratio<-_R2::num, _R2::den>>::type type;
+
+      static constexpr intmax_t num = type::num;
+      static constexpr intmax_t den = type::den;
+    };
+# 605 "C:/mingw64/include/c++/14.1.0/ratio" 3
+  template<typename _R1, typename _R2>
+    using ratio_subtract = typename __ratio_subtract<_R1, _R2>::type;
+# 618 "C:/mingw64/include/c++/14.1.0/ratio" 3
+  using atto = ratio< 1, 1000000000000000000>;
+  using femto = ratio< 1, 1000000000000000>;
+  using pico = ratio< 1, 1000000000000>;
+  using nano = ratio< 1, 1000000000>;
+  using micro = ratio< 1, 1000000>;
+  using milli = ratio< 1, 1000>;
+  using centi = ratio< 1, 100>;
+  using deci = ratio< 1, 10>;
+  using deca = ratio< 10, 1>;
+  using hecto = ratio< 100, 1>;
+  using kilo = ratio< 1000, 1>;
+  using mega = ratio< 1000000, 1>;
+  using giga = ratio< 1000000000, 1>;
+  using tera = ratio< 1000000000000, 1>;
+  using peta = ratio< 1000000000000000, 1>;
+  using exa = ratio< 1000000000000000000, 1>;
+# 646 "C:/mingw64/include/c++/14.1.0/ratio" 3
+
+}
+# 38 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 2 3
+
+
+# 1 "C:/mingw64/include/c++/14.1.0/ctime" 1 3
+# 39 "C:/mingw64/include/c++/14.1.0/ctime" 3
+       
+# 40 "C:/mingw64/include/c++/14.1.0/ctime" 3
+# 41 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 2 3
+
+
+
+
+
+
+# 1 "C:/mingw64/include/c++/14.1.0/bits/version.h" 1 3
+# 47 "C:/mingw64/include/c++/14.1.0/bits/version.h" 3
+       
+# 48 "C:/mingw64/include/c++/14.1.0/bits/version.h" 3
+# 48 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 2 3
+
+namespace std
+{
+
+
+
+  namespace filesystem { struct __file_clock; };
+
+
+  namespace chrono
+  {
+
+
+
+
+    template<typename _Rep, typename _Period = ratio<1>>
+      class duration;
+
+
+    template<typename _Clock, typename _Dur = typename _Clock::duration>
+      class time_point;
+
+  }
+# 79 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+  template<typename _CT, typename _Period1, typename _Period2, typename = void>
+    struct __duration_common_type
+    { };
+
+  template<typename _CT, typename _Period1, typename _Period2>
+    struct __duration_common_type<_CT, _Period1, _Period2,
+      __void_t<typename _CT::type>>
+    {
+    private:
+      using __gcd_num = __static_gcd<_Period1::num, _Period2::num>;
+      using __gcd_den = __static_gcd<_Period1::den, _Period2::den>;
+      using __cr = typename _CT::type;
+      using __r = ratio<__gcd_num::value,
+   (_Period1::den / __gcd_den::value) * _Period2::den>;
+
+    public:
+      using type = chrono::duration<__cr, typename __r::type>;
+    };
+
+
+
+
+
+
+
+  template<typename _Rep1, typename _Period1, typename _Rep2, typename _Period2>
+    struct common_type<chrono::duration<_Rep1, _Period1>,
+         chrono::duration<_Rep2, _Period2>>
+    : __duration_common_type<common_type<_Rep1, _Rep2>,
+        typename _Period1::type,
+        typename _Period2::type>
+    { };
+
+
+  template<typename _Rep, typename _Period>
+    struct common_type<chrono::duration<_Rep, _Period>,
+         chrono::duration<_Rep, _Period>>
+    {
+      using type = chrono::duration<typename common_type<_Rep>::type,
+        typename _Period::type>;
+    };
+
+
+  template<typename _Rep, typename _Period>
+    struct common_type<chrono::duration<_Rep, _Period>>
+    {
+      using type = chrono::duration<typename common_type<_Rep>::type,
+        typename _Period::type>;
+    };
+
+
+
+
+
+
+  template<typename _CT, typename _Clock, typename = void>
+    struct __timepoint_common_type
+    { };
+
+  template<typename _CT, typename _Clock>
+    struct __timepoint_common_type<_CT, _Clock, __void_t<typename _CT::type>>
+    {
+      using type = chrono::time_point<_Clock, typename _CT::type>;
+    };
+
+
+
+
+
+
+
+  template<typename _Clock, typename _Duration1, typename _Duration2>
+    struct common_type<chrono::time_point<_Clock, _Duration1>,
+         chrono::time_point<_Clock, _Duration2>>
+    : __timepoint_common_type<common_type<_Duration1, _Duration2>, _Clock>
+    { };
+
+
+  template<typename _Clock, typename _Duration>
+    struct common_type<chrono::time_point<_Clock, _Duration>,
+         chrono::time_point<_Clock, _Duration>>
+    { using type = chrono::time_point<_Clock, _Duration>; };
+
+
+  template<typename _Clock, typename _Duration>
+    struct common_type<chrono::time_point<_Clock, _Duration>>
+    { using type = chrono::time_point<_Clock, _Duration>; };
+
+
+
+
+  namespace chrono
+  {
+
+
+
+
+
+
+    template<typename _ToDur, typename _CF, typename _CR,
+      bool _NumIsOne = false, bool _DenIsOne = false>
+      struct __duration_cast_impl
+      {
+ template<typename _Rep, typename _Period>
+   static constexpr _ToDur
+   __cast(const duration<_Rep, _Period>& __d)
+   {
+     typedef typename _ToDur::rep __to_rep;
+     return _ToDur(static_cast<__to_rep>(static_cast<_CR>(__d.count())
+       * static_cast<_CR>(_CF::num)
+       / static_cast<_CR>(_CF::den)));
+   }
+      };
+
+    template<typename _ToDur, typename _CF, typename _CR>
+      struct __duration_cast_impl<_ToDur, _CF, _CR, true, true>
+      {
+ template<typename _Rep, typename _Period>
+   static constexpr _ToDur
+   __cast(const duration<_Rep, _Period>& __d)
+   {
+     typedef typename _ToDur::rep __to_rep;
+     return _ToDur(static_cast<__to_rep>(__d.count()));
+   }
+      };
+
+    template<typename _ToDur, typename _CF, typename _CR>
+      struct __duration_cast_impl<_ToDur, _CF, _CR, true, false>
+      {
+ template<typename _Rep, typename _Period>
+   static constexpr _ToDur
+   __cast(const duration<_Rep, _Period>& __d)
+   {
+     typedef typename _ToDur::rep __to_rep;
+     return _ToDur(static_cast<__to_rep>(
+       static_cast<_CR>(__d.count()) / static_cast<_CR>(_CF::den)));
+   }
+      };
+
+    template<typename _ToDur, typename _CF, typename _CR>
+      struct __duration_cast_impl<_ToDur, _CF, _CR, false, true>
+      {
+ template<typename _Rep, typename _Period>
+   static constexpr _ToDur
+   __cast(const duration<_Rep, _Period>& __d)
+   {
+     typedef typename _ToDur::rep __to_rep;
+     return _ToDur(static_cast<__to_rep>(
+       static_cast<_CR>(__d.count()) * static_cast<_CR>(_CF::num)));
+   }
+      };
+
+    template<typename _Tp>
+      struct __is_duration
+      : std::false_type
+      { };
+
+    template<typename _Rep, typename _Period>
+      struct __is_duration<duration<_Rep, _Period>>
+      : std::true_type
+      { };
+
+    template<typename _Tp>
+      using __enable_if_is_duration
+ = typename enable_if<__is_duration<_Tp>::value, _Tp>::type;
+
+    template<typename _Tp>
+      using __disable_if_is_duration
+ = typename enable_if<!__is_duration<_Tp>::value, _Tp>::type;
+
+
+    template<typename _Tp>
+      inline constexpr bool __is_duration_v = false;
+    template<typename _Rep, typename _Period>
+      inline constexpr bool __is_duration_v<duration<_Rep, _Period>> = true;
+    template<typename _Tp>
+      inline constexpr bool __is_time_point_v = false;
+    template<typename _Clock, typename _Dur>
+      inline constexpr bool __is_time_point_v<time_point<_Clock, _Dur>> = true;
+# 272 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _ToDur, typename _Rep, typename _Period>
+      [[__nodiscard__]]
+      constexpr __enable_if_is_duration<_ToDur>
+      duration_cast(const duration<_Rep, _Period>& __d)
+      {
+
+ if constexpr (is_same_v<_ToDur, duration<_Rep, _Period>>)
+   return __d;
+ else
+   {
+
+   using __to_period = typename _ToDur::period;
+   using __to_rep = typename _ToDur::rep;
+   using __cf = ratio_divide<_Period, __to_period>;
+   using __cr = typename common_type<__to_rep, _Rep, intmax_t>::type;
+   using __dc = __duration_cast_impl<_ToDur, __cf, __cr,
+         __cf::num == 1, __cf::den == 1>;
+   return __dc::__cast(__d);
+
+   }
+
+      }
+# 306 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _Rep>
+      struct treat_as_floating_point
+      : is_floating_point<_Rep>
+      { };
+
+
+    template <typename _Rep>
+      inline constexpr bool treat_as_floating_point_v =
+ treat_as_floating_point<_Rep>::value;
+
+    template<>
+      inline constexpr bool treat_as_floating_point_v<int> = false;
+    template<>
+      inline constexpr bool treat_as_floating_point_v<long> = false;
+    template<>
+      inline constexpr bool treat_as_floating_point_v<long long> = false;
+    template<>
+      inline constexpr bool treat_as_floating_point_v<float> = true;
+    template<>
+      inline constexpr bool treat_as_floating_point_v<double> = true;
+    template<>
+      inline constexpr bool treat_as_floating_point_v<long double> = true;
+
+
+
+
+    template<typename _Tp>
+      inline constexpr bool is_clock_v = false;
+
+    template<typename _Tp>
+      requires requires {
+ typename _Tp::rep;
+ typename _Tp::period;
+ typename _Tp::duration;
+ typename _Tp::time_point::clock;
+ typename _Tp::time_point::duration;
+ { &_Tp::is_steady } -> same_as<const bool*>;
+ { _Tp::now() } -> same_as<typename _Tp::time_point>;
+ requires same_as<typename _Tp::duration,
+    duration<typename _Tp::rep, typename _Tp::period>>;
+ requires same_as<typename _Tp::time_point::duration,
+    typename _Tp::duration>;
+      }
+    inline constexpr bool is_clock_v<_Tp> = true;
+# 369 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _Tp>
+      struct is_clock
+      : bool_constant<is_clock_v<_Tp>>
+      { };
+# 386 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _ToDur, typename _Rep, typename _Period>
+      [[nodiscard]] constexpr __enable_if_is_duration<_ToDur>
+      floor(const duration<_Rep, _Period>& __d)
+      {
+ auto __to = chrono::duration_cast<_ToDur>(__d);
+ if (__to > __d)
+   return __to - _ToDur{1};
+ return __to;
+      }
+# 406 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _ToDur, typename _Rep, typename _Period>
+      [[nodiscard]] constexpr __enable_if_is_duration<_ToDur>
+      ceil(const duration<_Rep, _Period>& __d)
+      {
+ auto __to = chrono::duration_cast<_ToDur>(__d);
+ if (__to < __d)
+   return __to + _ToDur{1};
+ return __to;
+      }
+# 427 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template <typename _ToDur, typename _Rep, typename _Period>
+      [[nodiscard]] constexpr
+      enable_if_t<
+ __and_<__is_duration<_ToDur>,
+        __not_<treat_as_floating_point<typename _ToDur::rep>>>::value,
+ _ToDur>
+      round(const duration<_Rep, _Period>& __d)
+      {
+ _ToDur __t0 = chrono::floor<_ToDur>(__d);
+ _ToDur __t1 = __t0 + _ToDur{1};
+ auto __diff0 = __d - __t0;
+ auto __diff1 = __t1 - __d;
+ if (__diff0 == __diff1)
+   {
+     if (__t0.count() & 1)
+       return __t1;
+     return __t0;
+   }
+ else if (__diff0 < __diff1)
+   return __t0;
+ return __t1;
+      }
+
+
+
+
+
+
+
+    template<typename _Rep, typename _Period>
+      [[nodiscard]] constexpr
+      enable_if_t<numeric_limits<_Rep>::is_signed, duration<_Rep, _Period>>
+      abs(duration<_Rep, _Period> __d)
+      {
+ if (__d >= __d.zero())
+   return __d;
+ return -__d;
+      }
+
+
+    namespace __detail { using chrono::ceil; }
+# 494 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _Rep>
+      struct duration_values
+      {
+ static constexpr _Rep
+ zero() noexcept
+ { return _Rep(0); }
+
+ static constexpr _Rep
+ max() noexcept
+ { return numeric_limits<_Rep>::max(); }
+
+ static constexpr _Rep
+ min() noexcept
+ { return numeric_limits<_Rep>::lowest(); }
+      };
+
+    template<typename _Rep, typename _Period>
+      class duration
+      {
+ static_assert(!__is_duration<_Rep>::value,
+        "rep cannot be a std::chrono::duration");
+ static_assert(__is_ratio<_Period>::value,
+        "period must be a specialization of std::ratio");
+ static_assert(_Period::num > 0, "period must be positive");
+
+ template<typename _Rep2>
+   using __is_float = treat_as_floating_point<_Rep2>;
+
+ static constexpr intmax_t
+ _S_gcd(intmax_t __m, intmax_t __n) noexcept
+ {
+
+
+
+   do
+     {
+       intmax_t __rem = __m % __n;
+       __m = __n;
+       __n = __rem;
+     }
+   while (__n != 0);
+   return __m;
+
+
+
+
+
+ }
+
+
+
+
+
+ template<typename _R1, typename _R2,
+   intmax_t __gcd1 = _S_gcd(_R1::num, _R2::num),
+   intmax_t __gcd2 = _S_gcd(_R1::den, _R2::den)>
+   using __divide = ratio<(_R1::num / __gcd1) * (_R2::den / __gcd2),
+     (_R1::den / __gcd2) * (_R2::num / __gcd1)>;
+
+
+ template<typename _Period2>
+   using __is_harmonic
+     = __bool_constant<__divide<_Period2, _Period>::den == 1>;
+
+      public:
+
+ using rep = _Rep;
+ using period = typename _Period::type;
+
+
+ constexpr duration() = default;
+
+ duration(const duration&) = default;
+
+
+
+ template<typename _Rep2, typename = _Require<
+   is_convertible<const _Rep2&, rep>,
+   __or_<__is_float<rep>, __not_<__is_float<_Rep2>>>>>
+   constexpr explicit duration(const _Rep2& __rep)
+   : __r(static_cast<rep>(__rep)) { }
+
+ template<typename _Rep2, typename _Period2, typename = _Require<
+   is_convertible<const _Rep2&, rep>,
+   __or_<__is_float<rep>,
+         __and_<__is_harmonic<_Period2>,
+         __not_<__is_float<_Rep2>>>>>>
+   constexpr duration(const duration<_Rep2, _Period2>& __d)
+   : __r(duration_cast<duration>(__d).count()) { }
+
+ ~duration() = default;
+ duration& operator=(const duration&) = default;
+
+
+ constexpr rep
+ count() const
+ { return __r; }
+
+
+
+ constexpr duration<typename common_type<rep>::type, period>
+ operator+() const
+ { return duration<typename common_type<rep>::type, period>(__r); }
+
+ constexpr duration<typename common_type<rep>::type, period>
+ operator-() const
+ { return duration<typename common_type<rep>::type, period>(-__r); }
+
+ constexpr duration&
+ operator++()
+ {
+   ++__r;
+   return *this;
+ }
+
+ constexpr duration
+ operator++(int)
+ { return duration(__r++); }
+
+ constexpr duration&
+ operator--()
+ {
+   --__r;
+   return *this;
+ }
+
+ constexpr duration
+ operator--(int)
+ { return duration(__r--); }
+
+ constexpr duration&
+ operator+=(const duration& __d)
+ {
+   __r += __d.count();
+   return *this;
+ }
+
+ constexpr duration&
+ operator-=(const duration& __d)
+ {
+   __r -= __d.count();
+   return *this;
+ }
+
+ constexpr duration&
+ operator*=(const rep& __rhs)
+ {
+   __r *= __rhs;
+   return *this;
+ }
+
+ constexpr duration&
+ operator/=(const rep& __rhs)
+ {
+   __r /= __rhs;
+   return *this;
+ }
+
+
+ template<typename _Rep2 = rep>
+   constexpr
+   __enable_if_t<!treat_as_floating_point<_Rep2>::value, duration&>
+   operator%=(const rep& __rhs)
+   {
+     __r %= __rhs;
+     return *this;
+   }
+
+ template<typename _Rep2 = rep>
+   constexpr
+   __enable_if_t<!treat_as_floating_point<_Rep2>::value, duration&>
+   operator%=(const duration& __d)
+   {
+     __r %= __d.count();
+     return *this;
+   }
+
+
+ static constexpr duration
+ zero() noexcept
+ { return duration(duration_values<rep>::zero()); }
+
+ static constexpr duration
+ min() noexcept
+ { return duration(duration_values<rep>::min()); }
+
+ static constexpr duration
+ max() noexcept
+ { return duration(duration_values<rep>::max()); }
+
+      private:
+ rep __r;
+      };
+
+
+
+
+
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      constexpr typename common_type<duration<_Rep1, _Period1>,
+         duration<_Rep2, _Period2>>::type
+      operator+(const duration<_Rep1, _Period1>& __lhs,
+  const duration<_Rep2, _Period2>& __rhs)
+      {
+ typedef duration<_Rep1, _Period1> __dur1;
+ typedef duration<_Rep2, _Period2> __dur2;
+ typedef typename common_type<__dur1,__dur2>::type __cd;
+ return __cd(__cd(__lhs).count() + __cd(__rhs).count());
+      }
+
+
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      constexpr typename common_type<duration<_Rep1, _Period1>,
+         duration<_Rep2, _Period2>>::type
+      operator-(const duration<_Rep1, _Period1>& __lhs,
+  const duration<_Rep2, _Period2>& __rhs)
+      {
+ typedef duration<_Rep1, _Period1> __dur1;
+ typedef duration<_Rep2, _Period2> __dur2;
+ typedef typename common_type<__dur1,__dur2>::type __cd;
+ return __cd(__cd(__lhs).count() - __cd(__rhs).count());
+      }
+# 727 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _Rep1, typename _Rep2,
+      typename _CRep = typename common_type<_Rep1, _Rep2>::type>
+      using __common_rep_t = typename
+ enable_if<is_convertible<const _Rep2&, _CRep>::value, _CRep>::type;
+# 739 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _Rep1, typename _Period, typename _Rep2>
+      constexpr duration<__common_rep_t<_Rep1, _Rep2>, _Period>
+      operator*(const duration<_Rep1, _Period>& __d, const _Rep2& __s)
+      {
+ typedef duration<typename common_type<_Rep1, _Rep2>::type, _Period>
+   __cd;
+ return __cd(__cd(__d).count() * __s);
+      }
+
+    template<typename _Rep1, typename _Rep2, typename _Period>
+      constexpr duration<__common_rep_t<_Rep2, _Rep1>, _Period>
+      operator*(const _Rep1& __s, const duration<_Rep2, _Period>& __d)
+      { return __d * __s; }
+
+    template<typename _Rep1, typename _Period, typename _Rep2>
+      constexpr
+      duration<__common_rep_t<_Rep1, __disable_if_is_duration<_Rep2>>, _Period>
+      operator/(const duration<_Rep1, _Period>& __d, const _Rep2& __s)
+      {
+ typedef duration<typename common_type<_Rep1, _Rep2>::type, _Period>
+   __cd;
+ return __cd(__cd(__d).count() / __s);
+      }
+
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      constexpr typename common_type<_Rep1, _Rep2>::type
+      operator/(const duration<_Rep1, _Period1>& __lhs,
+  const duration<_Rep2, _Period2>& __rhs)
+      {
+ typedef duration<_Rep1, _Period1> __dur1;
+ typedef duration<_Rep2, _Period2> __dur2;
+ typedef typename common_type<__dur1,__dur2>::type __cd;
+ return __cd(__lhs).count() / __cd(__rhs).count();
+      }
+
+
+    template<typename _Rep1, typename _Period, typename _Rep2>
+      constexpr
+      duration<__common_rep_t<_Rep1, __disable_if_is_duration<_Rep2>>, _Period>
+      operator%(const duration<_Rep1, _Period>& __d, const _Rep2& __s)
+      {
+ typedef duration<typename common_type<_Rep1, _Rep2>::type, _Period>
+   __cd;
+ return __cd(__cd(__d).count() % __s);
+      }
+
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      constexpr typename common_type<duration<_Rep1, _Period1>,
+         duration<_Rep2, _Period2>>::type
+      operator%(const duration<_Rep1, _Period1>& __lhs,
+  const duration<_Rep2, _Period2>& __rhs)
+      {
+ typedef duration<_Rep1, _Period1> __dur1;
+ typedef duration<_Rep2, _Period2> __dur2;
+ typedef typename common_type<__dur1,__dur2>::type __cd;
+ return __cd(__cd(__lhs).count() % __cd(__rhs).count());
+      }
+# 807 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      constexpr bool
+      operator==(const duration<_Rep1, _Period1>& __lhs,
+   const duration<_Rep2, _Period2>& __rhs)
+      {
+ typedef duration<_Rep1, _Period1> __dur1;
+ typedef duration<_Rep2, _Period2> __dur2;
+ typedef typename common_type<__dur1,__dur2>::type __ct;
+ return __ct(__lhs).count() == __ct(__rhs).count();
+      }
+
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      constexpr bool
+      operator<(const duration<_Rep1, _Period1>& __lhs,
+  const duration<_Rep2, _Period2>& __rhs)
+      {
+ typedef duration<_Rep1, _Period1> __dur1;
+ typedef duration<_Rep2, _Period2> __dur2;
+ typedef typename common_type<__dur1,__dur2>::type __ct;
+ return __ct(__lhs).count() < __ct(__rhs).count();
+      }
+
+
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      requires three_way_comparable<common_type_t<_Rep1, _Rep2>>
+      constexpr auto
+      operator<=>(const duration<_Rep1, _Period1>& __lhs,
+    const duration<_Rep2, _Period2>& __rhs)
+      {
+ using __ct = common_type_t<duration<_Rep1, _Period1>,
+       duration<_Rep2, _Period2>>;
+ return __ct(__lhs).count() <=> __ct(__rhs).count();
+      }
+# 852 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      constexpr bool
+      operator<=(const duration<_Rep1, _Period1>& __lhs,
+   const duration<_Rep2, _Period2>& __rhs)
+      { return !(__rhs < __lhs); }
+
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      constexpr bool
+      operator>(const duration<_Rep1, _Period1>& __lhs,
+  const duration<_Rep2, _Period2>& __rhs)
+      { return __rhs < __lhs; }
+
+    template<typename _Rep1, typename _Period1,
+      typename _Rep2, typename _Period2>
+      constexpr bool
+      operator>=(const duration<_Rep1, _Period1>& __lhs,
+   const duration<_Rep2, _Period2>& __rhs)
+      { return !(__lhs < __rhs); }
+# 888 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    using nanoseconds = duration<int64_t, nano>;
+
+
+    using microseconds = duration<int64_t, micro>;
+
+
+    using milliseconds = duration<int64_t, milli>;
+
+
+    using seconds = duration<int64_t>;
+
+
+    using minutes = duration<int64_t, ratio< 60>>;
+
+
+    using hours = duration<int64_t, ratio<3600>>;
+
+
+
+    using days = duration<int64_t, ratio<86400>>;
+
+
+    using weeks = duration<int64_t, ratio<604800>>;
+
+
+    using years = duration<int64_t, ratio<31556952>>;
+
+
+    using months = duration<int64_t, ratio<2629746>>;
+
+
+
+
+    template<typename _Clock, typename _Dur>
+      class time_point
+      {
+ static_assert(__is_duration<_Dur>::value,
+     "duration must be a specialization of std::chrono::duration");
+
+      public:
+ typedef _Clock clock;
+ typedef _Dur duration;
+ typedef typename duration::rep rep;
+ typedef typename duration::period period;
+
+ constexpr time_point() : __d(duration::zero())
+ { }
+
+ constexpr explicit time_point(const duration& __dur)
+ : __d(__dur)
+ { }
+
+
+ template<typename _Dur2,
+   typename = _Require<is_convertible<_Dur2, _Dur>>>
+   constexpr time_point(const time_point<clock, _Dur2>& __t)
+   : __d(__t.time_since_epoch())
+   { }
+
+
+ constexpr duration
+ time_since_epoch() const
+ { return __d; }
+
+
+ constexpr time_point&
+ operator++()
+ {
+   ++__d;
+   return *this;
+ }
+
+ constexpr time_point
+ operator++(int)
+ { return time_point{__d++}; }
+
+ constexpr time_point&
+ operator--()
+ {
+   --__d;
+   return *this;
+ }
+
+ constexpr time_point
+ operator--(int)
+ { return time_point{__d--}; }
+
+
+
+ constexpr time_point&
+ operator+=(const duration& __dur)
+ {
+   __d += __dur;
+   return *this;
+ }
+
+ constexpr time_point&
+ operator-=(const duration& __dur)
+ {
+   __d -= __dur;
+   return *this;
+ }
+
+
+ static constexpr time_point
+ min() noexcept
+ { return time_point(duration::min()); }
+
+ static constexpr time_point
+ max() noexcept
+ { return time_point(duration::max()); }
+
+      private:
+ duration __d;
+      };
+# 1016 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _ToDur, typename _Clock, typename _Dur>
+      [[__nodiscard__]] constexpr
+      __enable_if_t<__is_duration<_ToDur>::value, time_point<_Clock, _ToDur>>
+      time_point_cast(const time_point<_Clock, _Dur>& __t)
+      {
+ typedef time_point<_Clock, _ToDur> __time_point;
+ return __time_point(duration_cast<_ToDur>(__t.time_since_epoch()));
+      }
+# 1038 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _ToDur, typename _Clock, typename _Dur>
+      [[nodiscard]] constexpr
+      enable_if_t<__is_duration_v<_ToDur>, time_point<_Clock, _ToDur>>
+      floor(const time_point<_Clock, _Dur>& __tp)
+      {
+ return time_point<_Clock, _ToDur>{
+     chrono::floor<_ToDur>(__tp.time_since_epoch())};
+      }
+# 1059 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _ToDur, typename _Clock, typename _Dur>
+      [[nodiscard]] constexpr
+      enable_if_t<__is_duration_v<_ToDur>, time_point<_Clock, _ToDur>>
+      ceil(const time_point<_Clock, _Dur>& __tp)
+      {
+ return time_point<_Clock, _ToDur>{
+     chrono::ceil<_ToDur>(__tp.time_since_epoch())};
+      }
+# 1081 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _ToDur, typename _Clock, typename _Dur>
+      [[nodiscard]] constexpr
+      enable_if_t<__is_duration_v<_ToDur>
+      && !treat_as_floating_point_v<typename _ToDur::rep>,
+    time_point<_Clock, _ToDur>>
+      round(const time_point<_Clock, _Dur>& __tp)
+      {
+ return time_point<_Clock, _ToDur>{
+     chrono::round<_ToDur>(__tp.time_since_epoch())};
+      }
+
+
+
+
+
+
+    template<typename _Clock, typename _Dur1,
+      typename _Rep2, typename _Period2>
+      constexpr time_point<_Clock,
+ typename common_type<_Dur1, duration<_Rep2, _Period2>>::type>
+      operator+(const time_point<_Clock, _Dur1>& __lhs,
+  const duration<_Rep2, _Period2>& __rhs)
+      {
+ typedef duration<_Rep2, _Period2> __dur2;
+ typedef typename common_type<_Dur1,__dur2>::type __ct;
+ typedef time_point<_Clock, __ct> __time_point;
+ return __time_point(__lhs.time_since_epoch() + __rhs);
+      }
+
+
+    template<typename _Rep1, typename _Period1,
+      typename _Clock, typename _Dur2>
+      constexpr time_point<_Clock,
+ typename common_type<duration<_Rep1, _Period1>, _Dur2>::type>
+      operator+(const duration<_Rep1, _Period1>& __lhs,
+  const time_point<_Clock, _Dur2>& __rhs)
+      {
+ typedef duration<_Rep1, _Period1> __dur1;
+ typedef typename common_type<__dur1,_Dur2>::type __ct;
+ typedef time_point<_Clock, __ct> __time_point;
+ return __time_point(__rhs.time_since_epoch() + __lhs);
+      }
+
+
+    template<typename _Clock, typename _Dur1,
+      typename _Rep2, typename _Period2>
+      constexpr time_point<_Clock,
+ typename common_type<_Dur1, duration<_Rep2, _Period2>>::type>
+      operator-(const time_point<_Clock, _Dur1>& __lhs,
+  const duration<_Rep2, _Period2>& __rhs)
+      {
+ typedef duration<_Rep2, _Period2> __dur2;
+ typedef typename common_type<_Dur1,__dur2>::type __ct;
+ typedef time_point<_Clock, __ct> __time_point;
+ return __time_point(__lhs.time_since_epoch() -__rhs);
+      }
+
+
+    template<typename _Clock, typename _Dur1, typename _Dur2>
+      constexpr typename common_type<_Dur1, _Dur2>::type
+      operator-(const time_point<_Clock, _Dur1>& __lhs,
+  const time_point<_Clock, _Dur2>& __rhs)
+      { return __lhs.time_since_epoch() - __rhs.time_since_epoch(); }
+
+
+
+
+
+
+
+    template<typename _Clock, typename _Dur1, typename _Dur2>
+      constexpr bool
+      operator==(const time_point<_Clock, _Dur1>& __lhs,
+   const time_point<_Clock, _Dur2>& __rhs)
+      { return __lhs.time_since_epoch() == __rhs.time_since_epoch(); }
+
+
+    template<typename _Clock, typename _Dur1,
+      three_way_comparable_with<_Dur1> _Dur2>
+      constexpr auto
+      operator<=>(const time_point<_Clock, _Dur1>& __lhs,
+    const time_point<_Clock, _Dur2>& __rhs)
+      { return __lhs.time_since_epoch() <=> __rhs.time_since_epoch(); }
+# 1172 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    template<typename _Clock, typename _Dur1, typename _Dur2>
+      constexpr bool
+      operator<(const time_point<_Clock, _Dur1>& __lhs,
+  const time_point<_Clock, _Dur2>& __rhs)
+      { return __lhs.time_since_epoch() < __rhs.time_since_epoch(); }
+
+    template<typename _Clock, typename _Dur1, typename _Dur2>
+      constexpr bool
+      operator<=(const time_point<_Clock, _Dur1>& __lhs,
+   const time_point<_Clock, _Dur2>& __rhs)
+      { return !(__rhs < __lhs); }
+
+    template<typename _Clock, typename _Dur1, typename _Dur2>
+      constexpr bool
+      operator>(const time_point<_Clock, _Dur1>& __lhs,
+  const time_point<_Clock, _Dur2>& __rhs)
+      { return __rhs < __lhs; }
+
+    template<typename _Clock, typename _Dur1, typename _Dur2>
+      constexpr bool
+      operator>=(const time_point<_Clock, _Dur1>& __lhs,
+   const time_point<_Clock, _Dur2>& __rhs)
+      { return !(__lhs < __rhs); }
+# 1217 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+inline namespace _V2 {
+
+
+
+
+
+
+
+    struct system_clock
+    {
+      typedef chrono::nanoseconds duration;
+      typedef duration::rep rep;
+      typedef duration::period period;
+      typedef chrono::time_point<system_clock, duration> time_point;
+
+      static_assert(system_clock::duration::min()
+      < system_clock::duration::zero(),
+      "a clock's minimum duration cannot be less than its epoch");
+
+      static constexpr bool is_steady = false;
+
+      static time_point
+      now() noexcept;
+
+
+      static std::time_t
+      to_time_t(const time_point& __t) noexcept
+      {
+ return std::time_t(duration_cast<chrono::seconds>
+      (__t.time_since_epoch()).count());
+      }
+
+      static time_point
+      from_time_t(std::time_t __t) noexcept
+      {
+ typedef chrono::time_point<system_clock, seconds> __from;
+ return time_point_cast<system_clock::duration>
+        (__from(chrono::seconds(__t)));
+      }
+    };
+# 1265 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    struct steady_clock
+    {
+      typedef chrono::nanoseconds duration;
+      typedef duration::rep rep;
+      typedef duration::period period;
+      typedef chrono::time_point<steady_clock, duration> time_point;
+
+      static constexpr bool is_steady = true;
+
+      static time_point
+      now() noexcept;
+    };
+# 1287 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+    using high_resolution_clock = system_clock;
+
+}
+
+
+
+
+    template<typename _Duration>
+      using sys_time = time_point<system_clock, _Duration>;
+    using sys_seconds = sys_time<seconds>;
+    using sys_days = sys_time<days>;
+
+    using file_clock = ::std::filesystem::__file_clock;
+
+    template<typename _Duration>
+      using file_time = time_point<file_clock, _Duration>;
+
+    template<> struct is_clock<system_clock> : true_type { };
+    template<> struct is_clock<steady_clock> : true_type { };
+    template<> struct is_clock<file_clock> : true_type { };
+
+    template<> inline constexpr bool is_clock_v<system_clock> = true;
+    template<> inline constexpr bool is_clock_v<steady_clock> = true;
+    template<> inline constexpr bool is_clock_v<file_clock> = true;
+
+
+  }
+
+
+  inline namespace literals
+  {
+# 1342 "C:/mingw64/include/c++/14.1.0/bits/chrono.h" 3
+  inline namespace chrono_literals
+  {
+
+
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wliteral-suffix"
+
+    template<typename _Dur, char... _Digits>
+      constexpr _Dur __check_overflow()
+      {
+ using _Val = __parse_int::_Parse_int<_Digits...>;
+ constexpr typename _Dur::rep __repval = _Val::value;
+ static_assert(__repval >= 0 && __repval == _Val::value,
+        "literal value cannot be represented by duration type");
+ return _Dur(__repval);
+      }
+
+
+
+    constexpr chrono::duration<long double, ratio<3600,1>>
+    operator""h(long double __hours)
+    { return chrono::duration<long double, ratio<3600,1>>{__hours}; }
+
+
+    template <char... _Digits>
+      constexpr chrono::hours
+      operator""h()
+      { return __check_overflow<chrono::hours, _Digits...>(); }
+
+
+    constexpr chrono::duration<long double, ratio<60,1>>
+    operator""min(long double __mins)
+    { return chrono::duration<long double, ratio<60,1>>{__mins}; }
+
+
+    template <char... _Digits>
+      constexpr chrono::minutes
+      operator""min()
+      { return __check_overflow<chrono::minutes, _Digits...>(); }
+
+
+    constexpr chrono::duration<long double>
+    operator""s(long double __secs)
+    { return chrono::duration<long double>{__secs}; }
+
+
+    template <char... _Digits>
+      constexpr chrono::seconds
+      operator""s()
+      { return __check_overflow<chrono::seconds, _Digits...>(); }
+
+
+    constexpr chrono::duration<long double, milli>
+    operator""ms(long double __msecs)
+    { return chrono::duration<long double, milli>{__msecs}; }
+
+
+    template <char... _Digits>
+      constexpr chrono::milliseconds
+      operator""ms()
+      { return __check_overflow<chrono::milliseconds, _Digits...>(); }
+
+
+    constexpr chrono::duration<long double, micro>
+    operator""us(long double __usecs)
+    { return chrono::duration<long double, micro>{__usecs}; }
+
+
+    template <char... _Digits>
+      constexpr chrono::microseconds
+      operator""us()
+      { return __check_overflow<chrono::microseconds, _Digits...>(); }
+
+
+    constexpr chrono::duration<long double, nano>
+    operator""ns(long double __nsecs)
+    { return chrono::duration<long double, nano>{__nsecs}; }
+
+
+    template <char... _Digits>
+      constexpr chrono::nanoseconds
+      operator""ns()
+      { return __check_overflow<chrono::nanoseconds, _Digits...>(); }
+
+#pragma GCC diagnostic pop
+
+  }
+  }
+
+  namespace chrono
+  {
+    using namespace literals::chrono_literals;
+  }
+
+
+
+  namespace filesystem
+  {
+    struct __file_clock
+    {
+      using duration = chrono::nanoseconds;
+      using rep = duration::rep;
+      using period = duration::period;
+      using time_point = chrono::time_point<__file_clock>;
+      static constexpr bool is_steady = false;
+
+      static time_point
+      now() noexcept
+      { return _S_from_sys(chrono::system_clock::now()); }
+
+
+      template<typename _Dur>
+ static
+ chrono::file_time<common_type_t<_Dur, chrono::seconds>>
+ from_sys(const chrono::sys_time<_Dur>& __t) noexcept
+ { return _S_from_sys(__t); }
+
+
+      template<typename _Dur>
+ static
+ chrono::sys_time<common_type_t<_Dur, chrono::seconds>>
+ to_sys(const chrono::file_time<_Dur>& __t) noexcept
+ { return _S_to_sys(__t); }
+
+
+    private:
+      using __sys_clock = chrono::system_clock;
+
+
+
+
+      static constexpr chrono::seconds _S_epoch_diff{6437664000};
+
+    protected:
+
+      template<typename _Dur>
+ static
+ chrono::time_point<__file_clock, common_type_t<_Dur, chrono::seconds>>
+ _S_from_sys(const chrono::time_point<__sys_clock, _Dur>& __t) noexcept
+ {
+   using _CDur = common_type_t<_Dur, chrono::seconds>;
+   using __file_time = chrono::time_point<__file_clock, _CDur>;
+   return __file_time{__t.time_since_epoch()} - _S_epoch_diff;
+ }
+
+
+      template<typename _Dur>
+ static
+ chrono::time_point<__sys_clock, common_type_t<_Dur, chrono::seconds>>
+ _S_to_sys(const chrono::time_point<__file_clock, _Dur>& __t) noexcept
+ {
+   using _CDur = common_type_t<_Dur, chrono::seconds>;
+   using __sys_time = chrono::time_point<__sys_clock, _CDur>;
+   return __sys_time{__t.time_since_epoch()} + _S_epoch_diff;
+ }
+    };
+  }
+
+
+
+}
+# 42 "C:/mingw64/include/c++/14.1.0/chrono" 2 3
+
+
+
+# 1 "C:/mingw64/include/c++/14.1.0/sstream" 1 3
+# 36 "C:/mingw64/include/c++/14.1.0/sstream" 3
+       
+# 37 "C:/mingw64/include/c++/14.1.0/sstream" 3
+# 55 "C:/mingw64/include/c++/14.1.0/sstream" 3
+namespace std
+{
+
+namespace __cxx11 {
+# 78 "C:/mingw64/include/c++/14.1.0/sstream" 3
+  template<typename _CharT, typename _Traits, typename _Alloc>
+    class basic_stringbuf : public basic_streambuf<_CharT, _Traits>
+    {
+      struct __xfer_bufptrs;
+
+
+      using allocator_traits = std::allocator_traits<_Alloc>;
+      using _Noexcept_swap
+ = __or_<typename allocator_traits::propagate_on_container_swap,
+  typename allocator_traits::is_always_equal>;
+
+
+    public:
+
+      typedef _CharT char_type;
+      typedef _Traits traits_type;
+
+
+      typedef _Alloc allocator_type;
+      typedef typename traits_type::int_type int_type;
+      typedef typename traits_type::pos_type pos_type;
+      typedef typename traits_type::off_type off_type;
+
+      typedef basic_streambuf<char_type, traits_type> __streambuf_type;
+      typedef basic_string<char_type, _Traits, _Alloc> __string_type;
+      typedef typename __string_type::size_type __size_type;
+
+    protected:
+
+      ios_base::openmode _M_mode;
+
+
+      __string_type _M_string;
+
+    public:
+# 121 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      basic_stringbuf()
+      : __streambuf_type(), _M_mode(ios_base::in | ios_base::out), _M_string()
+      { }
+# 132 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      explicit
+      basic_stringbuf(ios_base::openmode __mode)
+      : __streambuf_type(), _M_mode(__mode), _M_string()
+      { }
+# 145 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      explicit
+      basic_stringbuf(const __string_type& __str,
+        ios_base::openmode __mode = ios_base::in | ios_base::out)
+      : __streambuf_type(), _M_mode(),
+ _M_string(__str.data(), __str.size(), __str.get_allocator())
+      { _M_stringbuf_init(__mode); }
+
+
+      basic_stringbuf(const basic_stringbuf&) = delete;
+
+      basic_stringbuf(basic_stringbuf&& __rhs)
+      : basic_stringbuf(std::move(__rhs), __xfer_bufptrs(__rhs, this))
+      { __rhs._M_sync(const_cast<char_type*>(__rhs._M_string.data()), 0, 0); }
+
+
+      explicit
+      basic_stringbuf(const allocator_type& __a)
+      : basic_stringbuf(ios_base::in | std::ios_base::out, __a)
+      { }
+
+      basic_stringbuf(ios_base::openmode __mode,
+        const allocator_type& __a)
+      : __streambuf_type(), _M_mode(__mode), _M_string(__a)
+      { }
+
+      explicit
+      basic_stringbuf(__string_type&& __s,
+        ios_base::openmode __mode = ios_base::in
+        | ios_base::out)
+      : __streambuf_type(), _M_mode(__mode), _M_string(std::move(__s))
+      { _M_stringbuf_init(__mode); }
+
+      template<typename _SAlloc>
+ basic_stringbuf(const basic_string<_CharT, _Traits, _SAlloc>& __s,
+   const allocator_type& __a)
+ : basic_stringbuf(__s, ios_base::in | std::ios_base::out, __a)
+ { }
+
+      template<typename _SAlloc>
+ basic_stringbuf(const basic_string<_CharT, _Traits, _SAlloc>& __s,
+   ios_base::openmode __mode,
+   const allocator_type& __a)
+ : __streambuf_type(), _M_mode(__mode),
+   _M_string(__s.data(), __s.size(), __a)
+ { _M_stringbuf_init(__mode); }
+
+      template<typename _SAlloc>
+ explicit
+ basic_stringbuf(const basic_string<_CharT, _Traits, _SAlloc>& __s,
+   ios_base::openmode __mode = ios_base::in
+          | ios_base::out)
+ : basic_stringbuf(__s, __mode, allocator_type{})
+ { }
+
+      basic_stringbuf(basic_stringbuf&& __rhs, const allocator_type& __a)
+      : basic_stringbuf(std::move(__rhs), __a, __xfer_bufptrs(__rhs, this))
+      { __rhs._M_sync(const_cast<char_type*>(__rhs._M_string.data()), 0, 0); }
+
+      allocator_type get_allocator() const noexcept
+      { return _M_string.get_allocator(); }
+
+
+
+
+      basic_stringbuf&
+      operator=(const basic_stringbuf&) = delete;
+
+      basic_stringbuf&
+      operator=(basic_stringbuf&& __rhs)
+      {
+ __xfer_bufptrs __st{__rhs, this};
+ const __streambuf_type& __base = __rhs;
+ __streambuf_type::operator=(__base);
+ this->pubimbue(__rhs.getloc());
+ _M_mode = __rhs._M_mode;
+ _M_string = std::move(__rhs._M_string);
+ __rhs._M_sync(const_cast<char_type*>(__rhs._M_string.data()), 0, 0);
+ return *this;
+      }
+
+      void
+      swap(basic_stringbuf& __rhs) noexcept(_Noexcept_swap::value)
+      {
+ __xfer_bufptrs __l_st{*this, std::__addressof(__rhs)};
+ __xfer_bufptrs __r_st{__rhs, this};
+ __streambuf_type& __base = __rhs;
+ __streambuf_type::swap(__base);
+ __rhs.pubimbue(this->pubimbue(__rhs.getloc()));
+ std::swap(_M_mode, __rhs._M_mode);
+ std::swap(_M_string, __rhs._M_string);
+      }
+# 248 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      __string_type
+      str() const &
+      {
+ __string_type __ret(_M_string.get_allocator());
+ if (char_type* __hi = _M_high_mark())
+   __ret.assign(this->pbase(), __hi);
+ else
+   __ret = _M_string;
+ return __ret;
+      }
+
+
+
+
+      template<__allocator_like _SAlloc>
+ basic_string<_CharT, _Traits, _SAlloc>
+ str(const _SAlloc& __sa) const
+ {
+   auto __sv = view();
+   return { __sv.data(), __sv.size(), __sa };
+ }
+
+
+      __string_type
+      str() &&
+      {
+ if (char_type* __hi = _M_high_mark())
+   {
+
+     _M_string._M_set_length(_M_high_mark() - this->pbase());
+   }
+ auto __str = std::move(_M_string);
+ _M_string.clear();
+ _M_sync(_M_string.data(), 0, 0);
+ return __str;
+      }
+
+
+     
+      basic_string_view<char_type, traits_type>
+      view() const noexcept
+      {
+ if (char_type* __hi = _M_high_mark())
+   return { this->pbase(), __hi };
+ else
+   return _M_string;
+      }
+# 304 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      void
+      str(const __string_type& __s)
+      {
+
+
+ _M_string.assign(__s.data(), __s.size());
+ _M_stringbuf_init(_M_mode);
+      }
+
+
+
+      template<__allocator_like _SAlloc>
+ requires (!is_same_v<_SAlloc, _Alloc>)
+ void
+ str(const basic_string<_CharT, _Traits, _SAlloc>& __s)
+ {
+   _M_string.assign(__s.data(), __s.size());
+   _M_stringbuf_init(_M_mode);
+ }
+
+
+      void
+      str(__string_type&& __s)
+      {
+ _M_string = std::move(__s);
+ _M_stringbuf_init(_M_mode);
+      }
+
+
+    protected:
+
+      void
+      _M_stringbuf_init(ios_base::openmode __mode)
+      {
+ _M_mode = __mode;
+ __size_type __len = 0;
+ if (_M_mode & (ios_base::ate | ios_base::app))
+   __len = _M_string.size();
+ _M_sync(const_cast<char_type*>(_M_string.data()), 0, __len);
+      }
+
+      virtual streamsize
+      showmanyc()
+      {
+ streamsize __ret = -1;
+ if (_M_mode & ios_base::in)
+   {
+     _M_update_egptr();
+     __ret = this->egptr() - this->gptr();
+   }
+ return __ret;
+      }
+
+      virtual int_type
+      underflow();
+
+      virtual int_type
+      pbackfail(int_type __c = traits_type::eof());
+
+      virtual int_type
+      overflow(int_type __c = traits_type::eof());
+# 377 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      virtual __streambuf_type*
+      setbuf(char_type* __s, streamsize __n)
+      {
+ if (__s && __n >= 0)
+   {
+
+
+
+
+
+
+     _M_string.clear();
+
+
+     _M_sync(__s, __n, 0);
+   }
+ return this;
+      }
+
+      virtual pos_type
+      seekoff(off_type __off, ios_base::seekdir __way,
+       ios_base::openmode __mode = ios_base::in | ios_base::out);
+
+      virtual pos_type
+      seekpos(pos_type __sp,
+       ios_base::openmode __mode = ios_base::in | ios_base::out);
+
+
+
+
+      void
+      _M_sync(char_type* __base, __size_type __i, __size_type __o);
+
+
+
+      void
+      _M_update_egptr()
+      {
+ if (char_type* __pptr = this->pptr())
+   {
+     char_type* __egptr = this->egptr();
+     if (!__egptr || __pptr > __egptr)
+       {
+  if (_M_mode & ios_base::in)
+    this->setg(this->eback(), this->gptr(), __pptr);
+  else
+    this->setg(__pptr, __pptr, __pptr);
+       }
+   }
+      }
+
+
+
+      void
+      _M_pbump(char_type* __pbeg, char_type* __pend, off_type __off);
+
+    private:
+
+
+
+
+      __attribute__((__always_inline__))
+      char_type*
+      _M_high_mark() const noexcept
+      {
+ if (char_type* __pptr = this->pptr())
+   {
+     char_type* __egptr = this->egptr();
+     if (!__egptr || __pptr > __egptr)
+       return __pptr;
+     else
+       return __egptr;
+   }
+ return 0;
+      }
+
+
+
+
+
+      struct __xfer_bufptrs
+      {
+ __xfer_bufptrs(const basic_stringbuf& __from, basic_stringbuf* __to)
+ : _M_to{__to}, _M_goff{-1, -1, -1}, _M_poff{-1, -1, -1}
+ {
+   const _CharT* const __str = __from._M_string.data();
+   const _CharT* __end = nullptr;
+   if (__from.eback())
+     {
+       _M_goff[0] = __from.eback() - __str;
+       _M_goff[1] = __from.gptr() - __str;
+       _M_goff[2] = __from.egptr() - __str;
+       __end = __from.egptr();
+     }
+   if (__from.pbase())
+     {
+       _M_poff[0] = __from.pbase() - __str;
+       _M_poff[1] = __from.pptr() - __from.pbase();
+       _M_poff[2] = __from.epptr() - __str;
+       if (!__end || __from.pptr() > __end)
+  __end = __from.pptr();
+     }
+
+
+   if (__end)
+     {
+
+
+       auto& __mut_from = const_cast<basic_stringbuf&>(__from);
+       __mut_from._M_string._M_length(__end - __str);
+     }
+ }
+
+ ~__xfer_bufptrs()
+ {
+   char_type* __str = const_cast<char_type*>(_M_to->_M_string.data());
+   if (_M_goff[0] != -1)
+     _M_to->setg(__str+_M_goff[0], __str+_M_goff[1], __str+_M_goff[2]);
+   if (_M_poff[0] != -1)
+     _M_to->_M_pbump(__str+_M_poff[0], __str+_M_poff[2], _M_poff[1]);
+ }
+
+ basic_stringbuf* _M_to;
+ off_type _M_goff[3];
+ off_type _M_poff[3];
+      };
+# 513 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      basic_stringbuf(basic_stringbuf&& __rhs, __xfer_bufptrs&&)
+      : __streambuf_type(static_cast<const __streambuf_type&>(__rhs)),
+      _M_mode(__rhs._M_mode), _M_string(std::move(__rhs._M_string))
+      { }
+
+
+
+
+      basic_stringbuf(basic_stringbuf&& __rhs, const allocator_type& __a,
+        __xfer_bufptrs&&)
+      : __streambuf_type(static_cast<const __streambuf_type&>(__rhs)),
+      _M_mode(__rhs._M_mode), _M_string(std::move(__rhs._M_string), __a)
+      { }
+
+
+    };
+# 546 "C:/mingw64/include/c++/14.1.0/sstream" 3
+  template<typename _CharT, typename _Traits, typename _Alloc>
+    class basic_istringstream : public basic_istream<_CharT, _Traits>
+    {
+    public:
+
+      typedef _CharT char_type;
+      typedef _Traits traits_type;
+
+
+      typedef _Alloc allocator_type;
+      typedef typename traits_type::int_type int_type;
+      typedef typename traits_type::pos_type pos_type;
+      typedef typename traits_type::off_type off_type;
+
+
+      typedef basic_string<_CharT, _Traits, _Alloc> __string_type;
+      typedef basic_stringbuf<_CharT, _Traits, _Alloc> __stringbuf_type;
+      typedef basic_istream<char_type, traits_type> __istream_type;
+
+    private:
+      __stringbuf_type _M_stringbuf;
+
+    public:
+# 580 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      basic_istringstream()
+      : __istream_type(), _M_stringbuf(ios_base::in)
+      { this->init(&_M_stringbuf); }
+# 596 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      explicit
+      basic_istringstream(ios_base::openmode __mode)
+      : __istream_type(), _M_stringbuf(__mode | ios_base::in)
+      { this->init(&_M_stringbuf); }
+# 614 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      explicit
+      basic_istringstream(const __string_type& __str,
+     ios_base::openmode __mode = ios_base::in)
+      : __istream_type(), _M_stringbuf(__str, __mode | ios_base::in)
+      { this->init(&_M_stringbuf); }
+
+
+
+
+
+
+
+      ~basic_istringstream()
+      { }
+
+
+      basic_istringstream(const basic_istringstream&) = delete;
+
+      basic_istringstream(basic_istringstream&& __rhs)
+      : __istream_type(std::move(__rhs)),
+      _M_stringbuf(std::move(__rhs._M_stringbuf))
+      { __istream_type::set_rdbuf(&_M_stringbuf); }
+
+
+      basic_istringstream(ios_base::openmode __mode, const allocator_type& __a)
+      : __istream_type(), _M_stringbuf(__mode | ios_base::in, __a)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      explicit
+      basic_istringstream(__string_type&& __str,
+     ios_base::openmode __mode = ios_base::in)
+      : __istream_type(), _M_stringbuf(std::move(__str), __mode | ios_base::in)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ basic_istringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       const allocator_type& __a)
+ : basic_istringstream(__str, ios_base::in, __a)
+ { }
+
+      template<typename _SAlloc>
+ basic_istringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       ios_base::openmode __mode,
+       const allocator_type& __a)
+ : __istream_type(), _M_stringbuf(__str, __mode | ios_base::in, __a)
+ { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ explicit
+ basic_istringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       ios_base::openmode __mode = ios_base::in)
+ : basic_istringstream(__str, __mode, allocator_type())
+ { }
+
+
+
+
+      basic_istringstream&
+      operator=(const basic_istringstream&) = delete;
+
+      basic_istringstream&
+      operator=(basic_istringstream&& __rhs)
+      {
+ __istream_type::operator=(std::move(__rhs));
+ _M_stringbuf = std::move(__rhs._M_stringbuf);
+ return *this;
+      }
+
+      void
+      swap(basic_istringstream& __rhs)
+      {
+ __istream_type::swap(__rhs);
+ _M_stringbuf.swap(__rhs._M_stringbuf);
+      }
+# 697 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      __stringbuf_type*
+      rdbuf() const
+      { return const_cast<__stringbuf_type*>(&_M_stringbuf); }
+
+
+
+
+
+      __string_type
+      str() const &
+      { return _M_stringbuf.str(); }
+
+
+
+
+      template<__allocator_like _SAlloc>
+ basic_string<_CharT, _Traits, _SAlloc>
+ str(const _SAlloc& __sa) const
+ { return _M_stringbuf.str(__sa); }
+
+
+      __string_type
+      str() &&
+      { return std::move(_M_stringbuf).str(); }
+
+
+     
+      basic_string_view<char_type, traits_type>
+      view() const noexcept
+      { return _M_stringbuf.view(); }
+# 735 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      void
+      str(const __string_type& __s)
+      { _M_stringbuf.str(__s); }
+
+
+
+      template<__allocator_like _SAlloc>
+ requires (!is_same_v<_SAlloc, _Alloc>)
+ void
+ str(const basic_string<_CharT, _Traits, _SAlloc>& __s)
+ { _M_stringbuf.str(__s); }
+
+
+      void
+      str(__string_type&& __s)
+      { _M_stringbuf.str(std::move(__s)); }
+
+    };
+# 770 "C:/mingw64/include/c++/14.1.0/sstream" 3
+  template <typename _CharT, typename _Traits, typename _Alloc>
+    class basic_ostringstream : public basic_ostream<_CharT, _Traits>
+    {
+    public:
+
+      typedef _CharT char_type;
+      typedef _Traits traits_type;
+
+
+      typedef _Alloc allocator_type;
+      typedef typename traits_type::int_type int_type;
+      typedef typename traits_type::pos_type pos_type;
+      typedef typename traits_type::off_type off_type;
+
+
+      typedef basic_string<_CharT, _Traits, _Alloc> __string_type;
+      typedef basic_stringbuf<_CharT, _Traits, _Alloc> __stringbuf_type;
+      typedef basic_ostream<char_type, traits_type> __ostream_type;
+
+    private:
+      __stringbuf_type _M_stringbuf;
+
+    public:
+# 804 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      basic_ostringstream()
+      : __ostream_type(), _M_stringbuf(ios_base::out)
+      { this->init(&_M_stringbuf); }
+# 820 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      explicit
+      basic_ostringstream(ios_base::openmode __mode)
+      : __ostream_type(), _M_stringbuf(__mode | ios_base::out)
+      { this->init(&_M_stringbuf); }
+# 838 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      explicit
+      basic_ostringstream(const __string_type& __str,
+     ios_base::openmode __mode = ios_base::out)
+      : __ostream_type(), _M_stringbuf(__str, __mode | ios_base::out)
+      { this->init(&_M_stringbuf); }
+
+
+
+
+
+
+
+      ~basic_ostringstream()
+      { }
+
+
+      basic_ostringstream(const basic_ostringstream&) = delete;
+
+      basic_ostringstream(basic_ostringstream&& __rhs)
+      : __ostream_type(std::move(__rhs)),
+      _M_stringbuf(std::move(__rhs._M_stringbuf))
+      { __ostream_type::set_rdbuf(&_M_stringbuf); }
+
+
+      basic_ostringstream(ios_base::openmode __mode, const allocator_type& __a)
+      : __ostream_type(), _M_stringbuf(__mode | ios_base::out, __a)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      explicit
+      basic_ostringstream(__string_type&& __str,
+     ios_base::openmode __mode = ios_base::out)
+      : __ostream_type(), _M_stringbuf(std::move(__str), __mode | ios_base::out)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ basic_ostringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       const allocator_type& __a)
+ : basic_ostringstream(__str, ios_base::out, __a)
+ { }
+
+      template<typename _SAlloc>
+ basic_ostringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       ios_base::openmode __mode,
+       const allocator_type& __a)
+ : __ostream_type(), _M_stringbuf(__str, __mode | ios_base::out, __a)
+ { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ explicit
+ basic_ostringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+       ios_base::openmode __mode = ios_base::out)
+ : basic_ostringstream(__str, __mode, allocator_type())
+ { }
+
+
+
+
+      basic_ostringstream&
+      operator=(const basic_ostringstream&) = delete;
+
+      basic_ostringstream&
+      operator=(basic_ostringstream&& __rhs)
+      {
+ __ostream_type::operator=(std::move(__rhs));
+ _M_stringbuf = std::move(__rhs._M_stringbuf);
+ return *this;
+      }
+
+      void
+      swap(basic_ostringstream& __rhs)
+      {
+ __ostream_type::swap(__rhs);
+ _M_stringbuf.swap(__rhs._M_stringbuf);
+      }
+# 921 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      __stringbuf_type*
+      rdbuf() const
+      { return const_cast<__stringbuf_type*>(&_M_stringbuf); }
+
+
+
+
+
+      __string_type
+      str() const &
+      { return _M_stringbuf.str(); }
+
+
+
+
+      template<__allocator_like _SAlloc>
+ basic_string<_CharT, _Traits, _SAlloc>
+ str(const _SAlloc& __sa) const
+ { return _M_stringbuf.str(__sa); }
+
+
+      __string_type
+      str() &&
+      { return std::move(_M_stringbuf).str(); }
+
+
+     
+      basic_string_view<char_type, traits_type>
+      view() const noexcept
+      { return _M_stringbuf.view(); }
+# 959 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      void
+      str(const __string_type& __s)
+      { _M_stringbuf.str(__s); }
+
+
+
+      template<__allocator_like _SAlloc>
+ requires (!is_same_v<_SAlloc, _Alloc>)
+ void
+ str(const basic_string<_CharT, _Traits, _SAlloc>& __s)
+ { _M_stringbuf.str(__s); }
+
+
+      void
+      str(__string_type&& __s)
+      { _M_stringbuf.str(std::move(__s)); }
+
+    };
+# 994 "C:/mingw64/include/c++/14.1.0/sstream" 3
+  template <typename _CharT, typename _Traits, typename _Alloc>
+    class basic_stringstream : public basic_iostream<_CharT, _Traits>
+    {
+    public:
+
+      typedef _CharT char_type;
+      typedef _Traits traits_type;
+
+
+      typedef _Alloc allocator_type;
+      typedef typename traits_type::int_type int_type;
+      typedef typename traits_type::pos_type pos_type;
+      typedef typename traits_type::off_type off_type;
+
+
+      typedef basic_string<_CharT, _Traits, _Alloc> __string_type;
+      typedef basic_stringbuf<_CharT, _Traits, _Alloc> __stringbuf_type;
+      typedef basic_iostream<char_type, traits_type> __iostream_type;
+
+    private:
+      __stringbuf_type _M_stringbuf;
+
+    public:
+# 1028 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      basic_stringstream()
+      : __iostream_type(), _M_stringbuf(ios_base::out | ios_base::in)
+      { this->init(&_M_stringbuf); }
+# 1042 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      explicit
+      basic_stringstream(ios_base::openmode __m)
+      : __iostream_type(), _M_stringbuf(__m)
+      { this->init(&_M_stringbuf); }
+# 1058 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      explicit
+      basic_stringstream(const __string_type& __str,
+    ios_base::openmode __m = ios_base::out | ios_base::in)
+      : __iostream_type(), _M_stringbuf(__str, __m)
+      { this->init(&_M_stringbuf); }
+
+
+
+
+
+
+
+      ~basic_stringstream()
+      { }
+
+
+      basic_stringstream(const basic_stringstream&) = delete;
+
+      basic_stringstream(basic_stringstream&& __rhs)
+      : __iostream_type(std::move(__rhs)),
+      _M_stringbuf(std::move(__rhs._M_stringbuf))
+      { __iostream_type::set_rdbuf(&_M_stringbuf); }
+
+
+      basic_stringstream(ios_base::openmode __mode, const allocator_type& __a)
+      : __iostream_type(), _M_stringbuf(__mode, __a)
+      { this->init(&_M_stringbuf); }
+
+      explicit
+      basic_stringstream(__string_type&& __str,
+    ios_base::openmode __mode = ios_base::in
+           | ios_base::out)
+      : __iostream_type(), _M_stringbuf(std::move(__str), __mode)
+      { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ basic_stringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+      const allocator_type& __a)
+ : basic_stringstream(__str, ios_base::in | ios_base::out, __a)
+ { }
+
+      template<typename _SAlloc>
+ basic_stringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+      ios_base::openmode __mode,
+      const allocator_type& __a)
+ : __iostream_type(), _M_stringbuf(__str, __mode, __a)
+ { this->init(std::__addressof(_M_stringbuf)); }
+
+      template<typename _SAlloc>
+ explicit
+ basic_stringstream(const basic_string<_CharT, _Traits, _SAlloc>& __str,
+      ios_base::openmode __mode = ios_base::in
+             | ios_base::out)
+ : basic_stringstream(__str, __mode, allocator_type())
+ { }
+
+
+
+
+      basic_stringstream&
+      operator=(const basic_stringstream&) = delete;
+
+      basic_stringstream&
+      operator=(basic_stringstream&& __rhs)
+      {
+ __iostream_type::operator=(std::move(__rhs));
+ _M_stringbuf = std::move(__rhs._M_stringbuf);
+ return *this;
+      }
+
+      void
+      swap(basic_stringstream& __rhs)
+      {
+ __iostream_type::swap(__rhs);
+ _M_stringbuf.swap(__rhs._M_stringbuf);
+      }
+# 1143 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      __stringbuf_type*
+      rdbuf() const
+      { return const_cast<__stringbuf_type*>(&_M_stringbuf); }
+
+
+
+
+
+      __string_type
+      str() const &
+      { return _M_stringbuf.str(); }
+
+
+
+
+      template<__allocator_like _SAlloc>
+ basic_string<_CharT, _Traits, _SAlloc>
+ str(const _SAlloc& __sa) const
+ { return _M_stringbuf.str(__sa); }
+
+
+      __string_type
+      str() &&
+      { return std::move(_M_stringbuf).str(); }
+
+
+     
+      basic_string_view<char_type, traits_type>
+      view() const noexcept
+      { return _M_stringbuf.view(); }
+# 1181 "C:/mingw64/include/c++/14.1.0/sstream" 3
+      void
+      str(const __string_type& __s)
+      { _M_stringbuf.str(__s); }
+
+
+
+      template<__allocator_like _SAlloc>
+ requires (!is_same_v<_SAlloc, _Alloc>)
+ void
+ str(const basic_string<_CharT, _Traits, _SAlloc>& __s)
+ { _M_stringbuf.str(__s); }
+
+
+      void
+      str(__string_type&& __s)
+      { _M_stringbuf.str(std::move(__s)); }
+
+    };
+
+
+
+  template <class _CharT, class _Traits, class _Allocator>
+    inline void
+    swap(basic_stringbuf<_CharT, _Traits, _Allocator>& __x,
+  basic_stringbuf<_CharT, _Traits, _Allocator>& __y)
+    noexcept(noexcept(__x.swap(__y)))
+    { __x.swap(__y); }
+
+
+  template <class _CharT, class _Traits, class _Allocator>
+    inline void
+    swap(basic_istringstream<_CharT, _Traits, _Allocator>& __x,
+  basic_istringstream<_CharT, _Traits, _Allocator>& __y)
+    { __x.swap(__y); }
+
+
+  template <class _CharT, class _Traits, class _Allocator>
+    inline void
+    swap(basic_ostringstream<_CharT, _Traits, _Allocator>& __x,
+  basic_ostringstream<_CharT, _Traits, _Allocator>& __y)
+    { __x.swap(__y); }
+
+
+  template <class _CharT, class _Traits, class _Allocator>
+    inline void
+    swap(basic_stringstream<_CharT, _Traits, _Allocator>& __x,
+  basic_stringstream<_CharT, _Traits, _Allocator>& __y)
+    { __x.swap(__y); }
+
+
+}
+
+}
+
+
+
+
+# 1 "C:/mingw64/include/c++/14.1.0/bits/sstream.tcc" 1 3
+# 37 "C:/mingw64/include/c++/14.1.0/bits/sstream.tcc" 3
+       
+# 38 "C:/mingw64/include/c++/14.1.0/bits/sstream.tcc" 3
+
+namespace std
+{
+
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::int_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    pbackfail(int_type __c)
+    {
+      int_type __ret = traits_type::eof();
+      if (this->eback() < this->gptr())
+ {
+
+
+   const bool __testeof = traits_type::eq_int_type(__c, __ret);
+   if (!__testeof)
+     {
+       const bool __testeq = traits_type::eq(traits_type::
+          to_char_type(__c),
+          this->gptr()[-1]);
+       const bool __testout = this->_M_mode & ios_base::out;
+       if (__testeq || __testout)
+  {
+    this->gbump(-1);
+    if (!__testeq)
+      *this->gptr() = traits_type::to_char_type(__c);
+    __ret = __c;
+  }
+     }
+   else
+     {
+       this->gbump(-1);
+       __ret = traits_type::not_eof(__c);
+     }
+ }
+      return __ret;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::int_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    overflow(int_type __c)
+    {
+      const bool __testout = this->_M_mode & ios_base::out;
+      if (__builtin_expect(!__testout, false))
+ return traits_type::eof();
+
+      const bool __testeof = traits_type::eq_int_type(__c, traits_type::eof());
+      if (__builtin_expect(__testeof, false))
+ return traits_type::not_eof(__c);
+
+      const __size_type __capacity = _M_string.capacity();
+
+
+      if (size_t(this->epptr() - this->pbase()) < __capacity)
+ {
+
+   char_type* __base = const_cast<char_type*>(_M_string.data());
+   _M_pbump(__base, __base + __capacity, this->pptr() - this->pbase());
+   if (_M_mode & ios_base::in)
+     {
+       const __size_type __nget = this->gptr() - this->eback();
+       const __size_type __eget = this->egptr() - this->eback();
+       this->setg(__base, __base + __nget, __base + __eget + 1);
+     }
+   *this->pptr() = traits_type::to_char_type(__c);
+   this->pbump(1);
+   return __c;
+ }
+
+
+      const __size_type __max_size = _M_string.max_size();
+      const bool __testput = this->pptr() < this->epptr();
+      if (__builtin_expect(!__testput && __capacity == __max_size, false))
+ return traits_type::eof();
+
+
+
+      const char_type __conv = traits_type::to_char_type(__c);
+      if (!__testput)
+ {
+# 129 "C:/mingw64/include/c++/14.1.0/bits/sstream.tcc" 3
+   const __size_type __opt_len = std::max(__size_type(2 * __capacity),
+       __size_type(512));
+   const __size_type __len = std::min(__opt_len, __max_size);
+   __string_type __tmp(_M_string.get_allocator());
+   __tmp.reserve(__len);
+   if (this->pbase())
+     __tmp.assign(this->pbase(), this->epptr() - this->pbase());
+   __tmp.push_back(__conv);
+   _M_string.swap(__tmp);
+   _M_sync(const_cast<char_type*>(_M_string.data()),
+    this->gptr() - this->eback(), this->pptr() - this->pbase());
+ }
+      else
+ *this->pptr() = __conv;
+      this->pbump(1);
+      return __c;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::int_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    underflow()
+    {
+      int_type __ret = traits_type::eof();
+      const bool __testin = this->_M_mode & ios_base::in;
+      if (__testin)
+ {
+
+   _M_update_egptr();
+
+   if (this->gptr() < this->egptr())
+     __ret = traits_type::to_int_type(*this->gptr());
+ }
+      return __ret;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::pos_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    seekoff(off_type __off, ios_base::seekdir __way, ios_base::openmode __mode)
+    {
+      pos_type __ret = pos_type(off_type(-1));
+      bool __testin = (ios_base::in & this->_M_mode & __mode) != 0;
+      bool __testout = (ios_base::out & this->_M_mode & __mode) != 0;
+      const bool __testboth = __testin && __testout && __way != ios_base::cur;
+      __testin &= !(__mode & ios_base::out);
+      __testout &= !(__mode & ios_base::in);
+
+
+
+      const char_type* __beg = __testin ? this->eback() : this->pbase();
+      if ((__beg || !__off) && (__testin || __testout || __testboth))
+ {
+   _M_update_egptr();
+
+   off_type __newoffi = __off;
+   off_type __newoffo = __newoffi;
+   if (__way == ios_base::cur)
+     {
+       __newoffi += this->gptr() - __beg;
+       __newoffo += this->pptr() - __beg;
+     }
+   else if (__way == ios_base::end)
+     __newoffo = __newoffi += this->egptr() - __beg;
+
+   if ((__testin || __testboth)
+       && __newoffi >= 0
+       && this->egptr() - __beg >= __newoffi)
+     {
+       this->setg(this->eback(), this->eback() + __newoffi,
+    this->egptr());
+       __ret = pos_type(__newoffi);
+     }
+   if ((__testout || __testboth)
+       && __newoffo >= 0
+       && this->egptr() - __beg >= __newoffo)
+     {
+       _M_pbump(this->pbase(), this->epptr(), __newoffo);
+       __ret = pos_type(__newoffo);
+     }
+ }
+      return __ret;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    typename basic_stringbuf<_CharT, _Traits, _Alloc>::pos_type
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    seekpos(pos_type __sp, ios_base::openmode __mode)
+    {
+      pos_type __ret = pos_type(off_type(-1));
+      const bool __testin = (ios_base::in & this->_M_mode & __mode) != 0;
+      const bool __testout = (ios_base::out & this->_M_mode & __mode) != 0;
+
+      const char_type* __beg = __testin ? this->eback() : this->pbase();
+      if ((__beg || !off_type(__sp)) && (__testin || __testout))
+ {
+   _M_update_egptr();
+
+   const off_type __pos(__sp);
+   const bool __testpos = (0 <= __pos
+      && __pos <= this->egptr() - __beg);
+   if (__testpos)
+     {
+       if (__testin)
+  this->setg(this->eback(), this->eback() + __pos,
+      this->egptr());
+       if (__testout)
+  _M_pbump(this->pbase(), this->epptr(), __pos);
+       __ret = __sp;
+     }
+ }
+      return __ret;
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    void
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    _M_sync(char_type* __base, __size_type __i, __size_type __o)
+    {
+      const bool __testin = _M_mode & ios_base::in;
+      const bool __testout = _M_mode & ios_base::out;
+      char_type* __endg = __base + _M_string.size();
+      char_type* __endp = __base + _M_string.capacity();
+
+      if (__base != _M_string.data())
+ {
+
+   __endg += __i;
+   __i = 0;
+   __endp = __endg;
+ }
+
+      if (__testin)
+ this->setg(__base, __base + __i, __endg);
+      if (__testout)
+ {
+   _M_pbump(__base, __endp, __o);
+
+
+
+   if (!__testin)
+     this->setg(__endg, __endg, __endg);
+ }
+    }
+
+  template <class _CharT, class _Traits, class _Alloc>
+    void
+    basic_stringbuf<_CharT, _Traits, _Alloc>::
+    _M_pbump(char_type* __pbeg, char_type* __pend, off_type __off)
+    {
+      this->setp(__pbeg, __pend);
+      while (__off > __gnu_cxx::__numeric_traits<int>::__max)
+ {
+   this->pbump(__gnu_cxx::__numeric_traits<int>::__max);
+   __off -= __gnu_cxx::__numeric_traits<int>::__max;
+ }
+      this->pbump(__off);
+    }
+
+
+
+
+  extern template class basic_stringbuf<char>;
+  extern template class basic_istringstream<char>;
+  extern template class basic_ostringstream<char>;
+  extern template class basic_stringstream<char>;
+
+
+  extern template class basic_stringbuf<wchar_t>;
+  extern template class basic_istringstream<wchar_t>;
+  extern template class basic_ostringstream<wchar_t>;
+  extern template class basic_stringstream<wchar_t>;
+
+
+
+
+}
+# 1239 "C:/mingw64/include/c++/14.1.0/sstream" 2 3
+# 46 "C:/mingw64/include/c++/14.1.0/chrono" 2 3
+# 55 "C:/mingw64/include/c++/14.1.0/chrono" 3
+# 1 "C:/mingw64/include/c++/14.1.0/bits/version.h" 1 3
+# 47 "C:/mingw64/include/c++/14.1.0/bits/version.h" 3
+       
+# 48 "C:/mingw64/include/c++/14.1.0/bits/version.h" 3
+# 56 "C:/mingw64/include/c++/14.1.0/chrono" 2 3
+
+namespace std
+{
+
+# 74 "C:/mingw64/include/c++/14.1.0/chrono" 3
+  namespace chrono
+  {
+
+
+
+    struct local_t { };
+    template<typename _Duration>
+      using local_time = time_point<local_t, _Duration>;
+    using local_seconds = local_time<seconds>;
+    using local_days = local_time<days>;
+
+    class utc_clock;
+    class tai_clock;
+    class gps_clock;
+
+    template<typename _Duration>
+      using utc_time = time_point<utc_clock, _Duration>;
+    using utc_seconds = utc_time<seconds>;
+
+    template<typename _Duration>
+      using tai_time = time_point<tai_clock, _Duration>;
+    using tai_seconds = tai_time<seconds>;
+
+    template<typename _Duration>
+      using gps_time = time_point<gps_clock, _Duration>;
+    using gps_seconds = gps_time<seconds>;
+
+    template<> struct is_clock<utc_clock> : true_type { };
+    template<> struct is_clock<tai_clock> : true_type { };
+    template<> struct is_clock<gps_clock> : true_type { };
+
+    template<> inline constexpr bool is_clock_v<utc_clock> = true;
+    template<> inline constexpr bool is_clock_v<tai_clock> = true;
+    template<> inline constexpr bool is_clock_v<gps_clock> = true;
+
+    struct leap_second_info
+    {
+      bool is_leap_second;
+      seconds elapsed;
+    };
+
+    template<typename _Duration>
+      leap_second_info
+      get_leap_second_info(const utc_time<_Duration>& __ut);
+
+
+
+
+
+
+
+    class utc_clock
+    {
+    public:
+      using rep = system_clock::rep;
+      using period = system_clock::period;
+      using duration = chrono::duration<rep, period>;
+      using time_point = chrono::time_point<utc_clock>;
+      static constexpr bool is_steady = false;
+
+      [[nodiscard]]
+      static time_point
+      now()
+      { return from_sys(system_clock::now()); }
+
+      template<typename _Duration>
+ [[nodiscard]]
+ static sys_time<common_type_t<_Duration, seconds>>
+ to_sys(const utc_time<_Duration>& __t)
+ {
+   using _CDur = common_type_t<_Duration, seconds>;
+   const auto __li = chrono::get_leap_second_info(__t);
+   sys_time<_CDur> __s{__t.time_since_epoch() - __li.elapsed};
+   if (__li.is_leap_second)
+     __s = chrono::floor<seconds>(__s) + seconds{1} - _CDur{1};
+   return __s;
+ }
+
+      template<typename _Duration>
+ [[nodiscard]]
+ static utc_time<common_type_t<_Duration, seconds>>
+ from_sys(const sys_time<_Duration>& __t);
+    };
+
+
+
+
+
+
+
+    class tai_clock
+    {
+    public:
+      using rep = system_clock::rep;
+      using period = system_clock::period;
+      using duration = chrono::duration<rep, period>;
+      using time_point = chrono::time_point<tai_clock>;
+      static constexpr bool is_steady = false;
+
+
+      [[nodiscard]]
+      static time_point
+      now()
+      { return from_utc(utc_clock::now()); }
+
+      template<typename _Duration>
+ [[nodiscard]]
+ static utc_time<common_type_t<_Duration, seconds>>
+ to_utc(const tai_time<_Duration>& __t)
+ {
+   using _CDur = common_type_t<_Duration, seconds>;
+   return utc_time<_CDur>{__t.time_since_epoch()} - 378691210s;
+ }
+
+      template<typename _Duration>
+ [[nodiscard]]
+ static tai_time<common_type_t<_Duration, seconds>>
+ from_utc(const utc_time<_Duration>& __t)
+ {
+   using _CDur = common_type_t<_Duration, seconds>;
+   return tai_time<_CDur>{__t.time_since_epoch()} + 378691210s;
+ }
+    };
+
+
+
+
+
+
+
+    class gps_clock
+    {
+    public:
+      using rep = system_clock::rep;
+      using period = system_clock::period;
+      using duration = chrono::duration<rep, period>;
+      using time_point = chrono::time_point<gps_clock>;
+      static constexpr bool is_steady = false;
+
+
+      [[nodiscard]]
+      static time_point
+      now()
+      { return from_utc(utc_clock::now()); }
+
+      template<typename _Duration>
+ [[nodiscard]]
+ static utc_time<common_type_t<_Duration, seconds>>
+ to_utc(const gps_time<_Duration>& __t)
+ {
+   using _CDur = common_type_t<_Duration, seconds>;
+   return utc_time<_CDur>{__t.time_since_epoch()} + 315964809s;
+ }
+
+      template<typename _Duration>
+ [[nodiscard]]
+ static gps_time<common_type_t<_Duration, seconds>>
+ from_utc(const utc_time<_Duration>& __t)
+ {
+   using _CDur = common_type_t<_Duration, seconds>;
+   return gps_time<_CDur>{__t.time_since_epoch()} - 315964809s;
+ }
+    };
+
+
+    template<typename _DestClock, typename _SourceClock>
+      struct clock_time_conversion
+      { };
+
+
+
+    template<typename _Clock>
+      struct clock_time_conversion<_Clock, _Clock>
+      {
+ template<typename _Duration>
+   time_point<_Clock, _Duration>
+   operator()(const time_point<_Clock, _Duration>& __t) const
+   { return __t; }
+      };
+
+    template<>
+      struct clock_time_conversion<system_clock, system_clock>
+      {
+ template<typename _Duration>
+   sys_time<_Duration>
+   operator()(const sys_time<_Duration>& __t) const
+   { return __t; }
+      };
+
+    template<>
+      struct clock_time_conversion<utc_clock, utc_clock>
+      {
+ template<typename _Duration>
+   utc_time<_Duration>
+   operator()(const utc_time<_Duration>& __t) const
+   { return __t; }
+      };
+
+
+
+    template<>
+      struct clock_time_conversion<utc_clock, system_clock>
+      {
+ template<typename _Duration>
+   utc_time<common_type_t<_Duration, seconds>>
+   operator()(const sys_time<_Duration>& __t) const
+   { return utc_clock::from_sys(__t); }
+      };
+
+    template<>
+      struct clock_time_conversion<system_clock, utc_clock>
+      {
+ template<typename _Duration>
+   sys_time<common_type_t<_Duration, seconds>>
+   operator()(const utc_time<_Duration>& __t) const
+   { return utc_clock::to_sys(__t); }
+      };
+
+    template<typename _Tp, typename _Clock>
+      inline constexpr bool __is_time_point_for_v = false;
+
+    template<typename _Clock, typename _Duration>
+      inline constexpr bool
+       __is_time_point_for_v<time_point<_Clock, _Duration>, _Clock> = true;
+
+
+
+    template<typename _SourceClock>
+      struct clock_time_conversion<system_clock, _SourceClock>
+      {
+ template<typename _Duration, typename _Src = _SourceClock>
+   auto
+   operator()(const time_point<_SourceClock, _Duration>& __t) const
+   -> decltype(_Src::to_sys(__t))
+   {
+     using _Ret = decltype(_SourceClock::to_sys(__t));
+     static_assert(__is_time_point_for_v<_Ret, system_clock>);
+     return _SourceClock::to_sys(__t);
+   }
+      };
+
+    template<typename _DestClock>
+      struct clock_time_conversion<_DestClock, system_clock>
+      {
+ template<typename _Duration, typename _Dest = _DestClock>
+   auto
+   operator()(const sys_time<_Duration>& __t) const
+   -> decltype(_Dest::from_sys(__t))
+   {
+     using _Ret = decltype(_DestClock::from_sys(__t));
+     static_assert(__is_time_point_for_v<_Ret, _DestClock>);
+     return _DestClock::from_sys(__t);
+   }
+      };
+
+
+
+    template<typename _SourceClock>
+      struct clock_time_conversion<utc_clock, _SourceClock>
+      {
+ template<typename _Duration, typename _Src = _SourceClock>
+   auto
+   operator()(const time_point<_SourceClock, _Duration>& __t) const
+   -> decltype(_Src::to_utc(__t))
+   {
+     using _Ret = decltype(_SourceClock::to_utc(__t));
+     static_assert(__is_time_point_for_v<_Ret, utc_clock>);
+     return _SourceClock::to_utc(__t);
+   }
+      };
+
+    template<typename _DestClock>
+      struct clock_time_conversion<_DestClock, utc_clock>
+      {
+ template<typename _Duration, typename _Dest = _DestClock>
+   auto
+   operator()(const utc_time<_Duration>& __t) const
+   -> decltype(_Dest::from_utc(__t))
+   {
+     using _Ret = decltype(_DestClock::from_utc(__t));
+     static_assert(__is_time_point_for_v<_Ret, _DestClock>);
+     return _DestClock::from_utc(__t);
+   }
+      };
+
+
+    namespace __detail
+    {
+      template<typename _DestClock, typename _SourceClock, typename _Duration>
+       concept __clock_convs
+   = requires (const time_point<_SourceClock, _Duration>& __t) {
+     clock_time_conversion<_DestClock, _SourceClock>{}(__t);
+   };
+
+      template<typename _DestClock, typename _SourceClock, typename _Duration>
+       concept __clock_convs_sys
+   = requires (const time_point<_SourceClock, _Duration>& __t) {
+     clock_time_conversion<_DestClock, system_clock>{}(
+       clock_time_conversion<system_clock, _SourceClock>{}(__t));
+   };
+
+      template<typename _DestClock, typename _SourceClock, typename _Duration>
+       concept __clock_convs_utc
+   = requires (const time_point<_SourceClock, _Duration>& __t) {
+     clock_time_conversion<_DestClock, utc_clock>{}(
+       clock_time_conversion<utc_clock, _SourceClock>{}(__t));
+   };
+
+      template<typename _DestClock, typename _SourceClock, typename _Duration>
+ concept __clock_convs_sys_utc
+   = requires (const time_point<_SourceClock, _Duration>& __t) {
+     clock_time_conversion<_DestClock, utc_clock>{}(
+       clock_time_conversion<utc_clock, system_clock>{}(
+  clock_time_conversion<system_clock, _SourceClock>{}(__t)));
+   };
+
+      template<typename _DestClock, typename _SourceClock, typename _Duration>
+       concept __clock_convs_utc_sys
+   = requires (const time_point<_SourceClock, _Duration>& __t) {
+     clock_time_conversion<_DestClock, system_clock>{}(
+       clock_time_conversion<system_clock, utc_clock>{}(
+  clock_time_conversion<utc_clock, _SourceClock>{}(__t)));
+   };
+
+    }
+
+
+
+    template<typename _DestClock, typename _SourceClock, typename _Duration>
+      [[nodiscard]]
+      inline auto
+      clock_cast(const time_point<_SourceClock, _Duration>& __t)
+      requires __detail::__clock_convs<_DestClock, _SourceClock, _Duration>
+ || __detail::__clock_convs_sys<_DestClock, _SourceClock, _Duration>
+ || __detail::__clock_convs_utc<_DestClock, _SourceClock, _Duration>
+ || __detail::__clock_convs_sys_utc<_DestClock, _SourceClock, _Duration>
+ || __detail::__clock_convs_utc_sys<_DestClock, _SourceClock, _Duration>
+      {
+       constexpr bool __direct
+  = __detail::__clock_convs<_DestClock, _SourceClock, _Duration>;
+       if constexpr (__direct)
+  {
+    return clock_time_conversion<_DestClock, _SourceClock>{}(__t);
+  }
+       else
+  {
+    constexpr bool __convert_via_sys_clock
+      = __detail::__clock_convs_sys<_DestClock, _SourceClock, _Duration>;
+    constexpr bool __convert_via_utc_clock
+      = __detail::__clock_convs_utc<_DestClock, _SourceClock, _Duration>;
+    if constexpr (__convert_via_sys_clock)
+      {
+        static_assert(!__convert_via_utc_clock,
+   "clock_cast requires a unique best conversion, but "
+   "conversion is possible via system_clock and also via"
+   "utc_clock");
+        return clock_time_conversion<_DestClock, system_clock>{}(
+   clock_time_conversion<system_clock, _SourceClock>{}(__t));
+      }
+    else if constexpr (__convert_via_utc_clock)
+      {
+        return clock_time_conversion<_DestClock, utc_clock>{}(
+   clock_time_conversion<utc_clock, _SourceClock>{}(__t));
+      }
+    else
+      {
+        constexpr bool __convert_via_sys_and_utc_clocks
+   = __detail::__clock_convs_sys_utc<_DestClock,
+         _SourceClock,
+         _Duration>;
+
+        if constexpr (__convert_via_sys_and_utc_clocks)
+   {
+     constexpr bool __convert_via_utc_and_sys_clocks
+       = __detail::__clock_convs_utc_sys<_DestClock,
+             _SourceClock,
+             _Duration>;
+     static_assert(!__convert_via_utc_and_sys_clocks,
+       "clock_cast requires a unique best conversion, but "
+       "conversion is possible via system_clock followed by "
+       "utc_clock, and also via utc_clock followed by "
+       "system_clock");
+     return clock_time_conversion<_DestClock, utc_clock>{}(
+       clock_time_conversion<utc_clock, system_clock>{}(
+         clock_time_conversion<system_clock, _SourceClock>{}(__t)));
+   }
+        else
+   {
+     return clock_time_conversion<_DestClock, system_clock>{}(
+       clock_time_conversion<system_clock, utc_clock>{}(
+         clock_time_conversion<utc_clock, _SourceClock>{}(__t)));
+   }
+      }
+  }
+      }
+
+
+
+
+    class day;
+    class month;
+    class year;
+    class weekday;
+    class weekday_indexed;
+    class weekday_last;
+    class month_day;
+    class month_day_last;
+    class month_weekday;
+    class month_weekday_last;
+    class year_month;
+    class year_month_day;
+    class year_month_day_last;
+    class year_month_weekday;
+    class year_month_weekday_last;
+
+    struct last_spec
+    {
+      explicit last_spec() = default;
+
+      friend constexpr month_day_last
+      operator/(int __m, last_spec) noexcept;
+
+      friend constexpr month_day_last
+      operator/(last_spec, int __m) noexcept;
+    };
+
+    inline constexpr last_spec last{};
+
+    namespace __detail
+    {
+
+      template <unsigned __d, typename _Tp>
+      consteval auto
+      __modulo_offset()
+      {
+ using _Up = make_unsigned_t<_Tp>;
+ auto constexpr __a = _Up(-1) - _Up(255 + __d - 2);
+ auto constexpr __b = _Up(__d * (__a / __d) - 1);
+
+ return _Up(-1) - __b;
+      }
+
+
+
+
+      template <unsigned __d, typename _Tp>
+      constexpr unsigned
+      __add_modulo(unsigned __x, _Tp __y)
+      {
+ using _Up = make_unsigned_t<_Tp>;
+# 533 "C:/mingw64/include/c++/14.1.0/chrono" 3
+ auto const __offset = __y >= 0 ? _Up(0) : __modulo_offset<__d, _Tp>();
+ return (__x + _Up(__y) - __offset) % __d;
+      }
+
+
+      template <unsigned __d, typename _Tp>
+      constexpr unsigned
+      __sub_modulo(unsigned __x, _Tp __y)
+      {
+ using _Up = make_unsigned_t<_Tp>;
+ auto const __offset = __y <= 0 ? _Up(0) : __modulo_offset<__d, _Tp>();
+ return (__x - _Up(__y) - __offset) % __d;
+      }
+
+      inline constexpr unsigned __days_per_month[12]
+ = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    }
+
+
+
+    class day
+    {
+    private:
+      unsigned char _M_d;
+
+    public:
+      day() = default;
+
+      explicit constexpr
+      day(unsigned __d) noexcept
+      : _M_d(__d)
+      { }
+
+      constexpr day&
+      operator++() noexcept
+      {
+ ++_M_d;
+ return *this;
+      }
+
+      constexpr day
+      operator++(int) noexcept
+      {
+ auto __ret = *this;
+ ++(*this);
+ return __ret;
+      }
+
+      constexpr day&
+      operator--() noexcept
+      {
+ --_M_d;
+ return *this;
+      }
+
+      constexpr day
+      operator--(int) noexcept
+      {
+ auto __ret = *this;
+ --(*this);
+ return __ret;
+      }
+
+      constexpr day&
+      operator+=(const days& __d) noexcept
+      {
+ *this = *this + __d;
+ return *this;
+      }
+
+      constexpr day&
+      operator-=(const days& __d) noexcept
+      {
+ *this = *this - __d;
+ return *this;
+      }
+
+      constexpr explicit
+      operator unsigned() const noexcept
+      { return _M_d; }
+
+      constexpr bool
+      ok() const noexcept
+      { return 1 <= _M_d && _M_d <= 31; }
+
+      friend constexpr bool
+      operator==(const day& __x, const day& __y) noexcept
+      { return unsigned{__x} == unsigned{__y}; }
+
+      friend constexpr strong_ordering
+      operator<=>(const day& __x, const day& __y) noexcept
+      { return unsigned{__x} <=> unsigned{__y}; }
+
+      friend constexpr day
+      operator+(const day& __x, const days& __y) noexcept
+      { return day(unsigned{__x} + __y.count()); }
+
+      friend constexpr day
+      operator+(const days& __x, const day& __y) noexcept
+      { return __y + __x; }
+
+      friend constexpr day
+      operator-(const day& __x, const days& __y) noexcept
+      { return __x + -__y; }
+
+      friend constexpr days
+      operator-(const day& __x, const day& __y) noexcept
+      { return days{int(unsigned{__x}) - int(unsigned{__y})}; }
+
+      friend constexpr month_day
+      operator/(const month& __m, const day& __d) noexcept;
+
+      friend constexpr month_day
+      operator/(int __m, const day& __d) noexcept;
+
+      friend constexpr month_day
+      operator/(const day& __d, const month& __m) noexcept;
+
+      friend constexpr month_day
+      operator/(const day& __d, int __m) noexcept;
+
+      friend constexpr year_month_day
+      operator/(const year_month& __ym, const day& __d) noexcept;
+    };
+
+
+
+    class month
+    {
+    private:
+      unsigned char _M_m;
+
+    public:
+      month() = default;
+
+      explicit constexpr
+      month(unsigned __m) noexcept
+      : _M_m(__m)
+      { }
+
+      constexpr month&
+      operator++() noexcept
+      {
+ *this += months{1};
+ return *this;
+      }
+
+      constexpr month
+      operator++(int) noexcept
+      {
+ auto __ret = *this;
+ ++(*this);
+ return __ret;
+      }
+
+      constexpr month&
+      operator--() noexcept
+      {
+ *this -= months{1};
+ return *this;
+      }
+
+      constexpr month
+      operator--(int) noexcept
+      {
+ auto __ret = *this;
+ --(*this);
+ return __ret;
+      }
+
+      constexpr month&
+      operator+=(const months& __m) noexcept
+      {
+ *this = *this + __m;
+ return *this;
+      }
+
+      constexpr month&
+      operator-=(const months& __m) noexcept
+      {
+ *this = *this - __m;
+ return *this;
+      }
+
+      explicit constexpr
+      operator unsigned() const noexcept
+      { return _M_m; }
+
+      constexpr bool
+      ok() const noexcept
+      { return 1 <= _M_m && _M_m <= 12; }
+
+      friend constexpr bool
+      operator==(const month& __x, const month& __y) noexcept
+      { return unsigned{__x} == unsigned{__y}; }
+
+      friend constexpr strong_ordering
+      operator<=>(const month& __x, const month& __y) noexcept
+      { return unsigned{__x} <=> unsigned{__y}; }
+
+      friend constexpr month
+      operator+(const month& __x, const months& __y) noexcept
+      {
+
+
+ return month{1 + __detail::__add_modulo<12>(
+   unsigned{__x} + 11, __y.count())};
+      }
+
+      friend constexpr month
+      operator+(const months& __x, const month& __y) noexcept
+      { return __y + __x; }
+
+      friend constexpr month
+      operator-(const month& __x, const months& __y) noexcept
+      {
+
+
+ return month{1 + __detail::__sub_modulo<12>(
+   unsigned{__x} + 11, __y.count())};
+      }
+
+      friend constexpr months
+      operator-(const month& __x, const month& __y) noexcept
+      {
+ const auto __dm = int(unsigned(__x)) - int(unsigned(__y));
+ return months{__dm < 0 ? 12 + __dm : __dm};
+      }
+
+      friend constexpr year_month
+      operator/(const year& __y, const month& __m) noexcept;
+
+      friend constexpr month_day
+      operator/(const month& __m, int __d) noexcept;
+
+      friend constexpr month_day_last
+      operator/(const month& __m, last_spec) noexcept;
+
+      friend constexpr month_day_last
+      operator/(last_spec, const month& __m) noexcept;
+
+      friend constexpr month_weekday
+      operator/(const month& __m, const weekday_indexed& __wdi) noexcept;
+
+      friend constexpr month_weekday
+      operator/(const weekday_indexed& __wdi, const month& __m) noexcept;
+
+      friend constexpr month_weekday_last
+      operator/(const month& __m, const weekday_last& __wdl) noexcept;
+
+      friend constexpr month_weekday_last
+      operator/(const weekday_last& __wdl, const month& __m) noexcept;
+    };
+
+    inline constexpr month January{1};
+    inline constexpr month February{2};
+    inline constexpr month March{3};
+    inline constexpr month April{4};
+    inline constexpr month May{5};
+    inline constexpr month June{6};
+    inline constexpr month July{7};
+    inline constexpr month August{8};
+    inline constexpr month September{9};
+    inline constexpr month October{10};
+    inline constexpr month November{11};
+    inline constexpr month December{12};
+
+
+
+    class year
+    {
+    private:
+      short _M_y;
+
+    public:
+      year() = default;
+
+      explicit constexpr
+      year(int __y) noexcept
+      : _M_y{static_cast<short>(__y)}
+      { }
+
+      static constexpr year
+      min() noexcept
+      { return year{-32767}; }
+
+      static constexpr year
+      max() noexcept
+      { return year{32767}; }
+
+      constexpr year&
+      operator++() noexcept
+      {
+ ++_M_y;
+ return *this;
+      }
+
+      constexpr year
+      operator++(int) noexcept
+      {
+ auto __ret = *this;
+ ++(*this);
+ return __ret;
+      }
+
+      constexpr year&
+      operator--() noexcept
+      {
+ --_M_y;
+ return *this;
+      }
+
+      constexpr year
+      operator--(int) noexcept
+      {
+ auto __ret = *this;
+ --(*this);
+ return __ret;
+      }
+
+      constexpr year&
+      operator+=(const years& __y) noexcept
+      {
+ *this = *this + __y;
+ return *this;
+      }
+
+      constexpr year&
+      operator-=(const years& __y) noexcept
+      {
+ *this = *this - __y;
+ return *this;
+      }
+
+      constexpr year
+      operator+() const noexcept
+      { return *this; }
+
+      constexpr year
+      operator-() const noexcept
+      { return year{-_M_y}; }
+
+      constexpr bool
+      is_leap() const noexcept
+      {
+# 900 "C:/mingw64/include/c++/14.1.0/chrono" 3
+ return (_M_y & (_M_y % 25 == 0 ? 15 : 3)) == 0;
+      }
+
+      explicit constexpr
+      operator int() const noexcept
+      { return _M_y; }
+
+      constexpr bool
+      ok() const noexcept
+      { return min()._M_y <= _M_y && _M_y <= max()._M_y; }
+
+      friend constexpr bool
+      operator==(const year& __x, const year& __y) noexcept
+      { return int{__x} == int{__y}; }
+
+      friend constexpr strong_ordering
+      operator<=>(const year& __x, const year& __y) noexcept
+      { return int{__x} <=> int{__y}; }
+
+      friend constexpr year
+      operator+(const year& __x, const years& __y) noexcept
+      { return year{int{__x} + static_cast<int>(__y.count())}; }
+
+      friend constexpr year
+      operator+(const years& __x, const year& __y) noexcept
+      { return __y + __x; }
+
+      friend constexpr year
+      operator-(const year& __x, const years& __y) noexcept
+      { return __x + -__y; }
+
+      friend constexpr years
+      operator-(const year& __x, const year& __y) noexcept
+      { return years{int{__x} - int{__y}}; }
+
+      friend constexpr year_month
+      operator/(const year& __y, int __m) noexcept;
+
+      friend constexpr year_month_day
+      operator/(const year& __y, const month_day& __md) noexcept;
+
+      friend constexpr year_month_day
+      operator/(const month_day& __md, const year& __y) noexcept;
+
+      friend constexpr year_month_day_last
+      operator/(const year& __y, const month_day_last& __mdl) noexcept;
+
+      friend constexpr year_month_day_last
+      operator/(const month_day_last& __mdl, const year& __y) noexcept;
+
+      friend constexpr year_month_weekday
+      operator/(const year& __y, const month_weekday& __mwd) noexcept;
+
+      friend constexpr year_month_weekday
+      operator/(const month_weekday& __mwd, const year& __y) noexcept;
+
+      friend constexpr year_month_weekday_last
+      operator/(const year& __y, const month_weekday_last& __mwdl) noexcept;
+
+      friend constexpr year_month_weekday_last
+      operator/(const month_weekday_last& __mwdl, const year& __y) noexcept;
+    };
+
+
+
+    class weekday
+    {
+    private:
+      unsigned char _M_wd;
+
+      static constexpr weekday
+      _S_from_days(const days& __d)
+      {
+ return weekday{__detail::__add_modulo<7>(4, __d.count())};
+      }
+
+    public:
+      weekday() = default;
+
+      explicit constexpr
+      weekday(unsigned __wd) noexcept
+      : _M_wd(__wd == 7 ? 0 : __wd)
+      { }
+
+      constexpr
+      weekday(const sys_days& __dp) noexcept
+      : weekday{_S_from_days(__dp.time_since_epoch())}
+      { }
+
+      explicit constexpr
+      weekday(const local_days& __dp) noexcept
+      : weekday{sys_days{__dp.time_since_epoch()}}
+      { }
+
+      constexpr weekday&
+      operator++() noexcept
+      {
+ *this += days{1};
+ return *this;
+      }
+
+      constexpr weekday
+      operator++(int) noexcept
+      {
+ auto __ret = *this;
+ ++(*this);
+ return __ret;
+      }
+
+      constexpr weekday&
+      operator--() noexcept
+      {
+ *this -= days{1};
+ return *this;
+      }
+
+      constexpr weekday
+      operator--(int) noexcept
+      {
+ auto __ret = *this;
+ --(*this);
+ return __ret;
+      }
+
+      constexpr weekday&
+      operator+=(const days& __d) noexcept
+      {
+ *this = *this + __d;
+ return *this;
+      }
+
+      constexpr weekday&
+      operator-=(const days& __d) noexcept
+      {
+ *this = *this - __d;
+ return *this;
+      }
+
+      constexpr unsigned
+      c_encoding() const noexcept
+      { return _M_wd; }
+
+      constexpr unsigned
+      iso_encoding() const noexcept
+      { return _M_wd == 0u ? 7u : _M_wd; }
+
+      constexpr bool
+      ok() const noexcept
+      { return _M_wd <= 6; }
+
+      constexpr weekday_indexed
+      operator[](unsigned __index) const noexcept;
+
+      constexpr weekday_last
+      operator[](last_spec) const noexcept;
+
+      friend constexpr bool
+      operator==(const weekday& __x, const weekday& __y) noexcept
+      { return __x._M_wd == __y._M_wd; }
+
+      friend constexpr weekday
+      operator+(const weekday& __x, const days& __y) noexcept
+      {
+ return weekday{__detail::__add_modulo<7>(__x._M_wd, __y.count())};
+      }
+
+      friend constexpr weekday
+      operator+(const days& __x, const weekday& __y) noexcept
+      { return __y + __x; }
+
+      friend constexpr weekday
+      operator-(const weekday& __x, const days& __y) noexcept
+      {
+ return weekday{__detail::__sub_modulo<7>(__x._M_wd, __y.count())};
+      }
+
+      friend constexpr days
+      operator-(const weekday& __x, const weekday& __y) noexcept
+      {
+ const auto __n = __x.c_encoding() - __y.c_encoding();
+ return static_cast<int>(__n) >= 0 ? days{__n} : days{__n + 7};
+      }
+    };
+
+    inline constexpr weekday Sunday{0};
+    inline constexpr weekday Monday{1};
+    inline constexpr weekday Tuesday{2};
+    inline constexpr weekday Wednesday{3};
+    inline constexpr weekday Thursday{4};
+    inline constexpr weekday Friday{5};
+    inline constexpr weekday Saturday{6};
+
+
+
+    class weekday_indexed
+    {
+    private:
+      chrono::weekday _M_wd;
+      unsigned char _M_index;
+
+    public:
+      weekday_indexed() = default;
+
+      constexpr
+      weekday_indexed(const chrono::weekday& __wd, unsigned __index) noexcept
+      : _M_wd(__wd), _M_index(__index)
+      { }
+
+      constexpr chrono::weekday
+      weekday() const noexcept
+      { return _M_wd; }
+
+      constexpr unsigned
+      index() const noexcept
+      { return _M_index; };
+
+      constexpr bool
+      ok() const noexcept
+      { return _M_wd.ok() && 1 <= _M_index && _M_index <= 5; }
+
+      friend constexpr bool
+      operator==(const weekday_indexed& __x, const weekday_indexed& __y) noexcept
+      { return __x.weekday() == __y.weekday() && __x.index() == __y.index(); }
+
+      friend constexpr month_weekday
+      operator/(const month& __m, const weekday_indexed& __wdi) noexcept;
+
+      friend constexpr month_weekday
+      operator/(int __m, const weekday_indexed& __wdi) noexcept;
+
+      friend constexpr month_weekday
+      operator/(const weekday_indexed& __wdi, const month& __m) noexcept;
+
+      friend constexpr month_weekday
+      operator/(const weekday_indexed& __wdi, int __m) noexcept;
+
+      friend constexpr year_month_weekday
+      operator/(const year_month& __ym, const weekday_indexed& __wdi) noexcept;
+    };
+
+    constexpr weekday_indexed
+    weekday::operator[](unsigned __index) const noexcept
+    { return {*this, __index}; }
+
+
+
+    class weekday_last
+    {
+    private:
+      chrono::weekday _M_wd;
+
+    public:
+      explicit constexpr
+      weekday_last(const chrono::weekday& __wd) noexcept
+      : _M_wd{__wd}
+      { }
+
+      constexpr chrono::weekday
+      weekday() const noexcept
+      { return _M_wd; }
+
+      constexpr bool
+      ok() const noexcept
+      { return _M_wd.ok(); }
+
+      friend constexpr bool
+      operator==(const weekday_last& __x, const weekday_last& __y) noexcept
+      { return __x.weekday() == __y.weekday(); }
+
+      friend constexpr month_weekday_last
+      operator/(int __m, const weekday_last& __wdl) noexcept;
+
+      friend constexpr month_weekday_last
+      operator/(const weekday_last& __wdl, int __m) noexcept;
+
+      friend constexpr year_month_weekday_last
+      operator/(const year_month& __ym, const weekday_last& __wdl) noexcept;
+    };
+
+    constexpr weekday_last
+    weekday::operator[](last_spec) const noexcept
+    { return weekday_last{*this}; }
+
+
+
+    class month_day
+    {
+    private:
+      chrono::month _M_m;
+      chrono::day _M_d;
+
+    public:
+      month_day() = default;
+
+      constexpr
+      month_day(const chrono::month& __m, const chrono::day& __d) noexcept
+      : _M_m{__m}, _M_d{__d}
+      { }
+
+      constexpr chrono::month
+      month() const noexcept
+      { return _M_m; }
+
+      constexpr chrono::day
+      day() const noexcept
+      { return _M_d; }
+
+      constexpr bool
+      ok() const noexcept
+      {
+ return _M_m.ok()
+   && 1u <= unsigned(_M_d)
+   && unsigned(_M_d) <= __detail::__days_per_month[unsigned(_M_m) - 1];
+      }
+
+      friend constexpr bool
+      operator==(const month_day& __x, const month_day& __y) noexcept
+      { return __x.month() == __y.month() && __x.day() == __y.day(); }
+
+      friend constexpr strong_ordering
+      operator<=>(const month_day& __x, const month_day& __y) noexcept
+ = default;
+
+      friend constexpr month_day
+      operator/(const chrono::month& __m, const chrono::day& __d) noexcept
+      { return {__m, __d}; }
+
+      friend constexpr month_day
+      operator/(const chrono::month& __m, int __d) noexcept
+      { return {__m, chrono::day(unsigned(__d))}; }
+
+      friend constexpr month_day
+      operator/(int __m, const chrono::day& __d) noexcept
+      { return {chrono::month(unsigned(__m)), __d}; }
+
+      friend constexpr month_day
+      operator/(const chrono::day& __d, const chrono::month& __m) noexcept
+      { return {__m, __d}; }
+
+      friend constexpr month_day
+      operator/(const chrono::day& __d, int __m) noexcept
+      { return {chrono::month(unsigned(__m)), __d}; }
+
+      friend constexpr year_month_day
+      operator/(int __y, const month_day& __md) noexcept;
+
+      friend constexpr year_month_day
+      operator/(const month_day& __md, int __y) noexcept;
+    };
+
+
+
+    class month_day_last
+    {
+    private:
+      chrono::month _M_m;
+
+    public:
+      explicit constexpr
+      month_day_last(const chrono::month& __m) noexcept
+      : _M_m{__m}
+      { }
+
+      constexpr chrono::month
+      month() const noexcept
+      { return _M_m; }
+
+      constexpr bool
+      ok() const noexcept
+      { return _M_m.ok(); }
+
+      friend constexpr bool
+      operator==(const month_day_last& __x, const month_day_last& __y) noexcept
+      { return __x.month() == __y.month(); }
+
+      friend constexpr strong_ordering
+      operator<=>(const month_day_last& __x, const month_day_last& __y) noexcept
+ = default;
+
+      friend constexpr month_day_last
+      operator/(const chrono::month& __m, last_spec) noexcept
+      { return month_day_last{__m}; }
+
+      friend constexpr month_day_last
+      operator/(int __m, last_spec) noexcept
+      { return chrono::month(unsigned(__m)) / last; }
+
+      friend constexpr month_day_last
+      operator/(last_spec, const chrono::month& __m) noexcept
+      { return __m / last; }
+
+      friend constexpr month_day_last
+      operator/(last_spec, int __m) noexcept
+      { return __m / last; }
+
+      friend constexpr year_month_day_last
+      operator/(int __y, const month_day_last& __mdl) noexcept;
+
+      friend constexpr year_month_day_last
+      operator/(const month_day_last& __mdl, int __y) noexcept;
+    };
+
+
+
+    class month_weekday
+    {
+    private:
+      chrono::month _M_m;
+      chrono::weekday_indexed _M_wdi;
+
+    public:
+      constexpr
+      month_weekday(const chrono::month& __m,
+      const chrono::weekday_indexed& __wdi) noexcept
+      : _M_m{__m}, _M_wdi{__wdi}
+      { }
+
+      constexpr chrono::month
+      month() const noexcept
+      { return _M_m; }
+
+      constexpr chrono::weekday_indexed
+      weekday_indexed() const noexcept
+      { return _M_wdi; }
+
+      constexpr bool
+      ok() const noexcept
+      { return _M_m.ok() && _M_wdi.ok(); }
+
+      friend constexpr bool
+      operator==(const month_weekday& __x, const month_weekday& __y) noexcept
+      {
+ return __x.month() == __y.month()
+   && __x.weekday_indexed() == __y.weekday_indexed();
+      }
+
+      friend constexpr month_weekday
+      operator/(const chrono::month& __m,
+  const chrono::weekday_indexed& __wdi) noexcept
+      { return {__m, __wdi}; }
+
+      friend constexpr month_weekday
+      operator/(int __m, const chrono::weekday_indexed& __wdi) noexcept
+      { return chrono::month(unsigned(__m)) / __wdi; }
+
+      friend constexpr month_weekday
+      operator/(const chrono::weekday_indexed& __wdi,
+  const chrono::month& __m) noexcept
+      { return __m / __wdi; }
+
+      friend constexpr month_weekday
+      operator/(const chrono::weekday_indexed& __wdi, int __m) noexcept
+      { return __m / __wdi; }
+
+      friend constexpr year_month_weekday
+      operator/(int __y, const month_weekday& __mwd) noexcept;
+
+      friend constexpr year_month_weekday
+      operator/(const month_weekday& __mwd, int __y) noexcept;
+    };
+
+
+
+    class month_weekday_last
+    {
+    private:
+      chrono::month _M_m;
+      chrono::weekday_last _M_wdl;
+
+    public:
+      constexpr
+      month_weekday_last(const chrono::month& __m,
+    const chrono::weekday_last& __wdl) noexcept
+      :_M_m{__m}, _M_wdl{__wdl}
+      { }
+
+      constexpr chrono::month
+      month() const noexcept
+      { return _M_m; }
+
+      constexpr chrono::weekday_last
+      weekday_last() const noexcept
+      { return _M_wdl; }
+
+      constexpr bool
+      ok() const noexcept
+      { return _M_m.ok() && _M_wdl.ok(); }
+
+      friend constexpr bool
+      operator==(const month_weekday_last& __x,
+   const month_weekday_last& __y) noexcept
+      {
+ return __x.month() == __y.month()
+   && __x.weekday_last() == __y.weekday_last();
+      }
+
+      friend constexpr month_weekday_last
+      operator/(const chrono::month& __m,
+  const chrono::weekday_last& __wdl) noexcept
+      { return {__m, __wdl}; }
+
+      friend constexpr month_weekday_last
+      operator/(int __m, const chrono::weekday_last& __wdl) noexcept
+      { return chrono::month(unsigned(__m)) / __wdl; }
+
+      friend constexpr month_weekday_last
+      operator/(const chrono::weekday_last& __wdl,
+  const chrono::month& __m) noexcept
+      { return __m / __wdl; }
+
+      friend constexpr month_weekday_last
+      operator/(const chrono::weekday_last& __wdl, int __m) noexcept
+      { return chrono::month(unsigned(__m)) / __wdl; }
+
+      friend constexpr year_month_weekday_last
+      operator/(int __y, const month_weekday_last& __mwdl) noexcept;
+
+      friend constexpr year_month_weekday_last
+      operator/(const month_weekday_last& __mwdl, int __y) noexcept;
+    };
+
+
+
+    namespace __detail
+    {
+# 1437 "C:/mingw64/include/c++/14.1.0/chrono" 3
+      using __months_years_conversion_disambiguator = void;
+    }
+
+    class year_month
+    {
+    private:
+      chrono::year _M_y;
+      chrono::month _M_m;
+
+    public:
+      year_month() = default;
+
+      constexpr
+      year_month(const chrono::year& __y, const chrono::month& __m) noexcept
+      : _M_y{__y}, _M_m{__m}
+      { }
+
+      constexpr chrono::year
+      year() const noexcept
+      { return _M_y; }
+
+      constexpr chrono::month
+      month() const noexcept
+      { return _M_m; }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month&
+ operator+=(const months& __dm) noexcept
+ {
+   *this = *this + __dm;
+   return *this;
+ }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month&
+ operator-=(const months& __dm) noexcept
+ {
+   *this = *this - __dm;
+   return *this;
+ }
+
+      constexpr year_month&
+      operator+=(const years& __dy) noexcept
+      {
+ *this = *this + __dy;
+ return *this;
+      }
+
+      constexpr year_month&
+      operator-=(const years& __dy) noexcept
+      {
+ *this = *this - __dy;
+ return *this;
+      }
+
+      constexpr bool
+      ok() const noexcept
+      { return _M_y.ok() && _M_m.ok(); }
+
+      friend constexpr bool
+      operator==(const year_month& __x, const year_month& __y) noexcept
+      { return __x.year() == __y.year() && __x.month() == __y.month(); }
+
+      friend constexpr strong_ordering
+      operator<=>(const year_month& __x, const year_month& __y) noexcept
+ = default;
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month
+ operator+(const year_month& __ym, const months& __dm) noexcept
+ {
+
+   auto __m = __ym.month() + __dm;
+   auto __i = int(unsigned(__ym.month())) - 1 + __dm.count();
+   auto __y = (__i < 0
+        ? __ym.year() + years{(__i - 11) / 12}
+        : __ym.year() + years{__i / 12});
+   return __y / __m;
+ }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month
+ operator+(const months& __dm, const year_month& __ym) noexcept
+ { return __ym + __dm; }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month
+ operator-(const year_month& __ym, const months& __dm) noexcept
+ { return __ym + -__dm; }
+
+      friend constexpr months
+      operator-(const year_month& __x, const year_month& __y) noexcept
+      {
+ return (__x.year() - __y.year()
+  + months{static_cast<int>(unsigned{__x.month()})
+    - static_cast<int>(unsigned{__y.month()})});
+      }
+
+      friend constexpr year_month
+      operator+(const year_month& __ym, const years& __dy) noexcept
+      { return (__ym.year() + __dy) / __ym.month(); }
+
+      friend constexpr year_month
+      operator+(const years& __dy, const year_month& __ym) noexcept
+      { return __ym + __dy; }
+
+      friend constexpr year_month
+      operator-(const year_month& __ym, const years& __dy) noexcept
+      { return __ym + -__dy; }
+
+      friend constexpr year_month
+      operator/(const chrono::year& __y, const chrono::month& __m) noexcept
+      { return {__y, __m}; }
+
+      friend constexpr year_month
+      operator/(const chrono::year& __y, int __m) noexcept
+      { return {__y, chrono::month(unsigned(__m))}; }
+
+      friend constexpr year_month_day
+      operator/(const year_month& __ym, int __d) noexcept;
+
+      friend constexpr year_month_day_last
+      operator/(const year_month& __ym, last_spec) noexcept;
+    };
+
+
+
+    class year_month_day
+    {
+    private:
+      chrono::year _M_y;
+      chrono::month _M_m;
+      chrono::day _M_d;
+
+      static constexpr year_month_day _S_from_days(const days& __dp) noexcept;
+
+      constexpr days _M_days_since_epoch() const noexcept;
+
+    public:
+      year_month_day() = default;
+
+      constexpr
+      year_month_day(const chrono::year& __y, const chrono::month& __m,
+       const chrono::day& __d) noexcept
+      : _M_y{__y}, _M_m{__m}, _M_d{__d}
+      { }
+
+      constexpr
+      year_month_day(const year_month_day_last& __ymdl) noexcept;
+
+      constexpr
+      year_month_day(const sys_days& __dp) noexcept
+      : year_month_day(_S_from_days(__dp.time_since_epoch()))
+      { }
+
+      explicit constexpr
+      year_month_day(const local_days& __dp) noexcept
+      : year_month_day(sys_days{__dp.time_since_epoch()})
+      { }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month_day&
+ operator+=(const months& __m) noexcept
+ {
+   *this = *this + __m;
+   return *this;
+ }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month_day&
+ operator-=(const months& __m) noexcept
+ {
+   *this = *this - __m;
+   return *this;
+ }
+
+      constexpr year_month_day&
+      operator+=(const years& __y) noexcept
+      {
+ *this = *this + __y;
+ return *this;
+      }
+
+      constexpr year_month_day&
+      operator-=(const years& __y) noexcept
+      {
+ *this = *this - __y;
+ return *this;
+      }
+
+      constexpr chrono::year
+      year() const noexcept
+      { return _M_y; }
+
+      constexpr chrono::month
+      month() const noexcept
+      { return _M_m; }
+
+      constexpr chrono::day
+      day() const noexcept
+      { return _M_d; }
+
+      constexpr
+      operator sys_days() const noexcept
+      { return sys_days{_M_days_since_epoch()}; }
+
+      explicit constexpr
+      operator local_days() const noexcept
+      { return local_days{sys_days{*this}.time_since_epoch()}; }
+
+      constexpr bool ok() const noexcept;
+
+      friend constexpr bool
+      operator==(const year_month_day& __x, const year_month_day& __y) noexcept
+      {
+ return __x.year() == __y.year()
+   && __x.month() == __y.month()
+   && __x.day() == __y.day();
+      }
+
+      friend constexpr strong_ordering
+      operator<=>(const year_month_day& __x, const year_month_day& __y) noexcept
+ = default;
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_day
+ operator+(const year_month_day& __ymd, const months& __dm) noexcept
+ { return (__ymd.year() / __ymd.month() + __dm) / __ymd.day(); }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_day
+ operator+(const months& __dm, const year_month_day& __ymd) noexcept
+ { return __ymd + __dm; }
+
+      friend constexpr year_month_day
+      operator+(const year_month_day& __ymd, const years& __dy) noexcept
+      { return (__ymd.year() + __dy) / __ymd.month() / __ymd.day(); }
+
+      friend constexpr year_month_day
+      operator+(const years& __dy, const year_month_day& __ymd) noexcept
+      { return __ymd + __dy; }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_day
+ operator-(const year_month_day& __ymd, const months& __dm) noexcept
+ { return __ymd + -__dm; }
+
+      friend constexpr year_month_day
+      operator-(const year_month_day& __ymd, const years& __dy) noexcept
+      { return __ymd + -__dy; }
+
+      friend constexpr year_month_day
+      operator/(const year_month& __ym, const chrono::day& __d) noexcept
+      { return {__ym.year(), __ym.month(), __d}; }
+
+      friend constexpr year_month_day
+      operator/(const year_month& __ym, int __d) noexcept
+      { return __ym / chrono::day{unsigned(__d)}; }
+
+      friend constexpr year_month_day
+      operator/(const chrono::year& __y, const month_day& __md) noexcept
+      { return __y / __md.month() / __md.day(); }
+
+      friend constexpr year_month_day
+      operator/(int __y, const month_day& __md) noexcept
+      { return chrono::year{__y} / __md; }
+
+      friend constexpr year_month_day
+      operator/(const month_day& __md, const chrono::year& __y) noexcept
+      { return __y / __md; }
+
+      friend constexpr year_month_day
+      operator/(const month_day& __md, int __y) noexcept
+      { return chrono::year(__y) / __md; }
+    };
+
+
+
+
+
+    constexpr year_month_day
+    year_month_day::_S_from_days(const days& __dp) noexcept
+    {
+      constexpr auto __z2 = static_cast<uint32_t>(-1468000);
+      constexpr auto __r2_e3 = static_cast<uint32_t>(536895458);
+
+      const auto __r0 = static_cast<uint32_t>(__dp.count()) + __r2_e3;
+
+      const auto __n1 = 4 * __r0 + 3;
+      const auto __q1 = __n1 / 146097;
+      const auto __r1 = __n1 % 146097 / 4;
+
+      constexpr auto __p32 = static_cast<uint64_t>(1) << 32;
+      const auto __n2 = 4 * __r1 + 3;
+      const auto __u2 = static_cast<uint64_t>(2939745) * __n2;
+      const auto __q2 = static_cast<uint32_t>(__u2 / __p32);
+      const auto __r2 = static_cast<uint32_t>(__u2 % __p32) / 2939745 / 4;
+
+      constexpr auto __p16 = static_cast<uint32_t>(1) << 16;
+      const auto __n3 = 2141 * __r2 + 197913;
+      const auto __q3 = __n3 / __p16;
+      const auto __r3 = __n3 % __p16 / 2141;
+
+      const auto __y0 = 100 * __q1 + __q2;
+      const auto __m0 = __q3;
+      const auto __d0 = __r3;
+
+      const auto __j = __r2 >= 306;
+      const auto __y1 = __y0 + __j;
+      const auto __m1 = __j ? __m0 - 12 : __m0;
+      const auto __d1 = __d0 + 1;
+
+      return year_month_day{chrono::year{static_cast<int>(__y1 + __z2)},
+       chrono::month{__m1}, chrono::day{__d1}};
+    }
+
+
+
+
+
+    constexpr days
+    year_month_day::_M_days_since_epoch() const noexcept
+    {
+      auto constexpr __z2 = static_cast<uint32_t>(-1468000);
+      auto constexpr __r2_e3 = static_cast<uint32_t>(536895458);
+
+      const auto __y1 = static_cast<uint32_t>(static_cast<int>(_M_y)) - __z2;
+      const auto __m1 = static_cast<uint32_t>(static_cast<unsigned>(_M_m));
+      const auto __d1 = static_cast<uint32_t>(static_cast<unsigned>(_M_d));
+
+      const auto __j = static_cast<uint32_t>(__m1 < 3);
+      const auto __y0 = __y1 - __j;
+      const auto __m0 = __j ? __m1 + 12 : __m1;
+      const auto __d0 = __d1 - 1;
+
+      const auto __q1 = __y0 / 100;
+      const auto __yc = 1461 * __y0 / 4 - __q1 + __q1 / 4;
+      const auto __mc = (979 *__m0 - 2919) / 32;
+      const auto __dc = __d0;
+
+      return days{static_cast<int32_t>(__yc + __mc + __dc - __r2_e3)};
+    }
+
+
+
+    class year_month_day_last
+    {
+    private:
+      chrono::year _M_y;
+      chrono::month_day_last _M_mdl;
+
+    public:
+      constexpr
+      year_month_day_last(const chrono::year& __y,
+     const chrono::month_day_last& __mdl) noexcept
+      : _M_y{__y}, _M_mdl{__mdl}
+      { }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month_day_last&
+ operator+=(const months& __m) noexcept
+ {
+   *this = *this + __m;
+   return *this;
+ }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month_day_last&
+ operator-=(const months& __m) noexcept
+ {
+   *this = *this - __m;
+   return *this;
+ }
+
+      constexpr year_month_day_last&
+      operator+=(const years& __y) noexcept
+      {
+ *this = *this + __y;
+ return *this;
+      }
+
+      constexpr year_month_day_last&
+      operator-=(const years& __y) noexcept
+      {
+ *this = *this - __y;
+ return *this;
+      }
+
+      constexpr chrono::year
+      year() const noexcept
+      { return _M_y; }
+
+      constexpr chrono::month
+      month() const noexcept
+      { return _M_mdl.month(); }
+
+      constexpr chrono::month_day_last
+      month_day_last() const noexcept
+      { return _M_mdl; }
+
+
+      constexpr chrono::day
+      day() const noexcept
+      {
+ const auto __m = static_cast<unsigned>(month());
+# 1861 "C:/mingw64/include/c++/14.1.0/chrono" 3
+ return chrono::day{__m != 2 ? (__m ^ (__m >> 3)) | 30
+   : _M_y.is_leap() ? 29 : 28};
+      }
+
+      constexpr
+      operator sys_days() const noexcept
+      { return sys_days{year() / month() / day()}; }
+
+      explicit constexpr
+      operator local_days() const noexcept
+      { return local_days{sys_days{*this}.time_since_epoch()}; }
+
+      constexpr bool
+      ok() const noexcept
+      { return _M_y.ok() && _M_mdl.ok(); }
+
+      friend constexpr bool
+      operator==(const year_month_day_last& __x,
+   const year_month_day_last& __y) noexcept
+      {
+ return __x.year() == __y.year()
+   && __x.month_day_last() == __y.month_day_last();
+      }
+
+      friend constexpr strong_ordering
+      operator<=>(const year_month_day_last& __x,
+    const year_month_day_last& __y) noexcept
+ = default;
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_day_last
+ operator+(const year_month_day_last& __ymdl,
+    const months& __dm) noexcept
+ { return (__ymdl.year() / __ymdl.month() + __dm) / last; }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_day_last
+ operator+(const months& __dm,
+    const year_month_day_last& __ymdl) noexcept
+ { return __ymdl + __dm; }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_day_last
+ operator-(const year_month_day_last& __ymdl,
+    const months& __dm) noexcept
+ { return __ymdl + -__dm; }
+
+      friend constexpr year_month_day_last
+      operator+(const year_month_day_last& __ymdl,
+  const years& __dy) noexcept
+      { return {__ymdl.year() + __dy, __ymdl.month_day_last()}; }
+
+      friend constexpr year_month_day_last
+      operator+(const years& __dy,
+  const year_month_day_last& __ymdl) noexcept
+      { return __ymdl + __dy; }
+
+      friend constexpr year_month_day_last
+      operator-(const year_month_day_last& __ymdl,
+  const years& __dy) noexcept
+      { return __ymdl + -__dy; }
+
+      friend constexpr year_month_day_last
+      operator/(const year_month& __ym, last_spec) noexcept
+      { return {__ym.year(), chrono::month_day_last{__ym.month()}}; }
+
+      friend constexpr year_month_day_last
+      operator/(const chrono::year& __y,
+  const chrono::month_day_last& __mdl) noexcept
+      { return {__y, __mdl}; }
+
+      friend constexpr year_month_day_last
+      operator/(int __y, const chrono::month_day_last& __mdl) noexcept
+      { return chrono::year(__y) / __mdl; }
+
+      friend constexpr year_month_day_last
+      operator/(const chrono::month_day_last& __mdl,
+  const chrono::year& __y) noexcept
+      { return __y / __mdl; }
+
+      friend constexpr year_month_day_last
+      operator/(const chrono::month_day_last& __mdl, int __y) noexcept
+      { return chrono::year(__y) / __mdl; }
+    };
+
+
+    constexpr
+    year_month_day::year_month_day(const year_month_day_last& __ymdl) noexcept
+    : _M_y{__ymdl.year()}, _M_m{__ymdl.month()}, _M_d{__ymdl.day()}
+    { }
+
+    constexpr bool
+    year_month_day::ok() const noexcept
+    {
+      if (!_M_y.ok() || !_M_m.ok())
+ return false;
+      return chrono::day{1} <= _M_d && _M_d <= (_M_y / _M_m / last).day();
+    }
+
+
+
+    class year_month_weekday
+    {
+    private:
+      chrono::year _M_y;
+      chrono::month _M_m;
+      chrono::weekday_indexed _M_wdi;
+
+      static constexpr year_month_weekday
+      _S_from_sys_days(const sys_days& __dp)
+      {
+ year_month_day __ymd{__dp};
+ chrono::weekday __wd{__dp};
+ auto __index = __wd[(unsigned{__ymd.day()} - 1) / 7 + 1];
+ return {__ymd.year(), __ymd.month(), __index};
+      }
+
+    public:
+      year_month_weekday() = default;
+
+      constexpr
+      year_month_weekday(const chrono::year& __y, const chrono::month& __m,
+    const chrono::weekday_indexed& __wdi) noexcept
+      : _M_y{__y}, _M_m{__m}, _M_wdi{__wdi}
+      { }
+
+      constexpr
+      year_month_weekday(const sys_days& __dp) noexcept
+      : year_month_weekday{_S_from_sys_days(__dp)}
+      { }
+
+      explicit constexpr
+      year_month_weekday(const local_days& __dp) noexcept
+      : year_month_weekday{sys_days{__dp.time_since_epoch()}}
+      { }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month_weekday&
+ operator+=(const months& __m) noexcept
+ {
+   *this = *this + __m;
+   return *this;
+ }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month_weekday&
+ operator-=(const months& __m) noexcept
+ {
+   *this = *this - __m;
+   return *this;
+ }
+
+      constexpr year_month_weekday&
+      operator+=(const years& __y) noexcept
+      {
+ *this = *this + __y;
+ return *this;
+      }
+
+      constexpr year_month_weekday&
+      operator-=(const years& __y) noexcept
+      {
+ *this = *this - __y;
+ return *this;
+      }
+
+      constexpr chrono::year
+      year() const noexcept
+      { return _M_y; }
+
+      constexpr chrono::month
+      month() const noexcept
+      { return _M_m; }
+
+      constexpr chrono::weekday
+      weekday() const noexcept
+      { return _M_wdi.weekday(); }
+
+      constexpr unsigned
+      index() const noexcept
+      { return _M_wdi.index(); }
+
+      constexpr chrono::weekday_indexed
+      weekday_indexed() const noexcept
+      { return _M_wdi; }
+
+      constexpr
+      operator sys_days() const noexcept
+      {
+ auto __d = sys_days{year() / month() / 1};
+ return __d + (weekday() - chrono::weekday(__d)
+        + days{(static_cast<int>(index())-1)*7});
+      }
+
+      explicit constexpr
+      operator local_days() const noexcept
+      { return local_days{sys_days{*this}.time_since_epoch()}; }
+
+      constexpr bool
+      ok() const noexcept
+      {
+ if (!_M_y.ok() || !_M_m.ok() || !_M_wdi.ok())
+   return false;
+ if (_M_wdi.index() <= 4)
+   return true;
+ days __d = (_M_wdi.weekday()
+      - chrono::weekday{sys_days{_M_y / _M_m / 1}}
+      + days((_M_wdi.index()-1)*7 + 1));
+ do { if (std::__is_constant_evaluated()) if (__builtin_expect(!bool(__d.count() >= 1), false)) std::__glibcxx_assert_fail(); } while (false);
+ return (unsigned)__d.count() <= (unsigned)(_M_y / _M_m / last).day();
+      }
+
+      friend constexpr bool
+      operator==(const year_month_weekday& __x,
+   const year_month_weekday& __y) noexcept
+      {
+ return __x.year() == __y.year()
+   && __x.month() == __y.month()
+   && __x.weekday_indexed() == __y.weekday_indexed();
+      }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_weekday
+ operator+(const year_month_weekday& __ymwd, const months& __dm) noexcept
+ {
+   return ((__ymwd.year() / __ymwd.month() + __dm)
+    / __ymwd.weekday_indexed());
+ }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_weekday
+ operator+(const months& __dm, const year_month_weekday& __ymwd) noexcept
+ { return __ymwd + __dm; }
+
+      friend constexpr year_month_weekday
+      operator+(const year_month_weekday& __ymwd, const years& __dy) noexcept
+      { return {__ymwd.year() + __dy, __ymwd.month(), __ymwd.weekday_indexed()}; }
+
+      friend constexpr year_month_weekday
+      operator+(const years& __dy, const year_month_weekday& __ymwd) noexcept
+      { return __ymwd + __dy; }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_weekday
+ operator-(const year_month_weekday& __ymwd, const months& __dm) noexcept
+ { return __ymwd + -__dm; }
+
+      friend constexpr year_month_weekday
+      operator-(const year_month_weekday& __ymwd, const years& __dy) noexcept
+      { return __ymwd + -__dy; }
+
+      friend constexpr year_month_weekday
+      operator/(const year_month& __ym,
+  const chrono::weekday_indexed& __wdi) noexcept
+      { return {__ym.year(), __ym.month(), __wdi}; }
+
+      friend constexpr year_month_weekday
+      operator/(const chrono::year& __y, const month_weekday& __mwd) noexcept
+      { return {__y, __mwd.month(), __mwd.weekday_indexed()}; }
+
+      friend constexpr year_month_weekday
+      operator/(int __y, const month_weekday& __mwd) noexcept
+      { return chrono::year(__y) / __mwd; }
+
+      friend constexpr year_month_weekday
+      operator/(const month_weekday& __mwd, const chrono::year& __y) noexcept
+      { return __y / __mwd; }
+
+      friend constexpr year_month_weekday
+      operator/(const month_weekday& __mwd, int __y) noexcept
+      { return chrono::year(__y) / __mwd; }
+    };
+
+
+
+    class year_month_weekday_last
+    {
+    private:
+      chrono::year _M_y;
+      chrono::month _M_m;
+      chrono::weekday_last _M_wdl;
+
+    public:
+      constexpr
+      year_month_weekday_last(const chrono::year& __y, const chrono::month& __m,
+         const chrono::weekday_last& __wdl) noexcept
+      : _M_y{__y}, _M_m{__m}, _M_wdl{__wdl}
+      { }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month_weekday_last&
+ operator+=(const months& __m) noexcept
+ {
+   *this = *this + __m;
+   return *this;
+ }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ constexpr year_month_weekday_last&
+ operator-=(const months& __m) noexcept
+ {
+   *this = *this - __m;
+   return *this;
+ }
+
+      constexpr year_month_weekday_last&
+      operator+=(const years& __y) noexcept
+      {
+ *this = *this + __y;
+ return *this;
+      }
+
+      constexpr year_month_weekday_last&
+      operator-=(const years& __y) noexcept
+      {
+ *this = *this - __y;
+ return *this;
+      }
+
+      constexpr chrono::year
+      year() const noexcept
+      { return _M_y; }
+
+      constexpr chrono::month
+      month() const noexcept
+      { return _M_m; }
+
+      constexpr chrono::weekday
+      weekday() const noexcept
+      { return _M_wdl.weekday(); }
+
+      constexpr chrono::weekday_last
+      weekday_last() const noexcept
+      { return _M_wdl; }
+
+      constexpr
+      operator sys_days() const noexcept
+      {
+ const auto __d = sys_days{_M_y / _M_m / last};
+ return sys_days{(__d - (chrono::weekday{__d}
+    - _M_wdl.weekday())).time_since_epoch()};
+      }
+
+      explicit constexpr
+      operator local_days() const noexcept
+      { return local_days{sys_days{*this}.time_since_epoch()}; }
+
+      constexpr bool
+      ok() const noexcept
+      { return _M_y.ok() && _M_m.ok() && _M_wdl.ok(); }
+
+      friend constexpr bool
+      operator==(const year_month_weekday_last& __x,
+   const year_month_weekday_last& __y) noexcept
+      {
+ return __x.year() == __y.year()
+   && __x.month() == __y.month()
+   && __x.weekday_last() == __y.weekday_last();
+      }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_weekday_last
+ operator+(const year_month_weekday_last& __ymwdl,
+    const months& __dm) noexcept
+ {
+   return ((__ymwdl.year() / __ymwdl.month() + __dm)
+    / __ymwdl.weekday_last());
+ }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_weekday_last
+ operator+(const months& __dm,
+    const year_month_weekday_last& __ymwdl) noexcept
+ { return __ymwdl + __dm; }
+
+      friend constexpr year_month_weekday_last
+      operator+(const year_month_weekday_last& __ymwdl,
+  const years& __dy) noexcept
+      { return {__ymwdl.year() + __dy, __ymwdl.month(), __ymwdl.weekday_last()}; }
+
+      friend constexpr year_month_weekday_last
+      operator+(const years& __dy,
+  const year_month_weekday_last& __ymwdl) noexcept
+      { return __ymwdl + __dy; }
+
+      template<typename = __detail::__months_years_conversion_disambiguator>
+ friend constexpr year_month_weekday_last
+ operator-(const year_month_weekday_last& __ymwdl,
+    const months& __dm) noexcept
+ { return __ymwdl + -__dm; }
+
+      friend constexpr year_month_weekday_last
+      operator-(const year_month_weekday_last& __ymwdl,
+  const years& __dy) noexcept
+      { return __ymwdl + -__dy; }
+
+      friend constexpr year_month_weekday_last
+      operator/(const year_month& __ym,
+  const chrono::weekday_last& __wdl) noexcept
+      { return {__ym.year(), __ym.month(), __wdl}; }
+
+      friend constexpr year_month_weekday_last
+      operator/(const chrono::year& __y,
+  const chrono::month_weekday_last& __mwdl) noexcept
+      { return {__y, __mwdl.month(), __mwdl.weekday_last()}; }
+
+      friend constexpr year_month_weekday_last
+      operator/(int __y, const chrono::month_weekday_last& __mwdl) noexcept
+      { return chrono::year(__y) / __mwdl; }
+
+      friend constexpr year_month_weekday_last
+      operator/(const chrono::month_weekday_last& __mwdl,
+  const chrono::year& __y) noexcept
+      { return __y / __mwdl; }
+
+      friend constexpr year_month_weekday_last
+      operator/(const chrono::month_weekday_last& __mwdl, int __y) noexcept
+      { return chrono::year(__y) / __mwdl; }
+    };
+
+
+
+
+    namespace __detail
+    {
+      consteval long long
+      __pow10(unsigned __n)
+      {
+ long long __r = 1;
+ while (__n-- > 0)
+   __r *= 10;
+ return __r;
+      }
+
+      template<typename _Duration> struct __utc_leap_second;
+    }
+# 2306 "C:/mingw64/include/c++/14.1.0/chrono" 3
+    template<typename _Duration>
+      class hh_mm_ss
+      {
+ static_assert( __is_duration<_Duration>::value );
+
+      private:
+ static consteval int
+ _S_fractional_width()
+ {
+   auto __den = _Duration::period::den;
+   const int __multiplicity_2 = std::__countr_zero((uintmax_t)__den);
+   __den >>= __multiplicity_2;
+   int __multiplicity_5 = 0;
+   while ((__den % 5) == 0)
+     {
+       ++__multiplicity_5;
+       __den /= 5;
+     }
+   if (__den != 1)
+     return 6;
+
+   int __width = (__multiplicity_2 > __multiplicity_5
+    ? __multiplicity_2 : __multiplicity_5);
+   if (__width > 18)
+     __width = 18;
+   return __width;
+ }
+
+ constexpr
+ hh_mm_ss(_Duration __d, bool __is_neg)
+ : _M_h (duration_cast<chrono::hours>(__d)),
+   _M_m (duration_cast<chrono::minutes>(__d - hours())),
+   _M_s (duration_cast<chrono::seconds>(__d - hours() - minutes())),
+   _M_is_neg(__is_neg)
+ {
+   auto __ss = __d - hours() - minutes() - seconds();
+   if constexpr (treat_as_floating_point_v<typename precision::rep>)
+     _M_ss._M_r = __ss.count();
+   else if constexpr (precision::period::den != 1)
+     _M_ss._M_r = duration_cast<precision>(__ss).count();
+ }
+
+ static constexpr _Duration
+ _S_abs(_Duration __d)
+ {
+   if constexpr (numeric_limits<typename _Duration::rep>::is_signed)
+     return chrono::abs(__d);
+   else
+     return __d;
+ }
+
+      public:
+ static constexpr unsigned fractional_width = {_S_fractional_width()};
+
+ using precision
+   = duration<common_type_t<typename _Duration::rep,
+       chrono::seconds::rep>,
+       ratio<1, __detail::__pow10(fractional_width)>>;
+
+ constexpr hh_mm_ss() noexcept = default;
+
+ constexpr explicit
+ hh_mm_ss(_Duration __d)
+ : hh_mm_ss(_S_abs(__d), __d < _Duration::zero())
+ { }
+
+ constexpr bool
+ is_negative() const noexcept
+ {
+   if constexpr (!_S_is_unsigned)
+     return _M_is_neg;
+   else
+     return false;
+ }
+
+ constexpr chrono::hours
+ hours() const noexcept
+ { return _M_h; }
+
+ constexpr chrono::minutes
+ minutes() const noexcept
+ { return _M_m; }
+
+ constexpr chrono::seconds
+ seconds() const noexcept
+ { return _M_s; }
+
+ constexpr precision
+ subseconds() const noexcept
+ { return static_cast<precision>(_M_ss); }
+
+ constexpr explicit
+ operator precision() const noexcept
+ { return to_duration(); }
+
+ constexpr precision
+ to_duration() const noexcept
+ {
+   if constexpr (!_S_is_unsigned)
+     if (_M_is_neg)
+       return -(_M_h + _M_m + _M_s + subseconds());
+   return _M_h + _M_m + _M_s + subseconds();
+ }
+
+      private:
+ static constexpr bool _S_is_unsigned
+   = __and_v<is_integral<typename _Duration::rep>,
+      is_unsigned<typename _Duration::rep>>;
+
+ template<typename _Ratio>
+   using __byte_duration = duration<unsigned char, _Ratio>;
+
+
+ template<typename _Dur>
+   struct __subseconds
+   {
+     typename _Dur::rep _M_r{};
+
+     constexpr explicit
+     operator _Dur() const noexcept
+     { return _Dur(_M_r); }
+   };
+
+
+ template<typename _Rep>
+   requires (!treat_as_floating_point_v<_Rep>)
+   struct __subseconds<duration<_Rep, ratio<1>>>
+   {
+     constexpr explicit
+     operator duration<_Rep, ratio<1>>() const noexcept
+     { return {}; }
+   };
+
+ template<typename _Rep, typename _Period>
+   requires (!treat_as_floating_point_v<_Rep>)
+     && ratio_less_v<_Period, ratio<1, 1>>
+     && ratio_greater_equal_v<_Period, ratio<1, 250>>
+   struct __subseconds<duration<_Rep, _Period>>
+   {
+     unsigned char _M_r{};
+
+     constexpr explicit
+     operator duration<_Rep, _Period>() const noexcept
+     { return duration<_Rep, _Period>(_M_r); }
+   };
+
+ template<typename _Rep, typename _Period>
+   requires (!treat_as_floating_point_v<_Rep>)
+     && ratio_less_v<_Period, ratio<1, 250>>
+     && ratio_greater_equal_v<_Period, ratio<1, 4000000000>>
+   struct __subseconds<duration<_Rep, _Period>>
+   {
+     uint_least32_t _M_r{};
+
+     constexpr explicit
+     operator duration<_Rep, _Period>() const noexcept
+     { return duration<_Rep, _Period>(_M_r); }
+   };
+
+ chrono::hours _M_h{};
+ __byte_duration<ratio<60>> _M_m{};
+ __byte_duration<ratio<1>> _M_s{};
+ bool _M_is_neg{};
+ __subseconds<precision> _M_ss{};
+
+ template<typename> friend struct __detail::__utc_leap_second;
+      };
+
+
+    namespace __detail
+    {
+
+      template<typename _Duration>
+ struct __utc_leap_second
+ {
+   explicit
+   __utc_leap_second(const sys_time<_Duration>& __s)
+   : _M_date(chrono::floor<days>(__s)), _M_time(__s - _M_date)
+   {
+     ++_M_time._M_s;
+   }
+
+   sys_days _M_date;
+   hh_mm_ss<common_type_t<_Duration, days>> _M_time;
+ };
+    }
+
+
+
+
+    constexpr bool
+    is_am(const hours& __h) noexcept
+    { return 0h <= __h && __h <= 11h; }
+
+    constexpr bool
+    is_pm(const hours& __h) noexcept
+    { return 12h <= __h && __h <= 23h; }
+
+    constexpr hours
+    make12(const hours& __h) noexcept
+    {
+      if (__h == 0h)
+ return 12h;
+      else if (__h > 12h)
+ return __h - 12h;
+      return __h;
+    }
+
+    constexpr hours
+    make24(const hours& __h, bool __is_pm) noexcept
+    {
+      if (!__is_pm)
+ {
+   if (__h == 12h)
+     return 0h;
+   else
+     return __h;
+ }
+      else
+ {
+   if (__h == 12h)
+     return __h;
+   else
+     return __h + 12h;
+ }
+    }
+
+
+
+
+    struct tzdb;
+
+    struct sys_info
+    {
+      sys_seconds begin;
+      sys_seconds end;
+      seconds offset;
+      minutes save;
+      string abbrev;
+    };
+
+    struct local_info
+    {
+      static constexpr int unique = 0;
+      static constexpr int nonexistent = 1;
+      static constexpr int ambiguous = 2;
+
+      int result;
+      sys_info first;
+      sys_info second;
+    };
+
+    class nonexistent_local_time : public runtime_error
+    {
+    public:
+      template<typename _Duration>
+ nonexistent_local_time(const local_time<_Duration>& __tp,
+          const local_info& __i)
+ : runtime_error(_S_make_what_str(__tp, __i))
+ { do { if (std::__is_constant_evaluated()) if (__builtin_expect(!bool(__i.result == local_info::nonexistent), false)) std::__glibcxx_assert_fail(); } while (false); }
+
+    private:
+      template<typename _Duration>
+ static string
+ _S_make_what_str(const local_time<_Duration>& __tp,
+    const local_info& __i)
+ {
+   std::ostringstream __os;
+   __os << __tp << " is in a gap between\n"
+        << local_seconds(__i.first.end.time_since_epoch())
+        + __i.first.offset << ' ' << __i.first.abbrev << " and\n"
+        << local_seconds(__i.second.begin.time_since_epoch())
+        + __i.second.offset << ' ' << __i.second.abbrev
+        << " which are both equivalent to\n"
+        << __i.first.end << " UTC";
+   return std::move(__os).str();
+ }
+    };
+
+    class ambiguous_local_time : public runtime_error
+    {
+    public:
+      template<typename _Duration>
+ ambiguous_local_time(const local_time<_Duration>& __tp,
+        const local_info& __i)
+ : runtime_error(_S_make_what_str(__tp, __i))
+ { do { if (std::__is_constant_evaluated()) if (__builtin_expect(!bool(__i.result == local_info::ambiguous), false)) std::__glibcxx_assert_fail(); } while (false); }
+
+    private:
+      template<typename _Duration>
+ static string
+ _S_make_what_str(const local_time<_Duration>& __tp,
+    const local_info& __i)
+ {
+   std::ostringstream __os;
+   __os << __tp << " is ambiguous.  It could be\n"
+        << __tp << ' ' << __i.first.abbrev << " == "
+        << __tp - __i.first.offset << " UTC or\n"
+        << __tp << ' ' << __i.second.abbrev << " == "
+        << __tp - __i.second.offset << " UTC";
+   return std::move(__os).str();
+ }
+    };
+
+    template<typename _Duration>
+      [[noreturn]] void
+      __throw_bad_local_time(const local_time<_Duration>& __tp,
+        const local_info& __i)
+      {
+
+ if (__i.result == local_info::nonexistent)
+   throw nonexistent_local_time(__tp, __i);
+ throw ambiguous_local_time(__tp, __i);
+
+
+
+      }
+
+    enum class choose { earliest, latest };
+
+    class time_zone
+    {
+    public:
+      time_zone(time_zone&&) = default;
+      time_zone& operator=(time_zone&&) = default;
+
+      ~time_zone();
+
+      [[nodiscard]]
+      string_view name() const noexcept { return _M_name; }
+
+      template<typename _Duration>
+ sys_info
+ get_info(const sys_time<_Duration>& __st) const
+ { return _M_get_sys_info(chrono::floor<seconds>(__st)); }
+
+      template<typename _Duration>
+ local_info
+ get_info(const local_time<_Duration>& __tp) const
+ { return _M_get_local_info(chrono::floor<seconds>(__tp)); }
+
+      template<typename _Duration>
+ sys_time<common_type_t<_Duration, seconds>>
+ to_sys(const local_time<_Duration>& __tp) const
+ {
+   local_info __info = get_info(__tp);
+
+   if (__info.result != local_info::unique)
+     __throw_bad_local_time(__tp, __info);
+
+   return sys_time<_Duration>(__tp.time_since_epoch())
+     - __info.first.offset;
+ }
+
+      template<typename _Duration>
+ sys_time<common_type_t<_Duration, seconds>>
+ to_sys(const local_time<_Duration>& __tp, choose __z) const
+ {
+   local_info __info = get_info(__tp);
+
+   if (__info.result == local_info::nonexistent)
+     return __info.first.end;
+
+   sys_time<_Duration> __st(__tp.time_since_epoch());
+
+   if (__info.result == local_info::ambiguous && __z == choose::latest)
+     return __st - __info.second.offset;
+
+
+   return __st - __info.first.offset;
+ }
+
+      template<typename _Duration>
+ local_time<common_type_t<_Duration, seconds>>
+ to_local(const sys_time<_Duration>& __tp) const
+ {
+   auto __d = (__tp + get_info(__tp).offset).time_since_epoch();
+   return local_time<common_type_t<_Duration, seconds>>(__d);
+ }
+
+      [[nodiscard]] friend bool
+      operator==(const time_zone& __x, const time_zone& __y) noexcept
+      { return __x._M_name == __y._M_name; }
+
+      [[nodiscard]] friend strong_ordering
+      operator<=>(const time_zone& __x, const time_zone& __y) noexcept
+      { return __x._M_name <=> __y._M_name; }
+
+    private:
+      sys_info _M_get_sys_info(sys_seconds) const;
+      local_info _M_get_local_info(local_seconds) const;
+
+      friend const tzdb& reload_tzdb();
+      friend struct tzdb;
+      friend class tzdb_list;
+
+      struct _Impl;
+
+      explicit time_zone(unique_ptr<_Impl> __p);
+      string _M_name;
+      unique_ptr<_Impl> _M_impl;
+    };
+
+    const time_zone* locate_zone(string_view __tz_name);
+    const time_zone* current_zone();
+# 2726 "C:/mingw64/include/c++/14.1.0/chrono" 3
+    class tzdb_list
+    {
+      struct _Node;
+
+    public:
+      tzdb_list(const tzdb_list&) = delete;
+      tzdb_list& operator=(const tzdb_list&) = delete;
+# 2741 "C:/mingw64/include/c++/14.1.0/chrono" 3
+      class const_iterator
+      {
+      public:
+ using value_type = tzdb;
+ using reference = const tzdb&;
+ using pointer = const tzdb*;
+ using difference_type = ptrdiff_t;
+ using iterator_category = forward_iterator_tag;
+
+ constexpr const_iterator() = default;
+ const_iterator(const const_iterator&) = default;
+ const_iterator(const_iterator&&) = default;
+ const_iterator& operator=(const const_iterator&) = default;
+ const_iterator& operator=(const_iterator&&) = default;
+
+ reference operator*() const noexcept;
+ pointer operator->() const noexcept { return &**this; }
+ const_iterator& operator++();
+ const_iterator operator++(int);
+
+ bool operator==(const const_iterator&) const noexcept = default;
+
+      private:
+ explicit const_iterator(const shared_ptr<_Node>&) noexcept;
+
+ friend class tzdb_list;
+
+ shared_ptr<_Node> _M_node;
+ void* _M_reserved = nullptr;
+      };
+# 2779 "C:/mingw64/include/c++/14.1.0/chrono" 3
+      const tzdb& front() const noexcept;
+# 2795 "C:/mingw64/include/c++/14.1.0/chrono" 3
+      const_iterator erase_after(const_iterator __p);
+
+      const_iterator begin() const noexcept;
+      const_iterator end() const noexcept { return {}; }
+      const_iterator cbegin() const noexcept { return begin(); }
+      const_iterator cend() const noexcept { return end(); }
+
+    private:
+      constexpr explicit tzdb_list(nullptr_t);
+
+      friend tzdb_list& get_tzdb_list();
+      friend const tzdb& get_tzdb();
+      friend const tzdb& reload_tzdb();
+      friend struct tzdb;
+      friend class leap_second;
+      friend struct time_zone::_Impl;
+      friend class time_zone_link;
+    };
+
+    class time_zone_link
+    {
+    public:
+      time_zone_link(time_zone_link&&) = default;
+      time_zone_link& operator=(time_zone_link&&) = default;
+
+      string_view name() const noexcept { return _M_name; }
+      string_view target() const noexcept { return _M_target; }
+
+      friend bool
+      operator==(const time_zone_link& __x, const time_zone_link& __y) noexcept
+      { return __x.name() == __y.name(); }
+
+      friend strong_ordering
+      operator<=>(const time_zone_link& __x, const time_zone_link& __y) noexcept
+      { return __x.name() <=> __y.name(); }
+
+    private:
+      friend const tzdb& reload_tzdb();
+      friend struct tzdb_list::_Node;
+
+      explicit time_zone_link(nullptr_t) { }
+
+      string _M_name;
+      string _M_target;
+    };
+
+    class leap_second
+    {
+    public:
+      leap_second(const leap_second&) = default;
+      leap_second& operator=(const leap_second&) = default;
+
+      [[nodiscard]]
+      constexpr sys_seconds
+      date() const noexcept
+      {
+ if (_M_s >= _M_s.zero()) [[likely]]
+   return sys_seconds(_M_s);
+ return sys_seconds(-_M_s);
+      }
+
+      [[nodiscard]]
+      constexpr seconds
+      value() const noexcept
+      {
+ if (_M_s >= _M_s.zero()) [[likely]]
+   return seconds(1);
+ return seconds(-1);
+      }
+
+
+
+      [[nodiscard]] friend constexpr bool
+      operator==(const leap_second&, const leap_second&) noexcept = default;
+
+      [[nodiscard]] friend constexpr strong_ordering
+      operator<=>(const leap_second& __x, const leap_second& __y) noexcept
+      { return __x.date() <=> __y.date(); }
+
+      template<typename _Duration>
+ [[nodiscard]] friend constexpr bool
+ operator==(const leap_second& __x,
+     const sys_time<_Duration>& __y) noexcept
+ { return __x.date() == __y; }
+
+      template<typename _Duration>
+ [[nodiscard]] friend constexpr bool
+ operator<(const leap_second& __x,
+    const sys_time<_Duration>& __y) noexcept
+ { return __x.date() < __y; }
+
+      template<typename _Duration>
+ [[nodiscard]] friend constexpr bool
+ operator<(const sys_time<_Duration>& __x,
+    const leap_second& __y) noexcept
+ { return __x < __y.date(); }
+
+      template<typename _Duration>
+ [[nodiscard]] friend constexpr bool
+ operator>(const leap_second& __x,
+    const sys_time<_Duration>& __y) noexcept
+ { return __y < __x.date(); }
+
+      template<typename _Duration>
+ [[nodiscard]] friend constexpr bool
+ operator>(const sys_time<_Duration>& __x,
+    const leap_second& __y) noexcept
+ { return __y.date() < __x; }
+
+      template<typename _Duration>
+ [[nodiscard]] friend constexpr bool
+ operator<=(const leap_second& __x,
+     const sys_time<_Duration>& __y) noexcept
+ { return !(__y < __x.date()); }
+
+      template<typename _Duration>
+ [[nodiscard]] friend constexpr bool
+ operator<=(const sys_time<_Duration>& __x,
+     const leap_second& __y) noexcept
+ { return !(__y.date() < __x); }
+
+      template<typename _Duration>
+ [[nodiscard]] friend constexpr bool
+ operator>=(const leap_second& __x,
+     const sys_time<_Duration>& __y) noexcept
+ { return !(__x.date() < __y); }
+
+      template<typename _Duration>
+ [[nodiscard]] friend constexpr bool
+ operator>=(const sys_time<_Duration>& __x,
+     const leap_second& __y) noexcept
+ { return !(__x < __y.date()); }
+
+      template<three_way_comparable_with<seconds> _Duration>
+ [[nodiscard]] friend constexpr auto
+ operator<=>(const leap_second& __x,
+      const sys_time<_Duration>& __y) noexcept
+ { return __x.date() <=> __y; }
+
+    private:
+      explicit leap_second(seconds::rep __s) : _M_s(__s) { }
+
+      friend struct tzdb_list::_Node;
+
+      friend const tzdb& reload_tzdb();
+
+      template<typename _Duration>
+ friend leap_second_info
+ get_leap_second_info(const utc_time<_Duration>&);
+
+      seconds _M_s;
+    };
+
+    template<class _Tp> struct zoned_traits { };
+
+    template<>
+      struct zoned_traits<const time_zone*>
+      {
+ static const time_zone*
+ default_zone()
+ { return std::chrono::locate_zone("UTC"); }
+
+ static const time_zone*
+ locate_zone(string_view __name)
+ { return std::chrono::locate_zone(__name); }
+      };
+
+    struct tzdb
+    {
+      string version;
+      std::vector<time_zone> zones;
+      std::vector<time_zone_link> links;
+      std::vector<leap_second> leap_seconds;
+
+      const time_zone*
+      locate_zone(string_view __tz_name) const;
+
+      const time_zone*
+      current_zone() const;
+
+    private:
+      friend const tzdb& reload_tzdb();
+      friend class time_zone;
+      friend struct tzdb_list::_Node;
+    };
+
+    tzdb_list& get_tzdb_list();
+    const tzdb& get_tzdb();
+
+    const tzdb& reload_tzdb();
+    string remote_version();
+
+    template<typename _Duration, typename _TimeZonePtr = const time_zone*>
+      class zoned_time
+      {
+ static_assert(__is_duration_v<_Duration>);
+
+ using _Traits = zoned_traits<_TimeZonePtr>;
+
+
+
+ using string_view = type_identity_t<std::string_view>;
+
+      public:
+ using duration = common_type_t<_Duration, seconds>;
+
+ zoned_time() requires requires { _Traits::default_zone(); }
+ { }
+
+ zoned_time(const zoned_time&) = default;
+ zoned_time& operator=(const zoned_time&) = default;
+
+ zoned_time(const sys_time<_Duration>& __st)
+   requires requires { _Traits::default_zone(); }
+ : _M_tp(__st)
+ { }
+
+ explicit
+ zoned_time(_TimeZonePtr __z) : _M_zone(std::move(__z)) { }
+
+ explicit
+ zoned_time(string_view __name)
+   requires requires {
+     _TimeZonePtr{_Traits::locate_zone(std::string_view{})};
+   }
+ : _M_zone(_Traits::locate_zone(__name))
+ { }
+
+ template<typename _Duration2>
+   zoned_time(const zoned_time<_Duration2, _TimeZonePtr>& __zt)
+   requires is_convertible_v<sys_time<_Duration2>, sys_time<_Duration>>
+   : _M_zone(__zt._M_zone), _M_tp(__zt._M_tp)
+   { }
+
+ zoned_time(_TimeZonePtr __z, const sys_time<_Duration>& __st)
+ : _M_zone(std::move(__z)), _M_tp(__st)
+ { }
+
+ zoned_time(string_view __name, const sys_time<_Duration>& __st)
+ : zoned_time(_Traits::locate_zone(__name), __st)
+ { }
+
+ zoned_time(_TimeZonePtr __z, const local_time<_Duration>& __tp)
+ requires requires {
+   { __z->to_sys(__tp) } -> convertible_to<sys_time<_Duration>>;
+ }
+ : _M_zone(std::move(__z)), _M_tp(_M_zone->to_sys(__tp))
+ { }
+
+ zoned_time(string_view __name, const local_time<_Duration>& __tp)
+ requires requires (_TimeZonePtr __z) {
+   { _Traits::locate_zone(__name) } -> convertible_to<_TimeZonePtr>;
+   { __z->to_sys(__tp) } -> convertible_to<sys_time<_Duration>>;
+ }
+ : zoned_time(_Traits::locate_zone(__name), __tp)
+ { }
+
+ zoned_time(_TimeZonePtr __z, const local_time<_Duration>& __tp,
+     choose __c)
+ requires requires {
+   { __z->to_sys(__tp, __c) } -> convertible_to<sys_time<_Duration>>;
+ }
+ : _M_zone(std::move(__z)), _M_tp(_M_zone->to_sys(__tp, __c))
+ { }
+
+ zoned_time(string_view __name, const local_time<_Duration>& __tp,
+     choose __c)
+ requires requires (_TimeZonePtr __z) {
+   { _Traits::locate_zone(__name) } -> convertible_to<_TimeZonePtr>;
+   { __z->to_sys(__tp, __c) } -> convertible_to<sys_time<_Duration>>;
+ }
+ : _M_zone(_Traits::locate_zone(__name)),
+   _M_tp(_M_zone->to_sys(__tp, __c))
+ { }
+
+ template<typename _Duration2, typename _TimeZonePtr2>
+   zoned_time(_TimeZonePtr __z,
+       const zoned_time<_Duration2, _TimeZonePtr2>& __zt)
+   requires is_convertible_v<sys_time<_Duration2>, sys_time<_Duration>>
+   : _M_zone(__z), _M_tp(__zt._M_tp)
+   { }
+
+ template<typename _Duration2, typename _TimeZonePtr2>
+   zoned_time(_TimeZonePtr __z,
+       const zoned_time<_Duration2, _TimeZonePtr2>& __zt,
+       choose)
+   requires is_convertible_v<sys_time<_Duration2>, sys_time<_Duration>>
+   : _M_zone(__z), _M_tp(__zt._M_tp)
+   { }
+
+ template<typename _Duration2, typename _TimeZonePtr2>
+   zoned_time(string_view __name,
+       const zoned_time<_Duration2, _TimeZonePtr2>& __zt)
+   requires is_convertible_v<sys_time<_Duration2>, sys_time<_Duration>>
+   && requires {
+     { _Traits::locate_zone(__name) } -> convertible_to<_TimeZonePtr>;
+   }
+   : _M_zone(_Traits::locate_zone(__name)), _M_tp(__zt._M_tp)
+   { }
+
+ template<typename _Duration2, typename _TimeZonePtr2>
+   zoned_time(string_view __name,
+       const zoned_time<_Duration2, _TimeZonePtr2>& __zt,
+       choose)
+   requires is_convertible_v<sys_time<_Duration2>, sys_time<_Duration>>
+   && requires {
+     { _Traits::locate_zone(__name) } -> convertible_to<_TimeZonePtr>;
+   }
+   : _M_zone(_Traits::locate_zone(__name)), _M_tp(__zt._M_tp)
+   { }
+
+ zoned_time&
+ operator=(const sys_time<_Duration>& __st)
+ {
+   _M_tp = __st;
+   return *this;
+ }
+
+ zoned_time&
+ operator=(const local_time<_Duration>& __lt)
+ {
+   _M_tp = _M_zone->to_sys(__lt);
+   return *this;
+ }
+
+ [[nodiscard]]
+ operator sys_time<duration>() const { return _M_tp; }
+
+ [[nodiscard]]
+ explicit operator local_time<duration>() const
+ { return get_local_time(); }
+
+ [[nodiscard]]
+ _TimeZonePtr
+ get_time_zone() const
+ { return _M_zone; }
+
+ [[nodiscard]]
+ local_time<duration>
+ get_local_time() const
+ { return _M_zone->to_local(_M_tp); }
+
+ [[nodiscard]]
+ sys_time<duration>
+ get_sys_time() const
+ { return _M_tp; }
+
+ [[nodiscard]]
+ sys_info
+ get_info() const
+ { return _M_zone->get_info(_M_tp); }
+
+ [[nodiscard]] friend bool
+ operator==(const zoned_time&, const zoned_time&) = default;
+
+      private:
+ _TimeZonePtr _M_zone{ _Traits::default_zone() };
+ sys_time<duration> _M_tp{};
+
+ template<typename _Duration2, typename _TimeZonePtr2>
+   friend class zoned_time;
+      };
+
+    zoned_time() -> zoned_time<seconds>;
+
+    template<typename _Duration>
+    zoned_time(sys_time<_Duration>)
+      -> zoned_time<common_type_t<_Duration, seconds>>;
+
+
+  template<typename _TimeZonePtrOrName>
+    using __time_zone_representation
+      = __conditional_t<is_convertible_v<_TimeZonePtrOrName, string_view>,
+   const time_zone*,
+   remove_cvref_t<_TimeZonePtrOrName>>;
+
+
+  template<typename _TimeZonePtrOrName>
+    zoned_time(_TimeZonePtrOrName&&)
+      -> zoned_time<seconds, __time_zone_representation<_TimeZonePtrOrName>>;
+
+  template<typename _TimeZonePtrOrName, typename _Duration>
+    zoned_time(_TimeZonePtrOrName&&, sys_time<_Duration>)
+      -> zoned_time<common_type_t<_Duration, seconds>,
+                    __time_zone_representation<_TimeZonePtrOrName>>;
+
+  template<typename _TimeZonePtrOrName, typename _Duration>
+    zoned_time(_TimeZonePtrOrName&&, local_time<_Duration>,
+               choose = choose::earliest)
+      -> zoned_time<common_type_t<_Duration, seconds>,
+                    __time_zone_representation<_TimeZonePtrOrName>>;
+
+  template<typename _Duration, typename _TimeZonePtrOrName,
+    typename _TimeZonePtr2>
+    zoned_time(_TimeZonePtrOrName&&, zoned_time<_Duration, _TimeZonePtr2>,
+               choose = choose::earliest)
+      -> zoned_time<common_type_t<_Duration, seconds>,
+                    __time_zone_representation<_TimeZonePtrOrName>>;
+
+  template<typename _Dur1, typename _TZPtr1, typename _Dur2, typename _TZPtr2>
+    [[nodiscard]]
+    inline bool
+    operator==(const zoned_time<_Dur1, _TZPtr1>& __x,
+        const zoned_time<_Dur2, _TZPtr2>& __y)
+    {
+      return __x.get_time_zone() == __y.get_time_zone()
+        && __x.get_sys_time() == __y.get_sys_time();
+    }
+
+    using zoned_seconds = zoned_time<seconds>;
+
+
+namespace __detail
+{
+    inline leap_second_info
+    __get_leap_second_info(sys_seconds __ss, bool __is_utc)
+    {
+      if (__ss < sys_seconds{}) [[unlikely]]
+ return {};
+
+      const seconds::rep __leaps[] {
+   78796800,
+   94694400,
+  126230400,
+  157766400,
+  189302400,
+  220924800,
+  252460800,
+  283996800,
+  315532800,
+  362793600,
+  394329600,
+  425865600,
+  489024000,
+  567993600,
+  631152000,
+  662688000,
+  709948800,
+  741484800,
+  773020800,
+  820454400,
+  867715200,
+  915148800,
+ 1136073600,
+ 1230768000,
+ 1341100800,
+ 1435708800,
+ 1483228800,
+      };
+
+
+      const sys_seconds __expires(1735344000s);
+
+
+      if (__ss > __expires)
+ {
+
+   size_t __n = std::size(__leaps);
+
+   auto __db = get_tzdb_list().begin();
+   auto __first = __db->leap_seconds.begin() + __n;
+   auto __last = __db->leap_seconds.end();
+   auto __pos = std::upper_bound(__first, __last, __ss);
+   seconds __elapsed(__n);
+   for (auto __i = __first; __i != __pos; ++__i)
+     __elapsed += __i->value();
+
+   if (__is_utc)
+     {
+
+       __ss -= __elapsed;
+
+       if (__pos != __first && __ss < __pos[-1])
+  {
+    if ((__ss + 1s) >= __pos[-1])
+      return {true, __elapsed};
+    __elapsed -= __pos[-1].value();
+  }
+     }
+   return {false, __elapsed};
+ }
+      else
+
+ {
+   seconds::rep __s = __ss.time_since_epoch().count();
+   const seconds::rep* __first = std::begin(__leaps);
+   const seconds::rep* __last = std::end(__leaps);
+
+
+   if (__s > (__last[-1] + (__last - __first) + 1))
+     return { false, seconds(__last - __first) };
+
+   auto __pos = std::upper_bound(__first, __last, __s);
+   seconds __elapsed{__pos - __first};
+   if (__is_utc)
+     {
+
+       __s -= __elapsed.count();
+
+       if (__pos != __first && __s < __pos[-1])
+  {
+    if ((__s + 1) >= __pos[-1])
+      return {true, __elapsed};
+    --__elapsed;
+  }
+     }
+   return {false, __elapsed};
+ }
+    }
+}
+
+    template<typename _Duration>
+      [[nodiscard]]
+      inline leap_second_info
+      get_leap_second_info(const utc_time<_Duration>& __ut)
+      {
+ auto __s = chrono::duration_cast<seconds>(__ut.time_since_epoch());
+ return __detail::__get_leap_second_info(sys_seconds(__s), true);
+      }
+
+    template<typename _Duration>
+      [[nodiscard]]
+      inline utc_time<common_type_t<_Duration, seconds>>
+      utc_clock::from_sys(const sys_time<_Duration>& __t)
+      {
+ using _CDur = common_type_t<_Duration, seconds>;
+ auto __s = chrono::time_point_cast<seconds>(__t);
+ const auto __li = __detail::__get_leap_second_info(__s, false);
+ return utc_time<_CDur>{__t.time_since_epoch()} + __li.elapsed;
+      }
+
+
+
+  }
+
+
+  inline namespace literals
+  {
+  inline namespace chrono_literals
+  {
+
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wliteral-suffix"
+
+
+    constexpr chrono::day
+    operator""d(unsigned long long __d) noexcept
+    { return chrono::day{static_cast<unsigned>(__d)}; }
+
+
+
+    constexpr chrono::year
+    operator""y(unsigned long long __y) noexcept
+    { return chrono::year{static_cast<int>(__y)}; }
+#pragma GCC diagnostic pop
+
+  }
+  }
+
+
+
+}
+
+
+# 1 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 1 3
+# 33 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 3
+       
+# 34 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 3
+
+
+
+
+# 1 "C:/mingw64/include/c++/14.1.0/iomanip" 1 3
+# 36 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+       
+# 37 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+# 45 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+# 1 "C:/mingw64/include/c++/14.1.0/bits/version.h" 1 3
+# 47 "C:/mingw64/include/c++/14.1.0/bits/version.h" 3
+       
+# 48 "C:/mingw64/include/c++/14.1.0/bits/version.h" 3
+# 46 "C:/mingw64/include/c++/14.1.0/iomanip" 2 3
+
+
+
+
+# 1 "C:/mingw64/include/c++/14.1.0/bits/quoted_string.h" 1 3
+# 33 "C:/mingw64/include/c++/14.1.0/bits/quoted_string.h" 3
+       
+# 34 "C:/mingw64/include/c++/14.1.0/bits/quoted_string.h" 3
+
+
+
+
+
+
+namespace std
+{
+
+
+  namespace __detail {
+
+
+
+    template<typename _String, typename _CharT>
+      struct _Quoted_string
+      {
+ static_assert(is_reference<_String>::value
+     || is_pointer<_String>::value,
+        "String type must be pointer or reference");
+
+ _Quoted_string(_String __str, _CharT __del, _CharT __esc)
+ : _M_string(__str), _M_delim{__del}, _M_escape{__esc}
+ { }
+
+ _Quoted_string&
+ operator=(_Quoted_string&) = delete;
+
+ _String _M_string;
+ _CharT _M_delim;
+ _CharT _M_escape;
+      };
+
+
+    template<typename _CharT, typename _Traits>
+      struct _Quoted_string<basic_string_view<_CharT, _Traits>, _CharT>
+      {
+ _Quoted_string(basic_string_view<_CharT, _Traits> __str,
+         _CharT __del, _CharT __esc)
+ : _M_string(__str), _M_delim{__del}, _M_escape{__esc}
+ { }
+
+ _Quoted_string&
+ operator=(_Quoted_string&) = delete;
+
+ basic_string_view<_CharT, _Traits> _M_string;
+ _CharT _M_delim;
+ _CharT _M_escape;
+      };
+
+
+
+
+
+
+
+    template<typename _CharT, typename _Traits>
+      std::basic_ostream<_CharT, _Traits>&
+      operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+   const _Quoted_string<const _CharT*, _CharT>& __str)
+      {
+
+
+ std::basic_ostringstream<_CharT, _Traits> __ostr;
+ __ostr << __str._M_delim;
+ for (const _CharT* __c = __str._M_string; *__c; ++__c)
+   {
+     if (*__c == __str._M_delim || *__c == __str._M_escape)
+       __ostr << __str._M_escape;
+     __ostr << *__c;
+   }
+ __ostr << __str._M_delim;
+
+ return __os << __ostr.str();
+      }
+
+
+
+
+
+
+    template<typename _CharT, typename _Traits, typename _String>
+      std::basic_ostream<_CharT, _Traits>&
+      operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+   const _Quoted_string<_String, _CharT>& __str)
+      {
+
+
+ std::basic_ostringstream<_CharT, _Traits> __ostr;
+ __ostr << __str._M_delim;
+ for (auto __c : __str._M_string)
+   {
+     if (__c == __str._M_delim || __c == __str._M_escape)
+       __ostr << __str._M_escape;
+     __ostr << __c;
+   }
+ __ostr << __str._M_delim;
+
+ return __os << __ostr.str();
+      }
+
+
+
+
+
+
+
+    template<typename _CharT, typename _Traits, typename _Alloc>
+      std::basic_istream<_CharT, _Traits>&
+      operator>>(std::basic_istream<_CharT, _Traits>& __is,
+   const _Quoted_string<basic_string<_CharT, _Traits, _Alloc>&,
+          _CharT>& __str)
+      {
+ _CharT __c;
+ __is >> __c;
+ if (!__is.good())
+   return __is;
+ if (__c != __str._M_delim)
+   {
+     __is.unget();
+     __is >> __str._M_string;
+     return __is;
+   }
+ __str._M_string.clear();
+ std::ios_base::fmtflags __flags
+   = __is.flags(__is.flags() & ~std::ios_base::skipws);
+ do
+   {
+     __is >> __c;
+     if (!__is.good())
+       break;
+     if (__c == __str._M_escape)
+       {
+  __is >> __c;
+  if (!__is.good())
+    break;
+       }
+     else if (__c == __str._M_delim)
+       break;
+     __str._M_string += __c;
+   }
+ while (true);
+ __is.setf(__flags);
+
+ return __is;
+      }
+  }
+
+
+}
+# 51 "C:/mingw64/include/c++/14.1.0/iomanip" 2 3
+
+
+
+namespace std
+{
+
+
+
+
+
+  struct _Resetiosflags { ios_base::fmtflags _M_mask; };
+# 70 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  inline _Resetiosflags
+  resetiosflags(ios_base::fmtflags __mask)
+  { return { __mask }; }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_istream<_CharT, _Traits>&
+    operator>>(basic_istream<_CharT, _Traits>& __is, _Resetiosflags __f)
+    {
+      __is.setf(ios_base::fmtflags(0), __f._M_mask);
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, _Resetiosflags __f)
+    {
+      __os.setf(ios_base::fmtflags(0), __f._M_mask);
+      return __os;
+    }
+
+
+  struct _Setiosflags { ios_base::fmtflags _M_mask; };
+# 100 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  inline _Setiosflags
+  setiosflags(ios_base::fmtflags __mask)
+  { return { __mask }; }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_istream<_CharT, _Traits>&
+    operator>>(basic_istream<_CharT, _Traits>& __is, _Setiosflags __f)
+    {
+      __is.setf(__f._M_mask);
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setiosflags __f)
+    {
+      __os.setf(__f._M_mask);
+      return __os;
+    }
+
+
+  struct _Setbase { int _M_base; };
+# 131 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  inline _Setbase
+  setbase(int __base)
+  { return { __base }; }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_istream<_CharT, _Traits>&
+    operator>>(basic_istream<_CharT, _Traits>& __is, _Setbase __f)
+    {
+      __is.setf(__f._M_base == 8 ? ios_base::oct :
+  __f._M_base == 10 ? ios_base::dec :
+  __f._M_base == 16 ? ios_base::hex :
+  ios_base::fmtflags(0), ios_base::basefield);
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setbase __f)
+    {
+      __os.setf(__f._M_base == 8 ? ios_base::oct :
+  __f._M_base == 10 ? ios_base::dec :
+  __f._M_base == 16 ? ios_base::hex :
+  ios_base::fmtflags(0), ios_base::basefield);
+      return __os;
+    }
+
+
+  template<typename _CharT>
+    struct _Setfill { _CharT _M_c; };
+# 168 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  template<typename _CharT>
+    inline _Setfill<_CharT>
+    setfill(_CharT __c)
+    { return { __c }; }
+
+  template<typename _CharT, typename _Traits>
+    __attribute__((__deprecated__("'std::setfill' should only be used with "
+      "output streams")))
+    inline basic_istream<_CharT, _Traits>&
+    operator>>(basic_istream<_CharT, _Traits>& __is, _Setfill<_CharT> __f)
+    {
+      __is.fill(__f._M_c);
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setfill<_CharT> __f)
+    {
+      __os.fill(__f._M_c);
+      return __os;
+    }
+
+
+  struct _Setprecision { int _M_n; };
+# 201 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  inline _Setprecision
+  setprecision(int __n)
+  { return { __n }; }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_istream<_CharT, _Traits>&
+    operator>>(basic_istream<_CharT, _Traits>& __is, _Setprecision __f)
+    {
+      __is.precision(__f._M_n);
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setprecision __f)
+    {
+      __os.precision(__f._M_n);
+      return __os;
+    }
+
+
+  struct _Setw { int _M_n; };
+# 231 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  inline _Setw
+  setw(int __n)
+  { return { __n }; }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_istream<_CharT, _Traits>&
+    operator>>(basic_istream<_CharT, _Traits>& __is, _Setw __f)
+    {
+      __is.width(__f._M_n);
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, _Setw __f)
+    {
+      __os.width(__f._M_n);
+      return __os;
+    }
+
+
+
+  template<typename _MoneyT>
+    struct _Get_money { _MoneyT& _M_mon; bool _M_intl; };
+# 264 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  template<typename _MoneyT>
+    inline _Get_money<_MoneyT>
+    get_money(_MoneyT& __mon, bool __intl = false)
+    { return { __mon, __intl }; }
+
+  template<typename _CharT, typename _Traits, typename _MoneyT>
+    basic_istream<_CharT, _Traits>&
+    operator>>(basic_istream<_CharT, _Traits>& __is, _Get_money<_MoneyT> __f)
+    {
+      typename basic_istream<_CharT, _Traits>::sentry __cerb(__is, false);
+      if (__cerb)
+ {
+   ios_base::iostate __err = ios_base::goodbit;
+   try
+     {
+       typedef istreambuf_iterator<_CharT, _Traits> _Iter;
+       typedef money_get<_CharT, _Iter> _MoneyGet;
+
+       const _MoneyGet& __mg = use_facet<_MoneyGet>(__is.getloc());
+       __mg.get(_Iter(__is.rdbuf()), _Iter(), __f._M_intl,
+         __is, __err, __f._M_mon);
+     }
+   catch(__cxxabiv1::__forced_unwind&)
+     {
+       __is._M_setstate(ios_base::badbit);
+       throw;
+     }
+   catch(...)
+     { __is._M_setstate(ios_base::badbit); }
+   if (__err)
+     __is.setstate(__err);
+ }
+      return __is;
+    }
+
+
+  template<typename _MoneyT>
+    struct _Put_money { const _MoneyT& _M_mon; bool _M_intl; };
+# 311 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  template<typename _MoneyT>
+    inline _Put_money<_MoneyT>
+    put_money(const _MoneyT& __mon, bool __intl = false)
+    { return { __mon, __intl }; }
+
+  template<typename _CharT, typename _Traits, typename _MoneyT>
+    basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, _Put_money<_MoneyT> __f)
+    {
+      typename basic_ostream<_CharT, _Traits>::sentry __cerb(__os);
+      if (__cerb)
+ {
+   ios_base::iostate __err = ios_base::goodbit;
+   try
+     {
+       typedef ostreambuf_iterator<_CharT, _Traits> _Iter;
+       typedef money_put<_CharT, _Iter> _MoneyPut;
+
+       const _MoneyPut& __mp = use_facet<_MoneyPut>(__os.getloc());
+       if (__mp.put(_Iter(__os.rdbuf()), __f._M_intl, __os,
+      __os.fill(), __f._M_mon).failed())
+  __err |= ios_base::badbit;
+     }
+   catch(__cxxabiv1::__forced_unwind&)
+     {
+       __os._M_setstate(ios_base::badbit);
+       throw;
+     }
+   catch(...)
+     { __os._M_setstate(ios_base::badbit); }
+   if (__err)
+     __os.setstate(__err);
+ }
+      return __os;
+    }
+
+  template<typename _CharT>
+    struct _Put_time
+    {
+      const std::tm* _M_tmb;
+      const _CharT* _M_fmt;
+    };
+# 363 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  template<typename _CharT>
+    inline _Put_time<_CharT>
+    put_time(const std::tm* __tmb, const _CharT* __fmt)
+    { return { __tmb, __fmt }; }
+
+  template<typename _CharT, typename _Traits>
+    basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, _Put_time<_CharT> __f)
+    {
+      typename basic_ostream<_CharT, _Traits>::sentry __cerb(__os);
+      if (__cerb)
+        {
+          ios_base::iostate __err = ios_base::goodbit;
+          try
+            {
+              typedef ostreambuf_iterator<_CharT, _Traits> _Iter;
+              typedef time_put<_CharT, _Iter> _TimePut;
+
+              const _CharT* const __fmt_end = __f._M_fmt +
+                _Traits::length(__f._M_fmt);
+
+              const _TimePut& __mp = use_facet<_TimePut>(__os.getloc());
+              if (__mp.put(_Iter(__os.rdbuf()), __os, __os.fill(),
+                           __f._M_tmb, __f._M_fmt, __fmt_end).failed())
+                __err |= ios_base::badbit;
+            }
+          catch(__cxxabiv1::__forced_unwind&)
+            {
+              __os._M_setstate(ios_base::badbit);
+              throw;
+            }
+          catch(...)
+            { __os._M_setstate(ios_base::badbit); }
+          if (__err)
+            __os.setstate(__err);
+        }
+      return __os;
+    }
+
+  template<typename _CharT>
+    struct _Get_time
+    {
+      std::tm* _M_tmb;
+      const _CharT* _M_fmt;
+    };
+# 418 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  template<typename _CharT>
+    inline _Get_time<_CharT>
+    get_time(std::tm* __tmb, const _CharT* __fmt)
+    { return { __tmb, __fmt }; }
+
+  template<typename _CharT, typename _Traits>
+    basic_istream<_CharT, _Traits>&
+    operator>>(basic_istream<_CharT, _Traits>& __is, _Get_time<_CharT> __f)
+    {
+      typename basic_istream<_CharT, _Traits>::sentry __cerb(__is, false);
+      if (__cerb)
+        {
+          ios_base::iostate __err = ios_base::goodbit;
+          try
+            {
+              typedef istreambuf_iterator<_CharT, _Traits> _Iter;
+              typedef time_get<_CharT, _Iter> _TimeGet;
+
+              const _CharT* const __fmt_end = __f._M_fmt +
+                _Traits::length(__f._M_fmt);
+
+              const _TimeGet& __mg = use_facet<_TimeGet>(__is.getloc());
+              __mg.get(_Iter(__is.rdbuf()), _Iter(), __is,
+                       __err, __f._M_tmb, __f._M_fmt, __fmt_end);
+            }
+          catch(__cxxabiv1::__forced_unwind&)
+            {
+              __is._M_setstate(ios_base::badbit);
+              throw;
+            }
+          catch(...)
+            { __is._M_setstate(ios_base::badbit); }
+          if (__err)
+            __is.setstate(__err);
+        }
+      return __is;
+    }
+# 465 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  template<typename _CharT>
+    inline auto
+    quoted(const _CharT* __string,
+    _CharT __delim = _CharT('"'), _CharT __escape = _CharT('\\'))
+    {
+      return __detail::_Quoted_string<const _CharT*, _CharT>(__string, __delim,
+            __escape);
+    }
+
+  template<typename _CharT, typename _Traits, typename _Alloc>
+    inline auto
+    quoted(const basic_string<_CharT, _Traits, _Alloc>& __string,
+    _CharT __delim = _CharT('"'), _CharT __escape = _CharT('\\'))
+    {
+      return __detail::_Quoted_string<
+ const basic_string<_CharT, _Traits, _Alloc>&, _CharT>(
+     __string, __delim, __escape);
+    }
+
+  template<typename _CharT, typename _Traits, typename _Alloc>
+    inline auto
+    quoted(basic_string<_CharT, _Traits, _Alloc>& __string,
+    _CharT __delim = _CharT('"'), _CharT __escape = _CharT('\\'))
+    {
+      return __detail::_Quoted_string<
+ basic_string<_CharT, _Traits, _Alloc>&, _CharT>(
+     __string, __delim, __escape);
+    }
+
+
+
+
+  template<typename _CharT, typename _Traits>
+    inline auto
+    quoted(basic_string_view<_CharT, _Traits> __sv,
+    _CharT __delim = _CharT('"'), _CharT __escape = _CharT('\\'))
+    {
+      return __detail::_Quoted_string<
+ basic_string_view<_CharT, _Traits>, _CharT>(__sv, __delim, __escape);
+    }
+# 514 "C:/mingw64/include/c++/14.1.0/iomanip" 3
+  extern template ostream& operator<<(ostream&, _Setfill<char>);
+  extern template ostream& operator<<(ostream&, _Setiosflags);
+  extern template ostream& operator<<(ostream&, _Resetiosflags);
+  extern template ostream& operator<<(ostream&, _Setbase);
+  extern template ostream& operator<<(ostream&, _Setprecision);
+  extern template ostream& operator<<(ostream&, _Setw);
+  extern template istream& operator>>(istream&, _Setfill<char>);
+  extern template istream& operator>>(istream&, _Setiosflags);
+  extern template istream& operator>>(istream&, _Resetiosflags);
+  extern template istream& operator>>(istream&, _Setbase);
+  extern template istream& operator>>(istream&, _Setprecision);
+  extern template istream& operator>>(istream&, _Setw);
+
+
+  extern template wostream& operator<<(wostream&, _Setfill<wchar_t>);
+  extern template wostream& operator<<(wostream&, _Setiosflags);
+  extern template wostream& operator<<(wostream&, _Resetiosflags);
+  extern template wostream& operator<<(wostream&, _Setbase);
+  extern template wostream& operator<<(wostream&, _Setprecision);
+  extern template wostream& operator<<(wostream&, _Setw);
+  extern template wistream& operator>>(wistream&, _Setfill<wchar_t>);
+  extern template wistream& operator>>(wistream&, _Setiosflags);
+  extern template wistream& operator>>(wistream&, _Resetiosflags);
+  extern template wistream& operator>>(wistream&, _Setbase);
+  extern template wistream& operator>>(wistream&, _Setprecision);
+  extern template wistream& operator>>(wistream&, _Setw);
+
+
+
+
+}
+# 39 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 2 3
+
+
+
+
+
+namespace std
+{
+
+
+namespace chrono
+{
+
+
+
+
+namespace __detail
+{
+
+
+
+
+
+  template<typename _CharT>
+    consteval auto
+    _Widen(const char* __narrow, const wchar_t* __wide)
+    {
+      if constexpr (is_same_v<_CharT, wchar_t>)
+ return __wide;
+      else
+ return __narrow;
+    }
+
+
+
+  template<typename _Period, typename _CharT>
+    constexpr basic_string_view<_CharT>
+    __units_suffix() noexcept
+    {
+# 85 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 3
+      if constexpr (is_same_v<_Period, atto>) return ::std::chrono::__detail::_Widen<_CharT>("as", L"as"); else
+      if constexpr (is_same_v<_Period, femto>) return ::std::chrono::__detail::_Widen<_CharT>("fs", L"fs"); else
+      if constexpr (is_same_v<_Period, pico>) return ::std::chrono::__detail::_Widen<_CharT>("ps", L"ps"); else
+      if constexpr (is_same_v<_Period, nano>) return ::std::chrono::__detail::_Widen<_CharT>("ns", L"ns"); else
+      if constexpr (is_same_v<_Period, milli>) return ::std::chrono::__detail::_Widen<_CharT>("ms", L"ms"); else
+
+
+
+
+
+      if constexpr (is_same_v<_Period, micro>) return ::std::chrono::__detail::_Widen<_CharT>("us", L"us"); else
+
+      if constexpr (is_same_v<_Period, centi>) return ::std::chrono::__detail::_Widen<_CharT>("cs", L"cs"); else
+      if constexpr (is_same_v<_Period, deci>) return ::std::chrono::__detail::_Widen<_CharT>("ds", L"ds"); else
+      if constexpr (is_same_v<_Period, ratio<1> >) return ::std::chrono::__detail::_Widen<_CharT>("s", L"s"); else
+      if constexpr (is_same_v<_Period, deca>) return ::std::chrono::__detail::_Widen<_CharT>("das", L"das"); else
+      if constexpr (is_same_v<_Period, hecto>) return ::std::chrono::__detail::_Widen<_CharT>("hs", L"hs"); else
+      if constexpr (is_same_v<_Period, kilo>) return ::std::chrono::__detail::_Widen<_CharT>("ks", L"ks"); else
+      if constexpr (is_same_v<_Period, mega>) return ::std::chrono::__detail::_Widen<_CharT>("Ms", L"Ms"); else
+      if constexpr (is_same_v<_Period, giga>) return ::std::chrono::__detail::_Widen<_CharT>("Gs", L"Gs"); else
+      if constexpr (is_same_v<_Period, tera>) return ::std::chrono::__detail::_Widen<_CharT>("Ts", L"Ts"); else
+      if constexpr (is_same_v<_Period, tera>) return ::std::chrono::__detail::_Widen<_CharT>("Ts", L"Ts"); else
+      if constexpr (is_same_v<_Period, peta>) return ::std::chrono::__detail::_Widen<_CharT>("Ps", L"Ps"); else
+      if constexpr (is_same_v<_Period, exa>) return ::std::chrono::__detail::_Widen<_CharT>("Es", L"Es"); else
+      if constexpr (is_same_v<_Period, ratio<60> >) return ::std::chrono::__detail::_Widen<_CharT>("min", L"min"); else
+      if constexpr (is_same_v<_Period, ratio<3600> >) return ::std::chrono::__detail::_Widen<_CharT>("h", L"h"); else
+      if constexpr (is_same_v<_Period, ratio<86400> >) return ::std::chrono::__detail::_Widen<_CharT>("d", L"d"); else
+
+ return {};
+    }
+
+  template<typename _Period, typename _CharT, typename _Out>
+    inline _Out
+    __fmt_units_suffix(_Out __out) noexcept
+    {
+      if (auto __s = __detail::__units_suffix<_Period, _CharT>(); __s.size())
+ return __format::__write(std::move(__out), __s);
+      else if constexpr (_Period::den == 1)
+ return std::format_to(std::move(__out), ::std::chrono::__detail::_Widen<_CharT>("[{}]s", L"[{}]s"),
+         (uintmax_t)_Period::num);
+      else
+ return std::format_to(std::move(__out), ::std::chrono::__detail::_Widen<_CharT>("[{}/{}]s", L"[{}/{}]s"),
+         (uintmax_t)_Period::num,
+         (uintmax_t)_Period::den);
+    }
+}
+
+
+
+
+
+
+  template<typename _CharT, typename _Traits,
+    typename _Rep, typename _Period>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+        const duration<_Rep, _Period>& __d)
+    {
+      using _Out = ostreambuf_iterator<_CharT, _Traits>;
+      using period = typename _Period::type;
+      std::basic_ostringstream<_CharT, _Traits> __s;
+      __s.flags(__os.flags());
+      __s.imbue(__os.getloc());
+      __s.precision(__os.precision());
+      __s << __d.count();
+      __detail::__fmt_units_suffix<period, _CharT>(_Out(__s));
+      __os << std::move(__s).str();
+      return __os;
+    }
+
+
+namespace __detail
+{
+
+  template<typename _Duration>
+    struct __local_time_fmt
+    {
+      local_time<_Duration> _M_time;
+      const string* _M_abbrev;
+      const seconds* _M_offset_sec;
+    };
+
+  struct __local_fmt_t;
+}
+# 180 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 3
+  template<typename _Duration>
+    inline __detail::__local_time_fmt<_Duration>
+    local_time_format(local_time<_Duration> __time,
+        const string* __abbrev = nullptr,
+        const seconds* __offset_sec = nullptr)
+    { return {__time, __abbrev, __offset_sec}; }
+
+
+}
+
+
+namespace __format
+{
+  [[noreturn,__gnu__::__always_inline__]]
+  inline void
+  __no_timezone_available()
+  { __throw_format_error("format error: no timezone available for %Z or %z"); }
+
+  [[noreturn,__gnu__::__always_inline__]]
+  inline void
+  __not_valid_for_duration()
+  { __throw_format_error("format error: chrono-format-spec not valid for "
+    "chrono::duration"); }
+
+  [[noreturn,__gnu__::__always_inline__]]
+  inline void
+  __invalid_chrono_spec()
+  { __throw_format_error("format error: chrono-format-spec not valid for "
+    "argument type"); }
+
+  template<typename _CharT>
+    struct _ChronoSpec : _Spec<_CharT>
+    {
+      basic_string_view<_CharT> _M_chrono_specs;
+    };
+
+
+
+
+  enum _ChronoParts {
+    _Year = 1, _Month = 2, _Day = 4, _Weekday = 8, _TimeOfDay = 16,
+    _TimeZone = 32,
+    _Date = _Year | _Month | _Day | _Weekday,
+    _DateTime = _Date | _TimeOfDay,
+    _ZonedDateTime = _DateTime | _TimeZone,
+    _Duration = 128
+  };
+
+  constexpr _ChronoParts
+  operator|(_ChronoParts __x, _ChronoParts __y) noexcept
+  { return static_cast<_ChronoParts>((int)__x | (int)__y); }
+
+  constexpr _ChronoParts&
+  operator|=(_ChronoParts& __x, _ChronoParts __y) noexcept
+  { return __x = __x | __y; }
+
+
+  template<typename _CharT>
+    struct __formatter_chrono
+    {
+      using __string_view = basic_string_view<_CharT>;
+      using __string = basic_string<_CharT>;
+
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ _M_parse(_ParseContext& __pc, _ChronoParts __parts)
+ {
+   auto __first = __pc.begin();
+   auto __last = __pc.end();
+
+   _ChronoSpec<_CharT> __spec{};
+
+   auto __finalize = [this, &__spec] {
+     _M_spec = __spec;
+   };
+
+   auto __finished = [&] {
+     if (__first == __last || *__first == '}')
+       {
+  __finalize();
+  return true;
+       }
+     return false;
+   };
+
+   if (__finished())
+     return __first;
+
+   __first = __spec._M_parse_fill_and_align(__first, __last);
+   if (__finished())
+     return __first;
+
+   __first = __spec._M_parse_width(__first, __last, __pc);
+   if (__finished())
+     return __first;
+
+   if (__parts & _ChronoParts::_Duration)
+     {
+       __first = __spec._M_parse_precision(__first, __last, __pc);
+       if (__finished())
+  return __first;
+     }
+
+   __first = __spec._M_parse_locale(__first, __last);
+   if (__finished())
+     return __first;
+
+
+
+   {
+     __string_view __str(__first, __last - __first);
+     auto __end = __str.find('}');
+     if (__end != __str.npos)
+       {
+  __str.remove_suffix(__str.length() - __end);
+  __last = __first + __end;
+       }
+     if (__str.find('{') != __str.npos)
+       __throw_format_error("chrono format error: '{' in chrono-specs");
+   }
+
+
+
+
+
+   const auto __chrono_specs = __first++;
+   if (*__chrono_specs != '%')
+     __throw_format_error("chrono format error: no '%' at start of "
+         "chrono-specs");
+
+   _CharT __mod{};
+   bool __conv = true;
+   int __needed = 0;
+
+   while (__first != __last)
+     {
+       enum _Mods { _Mod_none, _Mod_E, _Mod_O, _Mod_E_O };
+       _Mods __allowed_mods = _Mod_none;
+
+       _CharT __c = *__first++;
+       switch (__c)
+  {
+  case 'a':
+  case 'A':
+    __needed = _Weekday;
+    break;
+  case 'b':
+  case 'h':
+  case 'B':
+    __needed = _Month;
+    break;
+  case 'c':
+    __needed = _DateTime;
+    __allowed_mods = _Mod_E;
+    break;
+  case 'C':
+    __needed = _Year;
+    __allowed_mods = _Mod_E;
+    break;
+  case 'd':
+  case 'e':
+    __needed = _Day;
+    __allowed_mods = _Mod_O;
+    break;
+  case 'D':
+  case 'F':
+    __needed = _Date;
+    break;
+  case 'g':
+  case 'G':
+    __needed = _Date;
+    break;
+  case 'H':
+  case 'I':
+    __needed = _TimeOfDay;
+    __allowed_mods = _Mod_O;
+    break;
+  case 'j':
+    if (!(__parts & _Duration))
+      __needed = _Date;
+    break;
+  case 'm':
+    __needed = _Month;
+    __allowed_mods = _Mod_O;
+    break;
+  case 'M':
+    __needed = _TimeOfDay;
+    __allowed_mods = _Mod_O;
+    break;
+  case 'p':
+  case 'r':
+  case 'R':
+  case 'T':
+    __needed = _TimeOfDay;
+    break;
+  case 'q':
+  case 'Q':
+    __needed = _Duration;
+    break;
+  case 'S':
+    __needed = _TimeOfDay;
+    __allowed_mods = _Mod_O;
+    break;
+  case 'u':
+  case 'w':
+    __needed = _Weekday;
+    __allowed_mods = _Mod_O;
+    break;
+  case 'U':
+  case 'V':
+  case 'W':
+    __needed = _Date;
+    __allowed_mods = _Mod_O;
+    break;
+  case 'x':
+    __needed = _Date;
+    __allowed_mods = _Mod_E;
+    break;
+  case 'X':
+    __needed = _TimeOfDay;
+    __allowed_mods = _Mod_E;
+    break;
+  case 'y':
+    __needed = _Year;
+    __allowed_mods = _Mod_E_O;
+    break;
+  case 'Y':
+    __needed = _Year;
+    __allowed_mods = _Mod_E;
+    break;
+  case 'z':
+    __needed = _TimeZone;
+    __allowed_mods = _Mod_E_O;
+    break;
+  case 'Z':
+    __needed = _TimeZone;
+    break;
+  case 'n':
+  case 't':
+  case '%':
+    break;
+  case 'O':
+  case 'E':
+    if (__mod) [[unlikely]]
+      {
+        __allowed_mods = _Mod_none;
+        break;
+      }
+    __mod = __c;
+    continue;
+  default:
+    __throw_format_error("chrono format error: invalid "
+           " specifier in chrono-specs");
+  }
+
+       if ((__mod == 'E' && !(__allowed_mods & _Mod_E))
+      || (__mod == 'O' && !(__allowed_mods & _Mod_O)))
+  __throw_format_error("chrono format error: invalid "
+         " modifier in chrono-specs");
+       __mod = _CharT();
+
+       if ((__parts & __needed) != __needed)
+  __throw_format_error("chrono format error: format argument "
+         "does not contain the information "
+         "required by the chrono-specs");
+
+
+       size_t __pos = __string_view(__first, __last - __first).find('%');
+       if (__pos == 0)
+  ++__first;
+       else
+  {
+    if (__pos == __string_view::npos)
+      {
+        __first = __last;
+        __conv = false;
+      }
+    else
+      __first += __pos + 1;
+  }
+     }
+
+
+   if (__conv || __mod != _CharT())
+     __throw_format_error("chrono format error: unescaped '%' in "
+     "chrono-specs");
+
+   _M_spec = __spec;
+   _M_spec._M_chrono_specs
+   = __string_view(__chrono_specs, __first - __chrono_specs);
+
+   return __first;
+ }
+
+
+
+
+
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_format(const _Tp& __t, _FormatContext& __fc,
+    bool __is_neg = false) const
+ {
+   auto __first = _M_spec._M_chrono_specs.begin();
+   const auto __last = _M_spec._M_chrono_specs.end();
+   if (__first == __last)
+     return _M_format_to_ostream(__t, __fc, __is_neg);
+
+   _Sink_iter<_CharT> __out;
+   __format::_Str_sink<_CharT> __sink;
+   bool __write_direct = false;
+   if constexpr (is_same_v<typename _FormatContext::iterator,
+      _Sink_iter<_CharT>>)
+     {
+       if (_M_spec._M_width_kind == __format::_WP_none)
+  {
+    __out = __fc.out();
+    __write_direct = true;
+  }
+       else
+  __out = __sink.out();
+     }
+   else
+     __out = __sink.out();
+
+
+
+   if constexpr (__is_specialization_of<_Tp, chrono::hh_mm_ss>)
+     __is_neg = __t.is_negative();
+
+   auto __print_sign = [&__is_neg, &__out] {
+     if constexpr (chrono::__is_duration_v<_Tp>
+       || __is_specialization_of<_Tp, chrono::hh_mm_ss>)
+       if (__is_neg)
+  {
+    *__out++ = _S_plus_minus[1];
+    __is_neg = false;
+  }
+     return std::move(__out);
+   };
+
+
+   constexpr const _CharT* __literals = ::std::chrono::__detail::_Widen<_CharT>("\n\t%", L"\n\t%");
+
+   ++__first;
+
+   _CharT __mod{};
+   do
+     {
+       _CharT __c = *__first++;
+       switch (__c)
+  {
+  case 'a':
+  case 'A':
+    __out = _M_a_A(__t, std::move(__out), __fc, __c == 'A');
+    break;
+  case 'b':
+  case 'h':
+  case 'B':
+    __out = _M_b_B(__t, std::move(__out), __fc, __c == 'B');
+    break;
+  case 'c':
+    __out = _M_c(__t, std::move(__out), __fc, __mod == 'E');
+    break;
+  case 'C':
+  case 'y':
+  case 'Y':
+    __out = _M_C_y_Y(__t, std::move(__out), __fc, __c, __mod);
+    break;
+  case 'd':
+  case 'e':
+    __out = _M_d_e(__t, std::move(__out), __fc, __c, __mod == 'O');
+    break;
+  case 'D':
+    __out = _M_D(__t, std::move(__out), __fc);
+    break;
+  case 'F':
+    __out = _M_F(__t, std::move(__out), __fc);
+    break;
+  case 'g':
+  case 'G':
+    __out = _M_g_G(__t, std::move(__out), __fc, __c == 'G');
+    break;
+  case 'H':
+  case 'I':
+    __out = _M_H_I(__t, __print_sign(), __fc, __c, __mod == 'O');
+    break;
+  case 'j':
+    __out = _M_j(__t, __print_sign(), __fc);
+    break;
+  case 'm':
+    __out = _M_m(__t, std::move(__out), __fc, __mod == 'O');
+    break;
+  case 'M':
+    __out = _M_M(__t, __print_sign(), __fc, __mod == 'O');
+    break;
+  case 'p':
+    __out = _M_p(__t, std::move(__out), __fc);
+    break;
+  case 'q':
+    __out = _M_q(__t, std::move(__out), __fc);
+    break;
+  case 'Q':
+
+    if constexpr (chrono::__is_duration_v<_Tp>)
+      __out = std::format_to(__print_sign(), _S_empty_spec,
+        __t.count());
+    else
+      __throw_format_error("chrono format error: argument is "
+      "not a duration");
+    break;
+  case 'r':
+    __out = _M_r(__t, __print_sign(), __fc);
+    break;
+  case 'R':
+  case 'T':
+    __out = _M_R_T(__t, __print_sign(), __fc, __c == 'T');
+    break;
+  case 'S':
+    __out = _M_S(__t, __print_sign(), __fc, __mod == 'O');
+    break;
+  case 'u':
+  case 'w':
+    __out = _M_u_w(__t, std::move(__out), __fc, __c, __mod == 'O');
+    break;
+  case 'U':
+  case 'V':
+  case 'W':
+    __out = _M_U_V_W(__t, std::move(__out), __fc, __c,
+       __mod == 'O');
+    break;
+  case 'x':
+    __out = _M_x(__t, std::move(__out), __fc, __mod == 'E');
+    break;
+  case 'X':
+    __out = _M_X(__t, __print_sign(), __fc, __mod == 'E');
+    break;
+  case 'z':
+    __out = _M_z(__t, std::move(__out), __fc, (bool)__mod);
+    break;
+  case 'Z':
+    __out = _M_Z(__t, std::move(__out), __fc);
+    break;
+  case 'n':
+    *__out++ = __literals[0];
+    break;
+  case 't':
+    *__out++ = __literals[1];
+    break;
+  case '%':
+    *__out++ = __literals[2];
+    break;
+  case 'O':
+  case 'E':
+    __mod = __c;
+    continue;
+  case '}':
+    __first = __last;
+    break;
+  }
+       __mod = _CharT();
+
+       __string_view __str(__first, __last - __first);
+       size_t __pos = __str.find('%');
+       if (__pos == 0)
+  ++__first;
+       else
+  {
+    if (__pos == __str.npos)
+      __first = __last;
+    else
+      {
+        __str.remove_suffix(__str.length() - __pos);
+        __first += __pos + 1;
+      }
+    __out = __format::__write(std::move(__out), __str);
+  }
+     }
+   while (__first != __last);
+
+   if constexpr (is_same_v<typename _FormatContext::iterator,
+      _Sink_iter<_CharT>>)
+     if (__write_direct)
+       return __out;
+
+   auto __str = std::move(__sink).get();
+   return __format::__write_padded_as_spec(__str, __str.size(),
+        __fc, _M_spec);
+ }
+
+      _ChronoSpec<_CharT> _M_spec;
+
+    private:
+
+      template<typename _FormatContext>
+ std::locale
+ _M_locale(_FormatContext& __fc) const
+ {
+   if (!_M_spec._M_localized)
+     return std::locale::classic();
+   else
+     return __fc.locale();
+ }
+
+
+
+
+
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_format_to_ostream(const _Tp& __t, _FormatContext& __fc,
+        bool __is_neg) const
+ {
+   using ::std::chrono::__detail::__utc_leap_second;
+   using ::std::chrono::__detail::__local_time_fmt;
+
+   if constexpr (__is_specialization_of<_Tp, __local_time_fmt>)
+     return _M_format_to_ostream(__t._M_time, __fc, false);
+   else
+     {
+       basic_ostringstream<_CharT> __os;
+       __os.imbue(_M_locale(__fc));
+
+       if constexpr (__is_specialization_of<_Tp, __utc_leap_second>)
+  __os << __t._M_date << ' ' << __t._M_time;
+       else if constexpr (chrono::__is_time_point_v<_Tp>)
+  {
+
+
+
+
+
+    if constexpr (is_convertible_v<_Tp, chrono::sys_days>)
+      __os << _S_date(__t);
+    else
+      {
+        auto __days = chrono::floor<chrono::days>(__t);
+        __os << chrono::year_month_day(__days) << ' '
+    << chrono::hh_mm_ss(__t - __days);
+      }
+  }
+       else
+  {
+    if constexpr (chrono::__is_duration_v<_Tp>)
+      if (__is_neg) [[unlikely]]
+        __os << _S_plus_minus[1];
+    __os << __t;
+  }
+
+       auto __str = std::move(__os).str();
+       return __format::__write_padded_as_spec(__str, __str.size(),
+            __fc, _M_spec);
+     }
+ }
+
+      static constexpr const _CharT* _S_chars
+ = ::std::chrono::__detail::_Widen<_CharT>("0123456789+-:/ {}", L"0123456789+-:/ {}");
+      static constexpr const _CharT* _S_plus_minus = _S_chars + 10;
+      static constexpr _CharT _S_colon = _S_chars[12];
+      static constexpr _CharT _S_slash = _S_chars[13];
+      static constexpr _CharT _S_space = _S_chars[14];
+      static constexpr const _CharT* _S_empty_spec = _S_chars + 15;
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_a_A(const _Tp& __t, typename _FormatContext::iterator __out,
+        _FormatContext& __ctx, bool __full) const
+ {
+
+
+   chrono::weekday __wd = _S_weekday(__t);
+   if (!__wd.ok())
+     __throw_format_error("format error: invalid weekday");
+
+   locale __loc = _M_locale(__ctx);
+   const auto& __tp = use_facet<__timepunct<_CharT>>(__loc);
+   const _CharT* __days[7];
+   if (__full)
+     __tp._M_days(__days);
+   else
+     __tp._M_days_abbreviated(__days);
+   __string_view __str(__days[__wd.c_encoding()]);
+   return __format::__write(std::move(__out), __str);
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_b_B(const _Tp& __t, typename _FormatContext::iterator __out,
+        _FormatContext& __ctx, bool __full) const
+ {
+
+
+   chrono::month __m = _S_month(__t);
+   if (!__m.ok())
+     __throw_format_error("format error: invalid month");
+   locale __loc = _M_locale(__ctx);
+   const auto& __tp = use_facet<__timepunct<_CharT>>(__loc);
+   const _CharT* __months[12];
+   if (__full)
+     __tp._M_months(__months);
+   else
+     __tp._M_months_abbreviated(__months);
+   __string_view __str(__months[(unsigned)__m - 1]);
+   return __format::__write(std::move(__out), __str);
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_c(const _Tp& __tt, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx, bool __mod = false) const
+ {
+
+
+
+   auto __t = _S_floor_seconds(__tt);
+   locale __loc = _M_locale(__ctx);
+   const auto& __tp = use_facet<__timepunct<_CharT>>(__loc);
+   const _CharT* __formats[2];
+   __tp._M_date_time_formats(__formats);
+   const _CharT* __rep = __formats[__mod];
+   if (!*__rep)
+     __rep = ::std::chrono::__detail::_Widen<_CharT>("%a %b %e %H:%M:%S %Y", L"%a %b %e %H:%M:%S %Y");
+   basic_string<_CharT> __fmt(_S_empty_spec);
+   __fmt.insert(1u, 1u, _S_colon);
+   __fmt.insert(2u, __rep);
+   return std::vformat_to(std::move(__out), __loc, __fmt,
+     std::make_format_args<_FormatContext>(__t));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_C_y_Y(const _Tp& __t, typename _FormatContext::iterator __out,
+        _FormatContext& __ctx, _CharT __conv, _CharT __mod = 0) const
+ {
+# 824 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 3
+   chrono::year __y = _S_year(__t);
+
+   if (__mod) [[unlikely]]
+     {
+       struct tm __tm{};
+       __tm.tm_year = (int)__y - 1900;
+       return _M_locale_fmt(std::move(__out), _M_locale(__ctx), __tm,
+       __conv, __mod);
+     }
+
+   basic_string<_CharT> __s;
+   int __yi = (int)__y;
+   const bool __is_neg = __yi < 0;
+   __yi = __builtin_abs(__yi);
+
+   if (__conv == 'Y' || __conv == 'C')
+     {
+       int __ci = __yi / 100;
+       if (__is_neg) [[unlikely]]
+  {
+    __s.assign(1, _S_plus_minus[1]);
+
+    if (__conv == 'C' && (__ci * 100) != __yi)
+      ++__ci;
+  }
+       if (__ci >= 100) [[unlikely]]
+  {
+    __s += std::format(_S_empty_spec, __ci / 100);
+    __ci %= 100;
+  }
+       __s += _S_two_digits(__ci);
+     }
+
+   if (__conv == 'Y' || __conv == 'y')
+     __s += _S_two_digits(__yi % 100);
+
+   return __format::__write(std::move(__out), __string_view(__s));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_D(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext&) const
+ {
+   auto __ymd = _S_date(__t);
+   basic_string<_CharT> __s;
+
+
+
+   __s = _S_two_digits((unsigned)__ymd.month());
+   __s += _S_slash;
+   __s += _S_two_digits((unsigned)__ymd.day());
+   __s += _S_slash;
+   __s += _S_two_digits(__builtin_abs((int)__ymd.year()) % 100);
+   return __format::__write(std::move(__out), __string_view(__s));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_d_e(const _Tp& __t, typename _FormatContext::iterator __out,
+        _FormatContext& __ctx, _CharT __conv, bool __mod = false) const
+ {
+
+
+
+
+
+   chrono::day __d = _S_day(__t);
+   unsigned __i = (unsigned)__d;
+
+   if (__mod) [[unlikely]]
+     {
+       struct tm __tm{};
+       __tm.tm_mday = __i;
+       return _M_locale_fmt(std::move(__out), _M_locale(__ctx), __tm,
+       (char)__conv, 'O');
+     }
+
+   auto __sv = _S_two_digits(__i);
+   _CharT __buf[2];
+   if (__conv == _CharT('e') && __i < 10)
+     {
+       __buf[0] = _S_space;
+       __buf[1] = __sv[1];
+       __sv = {__buf, 2};
+     }
+   return __format::__write(std::move(__out), __sv);
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_F(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext&) const
+ {
+   auto __ymd = _S_date(__t);
+   auto __s = std::format(::std::chrono::__detail::_Widen<_CharT>("{:04d}-  -  ", L"{:04d}-  -  "),
+     (int)__ymd.year());
+   auto __sv = _S_two_digits((unsigned)__ymd.month());
+   __s[__s.size() - 5] = __sv[0];
+   __s[__s.size() - 4] = __sv[1];
+   __sv = _S_two_digits((unsigned)__ymd.day());
+   __s[__s.size() - 2] = __sv[0];
+   __s[__s.size() - 1] = __sv[1];
+   __sv = __s;
+   return __format::__write(std::move(__out), __sv);
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_g_G(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx, bool __full) const
+ {
+
+
+   using namespace chrono;
+   auto __d = _S_days(__t);
+
+   __d -= (weekday(__d) - Monday) - days(3);
+
+   year __y = year_month_day(__d).year();
+   return _M_C_y_Y(__y, std::move(__out), __ctx, "yY"[__full]);
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_H_I(const _Tp& __t, typename _FormatContext::iterator __out,
+        _FormatContext& __ctx, _CharT __conv, bool __mod = false) const
+ {
+
+
+
+
+
+   const auto __hms = _S_hms(__t);
+   int __i = __hms.hours().count();
+
+   if (__mod) [[unlikely]]
+     {
+       struct tm __tm{};
+       __tm.tm_hour = __i;
+       return _M_locale_fmt(std::move(__out), _M_locale(__ctx), __tm,
+       (char)__conv, 'O');
+     }
+
+   if (__conv == _CharT('I'))
+     {
+       if (__i == 0)
+  __i = 12;
+       else if (__i > 12)
+  __i -= 12;
+     }
+   return __format::__write(std::move(__out), _S_two_digits(__i));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_j(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext&) const
+ {
+   if constexpr (chrono::__is_duration_v<_Tp>)
+     {
+
+       unsigned __d = chrono::duration_cast<chrono::days>(__t).count();
+       return std::format_to(std::move(__out), _S_empty_spec, __d);
+     }
+   else
+     {
+
+       using namespace chrono;
+       auto __day = _S_days(__t);
+       auto __ymd = _S_date(__t);
+       days __d;
+
+
+       if constexpr (is_same_v<typename decltype(__day)::clock, local_t>)
+  __d = __day - local_days(__ymd.year()/January/0);
+       else
+  __d = __day - sys_days(__ymd.year()/January/0);
+       return std::format_to(std::move(__out), ::std::chrono::__detail::_Widen<_CharT>("{:03d}", L"{:03d}"),
+        __d.count());
+     }
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_m(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx, bool __mod) const
+ {
+
+
+
+   auto __m = _S_month(__t);
+   auto __i = (unsigned)__m;
+
+   if (__mod) [[unlikely]]
+     {
+       struct tm __tm{};
+       __tm.tm_mon = __i - 1;
+       return _M_locale_fmt(std::move(__out), _M_locale(__ctx), __tm,
+       'm', 'O');
+     }
+
+   return __format::__write(std::move(__out), _S_two_digits(__i));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_M(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx, bool __mod) const
+ {
+
+
+
+   auto __m = _S_hms(__t).minutes();
+   auto __i = __m.count();
+
+   if (__mod) [[unlikely]]
+     {
+       struct tm __tm{};
+       __tm.tm_min = __i;
+       return _M_locale_fmt(std::move(__out), _M_locale(__ctx), __tm,
+       'M', 'O');
+     }
+
+   return __format::__write(std::move(__out), _S_two_digits(__i));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_p(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx) const
+ {
+
+   auto __hms = _S_hms(__t);
+   locale __loc = _M_locale(__ctx);
+   const auto& __tp = use_facet<__timepunct<_CharT>>(__loc);
+   const _CharT* __ampm[2];
+   __tp._M_am_pm(__ampm);
+   return std::format_to(std::move(__out), _S_empty_spec,
+    __ampm[__hms.hours().count() >= 12]);
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_q(const _Tp&, typename _FormatContext::iterator __out,
+      _FormatContext&) const
+ {
+
+   if constexpr (!chrono::__is_duration_v<_Tp>)
+     __throw_format_error("format error: argument is not a duration");
+   else
+     {
+       namespace __d = chrono::__detail;
+       using period = typename _Tp::period;
+       return __d::__fmt_units_suffix<period, _CharT>(std::move(__out));
+     }
+ }
+
+
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_r(const _Tp& __tt, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx) const
+ {
+
+   auto __t = _S_floor_seconds(__tt);
+   locale __loc = _M_locale(__ctx);
+   const auto& __tp = use_facet<__timepunct<_CharT>>(__loc);
+   const _CharT* __ampm_fmt;
+   __tp._M_am_pm_format(&__ampm_fmt);
+   basic_string<_CharT> __fmt(_S_empty_spec);
+   __fmt.insert(1u, 1u, _S_colon);
+   __fmt.insert(2u, __ampm_fmt);
+   return std::vformat_to(std::move(__out), __fmt,
+     std::make_format_args<_FormatContext>(__t));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_R_T(const _Tp& __t, typename _FormatContext::iterator __out,
+        _FormatContext& __ctx, bool __secs) const
+ {
+
+
+   auto __hms = _S_hms(__t);
+
+   auto __s = std::format(::std::chrono::__detail::_Widen<_CharT>("{:02d}:00", L"{:02d}:00"),
+     __hms.hours().count());
+   auto __sv = _S_two_digits(__hms.minutes().count());
+   __s[__s.size() - 2] = __sv[0];
+   __s[__s.size() - 1] = __sv[1];
+   __sv = __s;
+   __out = __format::__write(std::move(__out), __sv);
+   if (__secs)
+     {
+       *__out++ = _S_colon;
+       __out = _M_S(__hms, std::move(__out), __ctx);
+     }
+   return __out;
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_S(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx, bool __mod = false) const
+ {
+
+
+   auto __hms = _S_hms(__t);
+
+   if (__mod) [[unlikely]]
+     {
+       struct tm __tm{};
+       __tm.tm_sec = (int)__hms.seconds().count();
+       return _M_locale_fmt(std::move(__out), _M_locale(__ctx), __tm,
+       'S', 'O');
+     }
+
+   if constexpr (__hms.fractional_width == 0)
+     __out = __format::__write(std::move(__out),
+          _S_two_digits(__hms.seconds().count()));
+   else
+     {
+       locale __loc = _M_locale(__ctx);
+       auto __s = __hms.seconds();
+       auto __ss = __hms.subseconds();
+       using rep = typename decltype(__ss)::rep;
+       if constexpr (is_floating_point_v<rep>)
+  {
+    chrono::duration<rep> __fs = __s + __ss;
+    __out = std::format_to(std::move(__out), __loc,
+      ::std::chrono::__detail::_Widen<_CharT>("{:#0{}.{}Lf}", L"{:#0{}.{}Lf}"),
+      __fs.count(),
+      3 + __hms.fractional_width,
+      __hms.fractional_width);
+  }
+       else
+  {
+    const auto& __np
+      = use_facet<numpunct<_CharT>>(__loc);
+    __out = __format::__write(std::move(__out),
+         _S_two_digits(__s.count()));
+    *__out++ = __np.decimal_point();
+    if constexpr (is_integral_v<rep>)
+      __out = std::format_to(std::move(__out),
+        ::std::chrono::__detail::_Widen<_CharT>("{:0{}}", L"{:0{}}"),
+        __ss.count(),
+        __hms.fractional_width);
+    else
+      {
+        auto __str = std::format(_S_empty_spec, __ss.count());
+        __out = std::format_to(::std::chrono::__detail::_Widen<_CharT>("{:0>{}s}", L"{:0>{}s}"),
+          __str,
+          __hms.fractional_width);
+      }
+  }
+     }
+   return __out;
+ }
+
+
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_u_w(const _Tp& __t, typename _FormatContext::iterator __out,
+        _FormatContext& __ctx, _CharT __conv, bool __mod = false) const
+ {
+
+
+
+
+
+   chrono::weekday __wd = _S_weekday(__t);
+
+   if (__mod) [[unlikely]]
+     {
+       struct tm __tm{};
+       __tm.tm_wday = __wd.c_encoding();
+       return _M_locale_fmt(std::move(__out), _M_locale(__ctx), __tm,
+       (char)__conv, 'O');
+     }
+
+   unsigned __wdi = __conv == 'u' ? __wd.iso_encoding()
+      : __wd.c_encoding();
+   const _CharT __d = _S_digit(__wdi);
+   return __format::__write(std::move(__out), __string_view(&__d, 1));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_U_V_W(const _Tp& __t, typename _FormatContext::iterator __out,
+   _FormatContext& __ctx, _CharT __conv, bool __mod = false) const
+ {
+
+
+
+
+
+
+   using namespace chrono;
+   auto __d = _S_days(__t);
+   using _TDays = decltype(__d);
+
+   if (__mod) [[unlikely]]
+     {
+       const year_month_day __ymd(__d);
+       const year __y = __ymd.year();
+       struct tm __tm{};
+       __tm.tm_year = (int)__y - 1900;
+       __tm.tm_yday = (__d - _TDays(__y/January/1)).count();
+       __tm.tm_wday = weekday(__d).c_encoding();
+       return _M_locale_fmt(std::move(__out), _M_locale(__ctx), __tm,
+       (char)__conv, 'O');
+     }
+
+   _TDays __first;
+   if (__conv == 'V')
+     {
+
+       __d -= (weekday(__d) - Monday) - days(3);
+
+
+       __first = _TDays(year_month_day(__d).year()/January/1);
+     }
+   else
+     {
+       year __y;
+       if constexpr (requires { __t.year(); })
+  __y = __t.year();
+       else
+  __y = year_month_day(__d).year();
+       const weekday __weekstart = __conv == 'U' ? Sunday : Monday;
+       __first = _TDays(__y/January/__weekstart[1]);
+     }
+   auto __weeks = chrono::floor<weeks>(__d - __first);
+   __string_view __sv = _S_two_digits(__weeks.count() + 1);
+   return __format::__write(std::move(__out), __sv);
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_x(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx, bool __mod = false) const
+ {
+
+
+   locale __loc = _M_locale(__ctx);
+   const auto& __tp = use_facet<__timepunct<_CharT>>(__loc);
+   const _CharT* __date_reps[2];
+   __tp._M_date_formats(__date_reps);
+   const _CharT* __rep = __date_reps[__mod];
+   if (!*__rep)
+     return _M_D(__t, std::move(__out), __ctx);
+
+   basic_string<_CharT> __fmt(_S_empty_spec);
+   __fmt.insert(1u, 1u, _S_colon);
+   __fmt.insert(2u, __rep);
+   return std::vformat_to(std::move(__out), __fmt,
+     std::make_format_args<_FormatContext>(__t));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_X(const _Tp& __tt, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx, bool __mod = false) const
+ {
+
+
+   auto __t = _S_floor_seconds(__tt);
+   locale __loc = _M_locale(__ctx);
+   const auto& __tp = use_facet<__timepunct<_CharT>>(__loc);
+   const _CharT* __time_reps[2];
+   __tp._M_time_formats(__time_reps);
+   const _CharT* __rep = __time_reps[__mod];
+   if (!*__rep)
+     return _M_R_T(__t, std::move(__out), __ctx, true);
+
+   basic_string<_CharT> __fmt(_S_empty_spec);
+   __fmt.insert(1u, 1u, _S_colon);
+   __fmt.insert(2u, __rep);
+   return std::vformat_to(std::move(__out), __fmt,
+     std::make_format_args<_FormatContext>(__t));
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_z(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext&, bool __mod = false) const
+ {
+   using ::std::chrono::__detail::__utc_leap_second;
+   using ::std::chrono::__detail::__local_time_fmt;
+
+   auto __utc = __mod ? __string_view(::std::chrono::__detail::_Widen<_CharT>("+00:00", L"+00:00"), 6)
+        : __string_view(::std::chrono::__detail::_Widen<_CharT>("+0000", L"+0000"), 5);
+
+   if constexpr (chrono::__is_time_point_v<_Tp>)
+     {
+       if constexpr (is_same_v<typename _Tp::clock,
+          chrono::system_clock>)
+  return __format::__write(std::move(__out), __utc);
+     }
+   else if constexpr (__is_specialization_of<_Tp, __local_time_fmt>)
+     {
+       if (__t._M_offset_sec)
+  {
+    auto __sv = __utc;
+    basic_string<_CharT> __s;
+    if (*__t._M_offset_sec != 0s)
+      {
+        chrono:: hh_mm_ss __hms(*__t._M_offset_sec);
+        __s = _S_plus_minus[__hms.is_negative()];
+        __s += _S_two_digits(__hms.hours().count());
+        if (__mod)
+   __s += _S_colon;
+        __s += _S_two_digits(__hms.minutes().count());
+        __sv = __s;
+      }
+    return __format::__write(std::move(__out), __sv);
+  }
+     }
+   else if constexpr (__is_specialization_of<_Tp, __utc_leap_second>)
+     return __format::__write(std::move(__out), __utc);
+
+   __no_timezone_available();
+ }
+
+      template<typename _Tp, typename _FormatContext>
+ typename _FormatContext::iterator
+ _M_Z(const _Tp& __t, typename _FormatContext::iterator __out,
+      _FormatContext& __ctx) const
+ {
+   using ::std::chrono::__detail::__utc_leap_second;
+   using ::std::chrono::__detail::__local_time_fmt;
+
+   __string_view __utc(::std::chrono::__detail::_Widen<_CharT>("UTC", L"UTC"), 3);
+   if constexpr (chrono::__is_time_point_v<_Tp>)
+     {
+       if constexpr (is_same_v<typename _Tp::clock,
+          chrono::system_clock>)
+  return __format::__write(std::move(__out), __utc);
+     }
+   else if constexpr (__is_specialization_of<_Tp, __local_time_fmt>)
+     {
+       if (__t._M_abbrev)
+  {
+    string_view __sv = *__t._M_abbrev;
+    if constexpr (is_same_v<_CharT, char>)
+      return __format::__write(std::move(__out), __sv);
+    else
+      {
+
+        basic_string<_CharT> __ws(__sv.size(), _CharT());
+        auto& __ct = use_facet<ctype<_CharT>>(_M_locale(__ctx));
+        __ct.widen(__sv.begin(), __sv.end(), __ws.data());
+        __string_view __wsv = __ws;
+        return __format::__write(std::move(__out), __wsv);
+      }
+  }
+     }
+   else if constexpr (__is_specialization_of<_Tp, __utc_leap_second>)
+     return __format::__write(std::move(__out), __utc);
+
+   __no_timezone_available();
+ }
+
+
+
+
+      static _CharT
+      _S_digit(int __n) noexcept
+      {
+
+ return ::std::chrono::__detail::_Widen<_CharT>("0123456789999999", L"0123456789999999")[__n & 0xf];
+      }
+
+
+      static basic_string_view<_CharT>
+      _S_two_digits(int __n) noexcept
+      {
+ return {
+   ::std::chrono::__detail::_Widen<_CharT>("0001020304050607080910111213141516171819" "2021222324252627282930313233343536373839" "4041424344454647484950515253545556575859" "6061626364656667686970717273747576777879" "8081828384858687888990919293949596979899" "9999999999999999999999999999999999999999" "9999999999999999", L"0001020304050607080910111213141516171819" "2021222324252627282930313233343536373839" "4041424344454647484950515253545556575859" "6061626364656667686970717273747576777879" "8081828384858687888990919293949596979899" "9999999999999999999999999999999999999999" "9999999999999999")
+
+
+
+
+
+                        + 2 * (__n & 0x7f),
+   2
+ };
+      }
+
+
+
+
+      template<typename _Tp>
+ static decltype(auto)
+ _S_hms(const _Tp& __t)
+ {
+   using ::std::chrono::__detail::__utc_leap_second;
+   using ::std::chrono::__detail::__local_time_fmt;
+
+   if constexpr (__is_specialization_of<_Tp, chrono::hh_mm_ss>)
+     return __t;
+   else if constexpr (__is_specialization_of<_Tp, __utc_leap_second>)
+     return __t._M_time;
+   else if constexpr (chrono::__is_duration_v<_Tp>)
+     return chrono::hh_mm_ss<_Tp>(__t);
+   else if constexpr (chrono::__is_time_point_v<_Tp>)
+     return chrono::hh_mm_ss(__t - chrono::floor<chrono::days>(__t));
+   else if constexpr (__is_specialization_of<_Tp, __local_time_fmt>)
+     return _S_hms(__t._M_time);
+   else
+     {
+       __invalid_chrono_spec();
+       return chrono::hh_mm_ss<chrono::seconds>();
+     }
+ }
+
+
+      template<typename _Tp>
+ static auto
+ _S_days(const _Tp& __t)
+ {
+   using namespace chrono;
+   using ::std::chrono::__detail::__utc_leap_second;
+   using ::std::chrono::__detail::__local_time_fmt;
+
+   if constexpr (__is_time_point_v<_Tp>)
+     return chrono::floor<days>(__t);
+   else if constexpr (__is_specialization_of<_Tp, __utc_leap_second>)
+     return __t._M_date;
+   else if constexpr (__is_specialization_of<_Tp, __local_time_fmt>)
+     return chrono::floor<days>(__t._M_time);
+   else if constexpr (is_same_v<_Tp, year_month_day>
+          || is_same_v<_Tp, year_month_day_last>
+          || is_same_v<_Tp, year_month_weekday>
+          || is_same_v<_Tp, year_month_weekday_last>)
+     return sys_days(__t);
+   else
+     {
+       if constexpr (__is_duration_v<_Tp>)
+  __not_valid_for_duration();
+       else
+  __invalid_chrono_spec();
+       return chrono::sys_days();
+     }
+ }
+
+
+      template<typename _Tp>
+ static chrono::year_month_day
+ _S_date(const _Tp& __t)
+ {
+   if constexpr (is_same_v<_Tp, chrono::year_month_day>)
+     return __t;
+   else
+     return chrono::year_month_day(_S_days(__t));
+ }
+
+      template<typename _Tp>
+ static chrono::day
+ _S_day(const _Tp& __t)
+ {
+   using namespace chrono;
+
+   if constexpr (is_same_v<_Tp, day>)
+     return __t;
+   else if constexpr (requires { __t.day(); })
+     return __t.day();
+   else
+     return _S_date(__t).day();
+ }
+
+      template<typename _Tp>
+ static chrono::month
+ _S_month(const _Tp& __t)
+ {
+   using namespace chrono;
+
+   if constexpr (is_same_v<_Tp, month>)
+     return __t;
+   else if constexpr (requires { __t.month(); })
+     return __t.month();
+   else
+     return _S_date(__t).month();
+ }
+
+      template<typename _Tp>
+ static chrono::year
+ _S_year(const _Tp& __t)
+ {
+   using namespace chrono;
+
+   if constexpr (is_same_v<_Tp, year>)
+     return __t;
+   else if constexpr (requires { __t.year(); })
+     return __t.year();
+   else
+     return _S_date(__t).year();
+ }
+
+      template<typename _Tp>
+ static chrono::weekday
+ _S_weekday(const _Tp& __t)
+ {
+   using namespace ::std::chrono;
+   using ::std::chrono::__detail::__local_time_fmt;
+
+   if constexpr (is_same_v<_Tp, weekday>)
+     return __t;
+   else if constexpr (requires { __t.weekday(); })
+     return __t.weekday();
+   else if constexpr (is_same_v<_Tp, month_weekday>)
+     return __t.weekday_indexed().weekday();
+   else if constexpr (is_same_v<_Tp, month_weekday_last>)
+     return __t.weekday_last().weekday();
+   else
+     return weekday(_S_days(__t));
+ }
+
+
+      template<typename _Tp>
+ static auto
+ _S_floor_seconds(const _Tp& __t)
+ {
+   using chrono::__detail::__local_time_fmt;
+   if constexpr (chrono::__is_time_point_v<_Tp>
+     || chrono::__is_duration_v<_Tp>)
+     {
+       if constexpr (_Tp::period::den != 1)
+  return chrono::floor<chrono::seconds>(__t);
+       else
+  return __t;
+     }
+   else if constexpr (__is_specialization_of<_Tp, chrono::hh_mm_ss>)
+     {
+       if constexpr (_Tp::fractional_width != 0)
+  return chrono::floor<chrono::seconds>(__t.to_duration());
+       else
+  return __t;
+     }
+   else if constexpr (__is_specialization_of<_Tp, __local_time_fmt>)
+     return _S_floor_seconds(__t._M_time);
+   else
+     return __t;
+ }
+
+
+
+      template<typename _Iter>
+ _Iter
+ _M_locale_fmt(_Iter __out, const locale& __loc, const struct tm& __tm,
+        char __fmt, char __mod) const
+ {
+   basic_ostringstream<_CharT> __os;
+   const auto& __tp = use_facet<time_put<_CharT>>(__loc);
+   __tp.put(__os, __os, _S_space, &__tm, __fmt, __mod);
+   if (__os)
+     __out = __format::__write(std::move(__out), __os.view());
+   return __out;
+ }
+    };
+
+}
+
+
+  template<typename _Rep, typename _Period, typename _CharT>
+    struct formatter<chrono::duration<_Rep, _Period>, _CharT>
+    {
+      constexpr typename basic_format_parse_context<_CharT>::iterator
+      parse(basic_format_parse_context<_CharT>& __pc)
+      {
+ using namespace __format;
+ auto __it = _M_f._M_parse(__pc, _Duration|_TimeOfDay);
+ if constexpr (!is_floating_point_v<_Rep>)
+   if (_M_f._M_spec._M_prec_kind != __format::_WP_none)
+     __throw_format_error("format error: invalid precision for duration");
+ return __it;
+      }
+
+      template<typename _Out>
+ typename basic_format_context<_Out, _CharT>::iterator
+ format(const chrono::duration<_Rep, _Period>& __d,
+        basic_format_context<_Out, _CharT>& __fc) const
+ {
+   return _M_f._M_format(chrono::abs(__d), __fc, __d < __d.zero());
+ }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::day, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Day); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::day& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::month, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Month); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::month& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::year, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Year); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::year& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::weekday, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Weekday); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::weekday& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::weekday_indexed, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Weekday); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::weekday_indexed& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::weekday_last, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Weekday); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::weekday_last& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::month_day, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Month|__format::_Day); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::month_day& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::month_day_last, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Month|__format::_Day); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::month_day_last& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::month_weekday, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Month|__format::_Weekday); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::month_weekday& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::month_weekday_last, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Month|__format::_Weekday); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::month_weekday_last& __t,
+        _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::year_month, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Year|__format::_Month); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::year_month& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::year_month_day, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Date); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::year_month_day& __t, _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::year_month_day_last, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Date); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::year_month_day_last& __t,
+        _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::year_month_weekday, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Date); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::year_month_weekday& __t,
+        _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::year_month_weekday_last, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_Date); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::year_month_weekday_last& __t,
+        _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _Rep, typename _Period, typename _CharT>
+    struct formatter<chrono::hh_mm_ss<chrono::duration<_Rep, _Period>>, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_TimeOfDay); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::hh_mm_ss<chrono::duration<_Rep, _Period>>& __t,
+        _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+
+  template<typename _CharT>
+    struct formatter<chrono::sys_info, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_ChronoParts{}); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::sys_info& __i, _FormatContext& __fc) const
+ { return _M_f._M_format(__i, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _CharT>
+    struct formatter<chrono::local_info, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_ChronoParts{}); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::local_info& __i, _FormatContext& __fc) const
+ { return _M_f._M_format(__i, __fc); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+
+  template<typename _Duration, typename _CharT>
+    struct formatter<chrono::sys_time<_Duration>, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ {
+   auto __next = _M_f._M_parse(__pc, __format::_ZonedDateTime);
+   if constexpr (!__stream_insertable)
+     if (_M_f._M_spec._M_chrono_specs.empty())
+       __format::__invalid_chrono_spec();
+   return __next;
+ }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::sys_time<_Duration>& __t,
+        _FormatContext& __fc) const
+ { return _M_f._M_format(__t, __fc); }
+
+    private:
+      static constexpr bool __stream_insertable
+ = requires (basic_ostream<_CharT>& __os,
+      chrono::sys_time<_Duration> __t) { __os << __t; };
+
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _Duration, typename _CharT>
+    struct formatter<chrono::utc_time<_Duration>, _CharT>
+    : __format::__formatter_chrono<_CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_ZonedDateTime); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::utc_time<_Duration>& __t,
+        _FormatContext& __fc) const
+ {
+
+
+
+   using chrono::__detail::__utc_leap_second;
+   using chrono::seconds;
+   using chrono::sys_time;
+   using _CDur = common_type_t<_Duration, seconds>;
+   const auto __li = chrono::get_leap_second_info(__t);
+   sys_time<_CDur> __s{__t.time_since_epoch() - __li.elapsed};
+   if (!__li.is_leap_second) [[likely]]
+     return _M_f._M_format(__s, __fc);
+   else
+     return _M_f._M_format(__utc_leap_second(__s), __fc);
+ }
+
+    private:
+      friend formatter<chrono::__detail::__utc_leap_second<_Duration>, _CharT>;
+
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _Duration, typename _CharT>
+    struct formatter<chrono::tai_time<_Duration>, _CharT>
+    : __format::__formatter_chrono<_CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_ZonedDateTime); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::tai_time<_Duration>& __t,
+        _FormatContext& __fc) const
+ {
+
+
+
+   constexpr chrono::days __tai_offset = chrono::days(4383);
+   using _CDur = common_type_t<_Duration, chrono::days>;
+   chrono::local_time<_CDur> __lt(__t.time_since_epoch() - __tai_offset);
+   const string __abbrev("TAI", 3);
+   const chrono::seconds __off = 0s;
+   const auto __lf = chrono::local_time_format(__lt, &__abbrev, &__off);
+   return _M_f._M_format(__lf, __fc);
+ }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _Duration, typename _CharT>
+    struct formatter<chrono::gps_time<_Duration>, _CharT>
+    : __format::__formatter_chrono<_CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_ZonedDateTime); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::gps_time<_Duration>& __t,
+        _FormatContext& __fc) const
+ {
+
+
+
+   constexpr chrono::days __gps_offset = chrono::days(3657);
+   using _CDur = common_type_t<_Duration, chrono::days>;
+   chrono::local_time<_CDur> __lt(__t.time_since_epoch() + __gps_offset);
+   const string __abbrev("GPS", 3);
+   const chrono::seconds __off = 0s;
+   const auto __lf = chrono::local_time_format(__lt, &__abbrev, &__off);
+   return _M_f._M_format(__lf, __fc);
+ }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _Duration, typename _CharT>
+    struct formatter<chrono::file_time<_Duration>, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_ZonedDateTime); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::file_time<_Duration>& __t,
+        _FormatContext& __ctx) const
+ {
+   using namespace chrono;
+   return _M_f._M_format(chrono::clock_cast<system_clock>(__t), __ctx);
+ }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _Duration, typename _CharT>
+    struct formatter<chrono::local_time<_Duration>, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_DateTime); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::local_time<_Duration>& __t,
+        _FormatContext& __ctx) const
+ { return _M_f._M_format(__t, __ctx); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+  template<typename _Duration, typename _CharT>
+    struct formatter<chrono::__detail::__local_time_fmt<_Duration>, _CharT>
+    {
+      template<typename _ParseContext>
+ constexpr typename _ParseContext::iterator
+ parse(_ParseContext& __pc)
+ { return _M_f._M_parse(__pc, __format::_ZonedDateTime); }
+
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::__detail::__local_time_fmt<_Duration>& __t,
+        _FormatContext& __ctx) const
+ { return _M_f._M_format(__t, __ctx); }
+
+    private:
+      __format::__formatter_chrono<_CharT> _M_f;
+    };
+
+
+  template<typename _Duration, typename _TimeZonePtr, typename _CharT>
+    struct formatter<chrono::zoned_time<_Duration, _TimeZonePtr>, _CharT>
+    : formatter<chrono::__detail::__local_time_fmt<_Duration>, _CharT>
+    {
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::zoned_time<_Duration, _TimeZonePtr>& __tp,
+        _FormatContext& __ctx) const
+ {
+   using chrono::__detail::__local_time_fmt;
+   using _Base = formatter<__local_time_fmt<_Duration>, _CharT>;
+   const chrono::sys_info __info = __tp.get_info();
+   const auto __lf = chrono::local_time_format(__tp.get_local_time(),
+            &__info.abbrev,
+            &__info.offset);
+   return _Base::format(__lf, __ctx);
+ }
+    };
+
+
+
+  template<typename _Duration, typename _CharT>
+    struct formatter<chrono::__detail::__utc_leap_second<_Duration>, _CharT>
+    : formatter<chrono::utc_time<_Duration>, _CharT>
+    {
+      template<typename _FormatContext>
+ typename _FormatContext::iterator
+ format(const chrono::__detail::__utc_leap_second<_Duration>& __t,
+        _FormatContext& __fc) const
+ { return this->_M_f._M_format(__t, __fc); }
+    };
+
+namespace chrono
+{
+
+
+
+
+namespace __detail
+{
+  template<typename _Duration = seconds>
+    struct _Parser
+    {
+      static_assert(is_same_v<common_type_t<_Duration, seconds>, _Duration>);
+
+      explicit
+      _Parser(__format::_ChronoParts __need) : _M_need(__need) { }
+
+      _Parser(_Parser&&) = delete;
+      void operator=(_Parser&&) = delete;
+
+      _Duration _M_time{};
+      sys_days _M_sys_days{};
+      year_month_day _M_ymd{};
+      weekday _M_wd{};
+      __format::_ChronoParts _M_need;
+      unsigned _M_is_leap_second : 1 {};
+      unsigned _M_reserved : 15 {};
+
+      template<typename _CharT, typename _Traits, typename _Alloc>
+ basic_istream<_CharT, _Traits>&
+ operator()(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+     basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+     minutes* __offset = nullptr);
+
+    private:
+
+
+      template<typename _CharT, typename _Traits>
+ static int_least32_t
+ _S_read_unsigned(basic_istream<_CharT, _Traits>& __is,
+    ios_base::iostate& __err, int __n)
+ {
+   int_least32_t __val = _S_try_read_digit(__is, __err);
+   if (__val == -1) [[unlikely]]
+     __err |= ios_base::failbit;
+   else
+     {
+       int __n1 = (std::min)(__n, 9);
+
+       for (int __i = 1; __i < __n1; ++__i)
+  if (auto __dig = _S_try_read_digit(__is, __err); __dig != -1)
+    {
+      __val *= 10;
+      __val += __dig;
+    }
+
+       while (__n1++ < __n) [[unlikely]]
+  if (auto __dig = _S_try_read_digit(__is, __err); __dig != -1)
+    {
+      if (__builtin_mul_overflow(__val, 10, &__val)
+     || __builtin_add_overflow(__val, __dig, &__val))
+        {
+   __err |= ios_base::failbit;
+   return -1;
+        }
+    }
+     }
+   return __val;
+ }
+
+
+
+      template<typename _CharT, typename _Traits>
+ static int_least32_t
+ _S_read_signed(basic_istream<_CharT, _Traits>& __is,
+    ios_base::iostate& __err, int __n)
+ {
+   auto __sign = __is.peek();
+   if (__sign == '-' || __sign == '+')
+     (void) __is.get();
+   int_least32_t __val = _S_read_unsigned(__is, __err, __n);
+   if (__err & ios_base::failbit)
+     {
+       if (__sign == '-') [[unlikely]]
+  __val *= -1;
+     }
+   return __val;
+ }
+
+
+
+      template<typename _CharT, typename _Traits>
+ static int_least32_t
+ _S_try_read_digit(basic_istream<_CharT, _Traits>& __is,
+     ios_base::iostate& __err)
+ {
+   int_least32_t __val = -1;
+   auto __i = __is.peek();
+   if (!_Traits::eq_int_type(__i, _Traits::eof())) [[likely]]
+     {
+       _CharT __c = _Traits::to_char_type(__i);
+       if (_CharT('0') <= __c && __c <= _CharT('9')) [[likely]]
+  {
+    (void) __is.get();
+    __val = __c - _CharT('0');
+  }
+     }
+   else
+     __err |= ios_base::eofbit;
+   return __val;
+ }
+
+
+
+      template<typename _CharT, typename _Traits>
+ static bool
+ _S_read_chr(basic_istream<_CharT, _Traits>& __is,
+      ios_base::iostate& __err, _CharT __c)
+ {
+   auto __i = __is.peek();
+   if (_Traits::eq_int_type(__i, _Traits::eof()))
+     __err |= ios_base::eofbit;
+   else if (_Traits::to_char_type(__i) == __c) [[likely]]
+     {
+       (void) __is.get();
+       return true;
+     }
+   __err |= ios_base::failbit;
+   return false;
+ }
+    };
+
+  template<typename _Duration>
+    using _Parser_t = _Parser<common_type_t<_Duration, seconds>>;
+
+}
+
+
+  template<typename _CharT, typename _Traits, typename _Rep, typename _Period,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  duration<_Rep, _Period>& __d,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      auto __need = __format::_ChronoParts::_TimeOfDay;
+      __detail::_Parser_t<duration<_Rep, _Period>> __p(__need);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ __d = chrono::duration_cast<duration<_Rep, _Period>>(__p._M_time);
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, const day& __d)
+    {
+      using _Ctx = __format::__format_context<_CharT>;
+      using _Str = basic_string_view<_CharT>;
+      _Str __s = ::std::chrono::__detail::_Widen<_CharT>("{:02d} is not a valid day", L"{:02d} is not a valid day");
+      if (__d.ok())
+ __s = __s.substr(0, 6);
+      auto __u = (unsigned)__d;
+      __os << std::vformat(__s, make_format_args<_Ctx>(__u));
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  day& __d,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      __detail::_Parser<> __p(__format::_ChronoParts::_Day);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ __d = __p._M_ymd.day();
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, const month& __m)
+    {
+      using _Ctx = __format::__format_context<_CharT>;
+      using _Str = basic_string_view<_CharT>;
+      _Str __s = ::std::chrono::__detail::_Widen<_CharT>("{:L%b}{} is not a valid month", L"{:L%b}{} is not a valid month");
+      if (__m.ok())
+ __os << std::vformat(__os.getloc(), __s.substr(0, 6),
+        make_format_args<_Ctx>(__m));
+      else
+ {
+   auto __u = (unsigned)__m;
+   __os << std::vformat(__s.substr(6), make_format_args<_Ctx>(__u));
+ }
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  month& __m,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      __detail::_Parser<> __p(__format::_ChronoParts::_Month);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ __m = __p._M_ymd.month();
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, const year& __y)
+    {
+      using _Ctx = __format::__format_context<_CharT>;
+      using _Str = basic_string_view<_CharT>;
+      _Str __s = ::std::chrono::__detail::_Widen<_CharT>("-{:04d} is not a valid year", L"-{:04d} is not a valid year");
+      if (__y.ok())
+ __s = __s.substr(0, 7);
+      int __i = (int)__y;
+      if (__i >= 0) [[likely]]
+ __s.remove_prefix(1);
+      else
+ __i = -__i;
+      __os << std::vformat(__s, make_format_args<_Ctx>(__i));
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  year& __y,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      __detail::_Parser<> __p(__format::_ChronoParts::_Year);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ __y = __p._M_ymd.year();
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, const weekday& __wd)
+    {
+      using _Ctx = __format::__format_context<_CharT>;
+      using _Str = basic_string_view<_CharT>;
+      _Str __s = ::std::chrono::__detail::_Widen<_CharT>("{:L%a}{} is not a valid weekday", L"{:L%a}{} is not a valid weekday");
+      if (__wd.ok())
+ __os << std::vformat(__os.getloc(), __s.substr(0, 6),
+        make_format_args<_Ctx>(__wd));
+      else
+ {
+   auto __c = __wd.c_encoding();
+   __os << std::vformat(__s.substr(6), make_format_args<_Ctx>(__c));
+ }
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  weekday& __wd,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      __detail::_Parser<> __p(__format::_ChronoParts::_Weekday);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ __wd = __p._M_wd;
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const weekday_indexed& __wdi)
+    {
+
+
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      __os2 << __wdi.weekday();
+      const auto __i = __wdi.index();
+      basic_string_view<_CharT> __s
+ = ::std::chrono::__detail::_Widen<_CharT>("[ is not a valid index]", L"[ is not a valid index]");
+      __os2 << __s[0];
+      __os2 << std::format(::std::chrono::__detail::_Widen<_CharT>("{}", L"{}"), __i);
+      if (__i >= 1 && __i <= 5)
+ __os2 << __s.back();
+      else
+ __os2 << __s.substr(1);
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const weekday_last& __wdl)
+    {
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      __os2 << __wdl.weekday() << ::std::chrono::__detail::_Widen<_CharT>("[last]", L"[last]");
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, const month_day& __md)
+    {
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      __os2 << __md.month();
+      if constexpr (is_same_v<_CharT, char>)
+ __os2 << '/';
+      else
+ __os2 << L'/';
+      __os2 << __md.day();
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  month_day& __md,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      using __format::_ChronoParts;
+      auto __need = _ChronoParts::_Month | _ChronoParts::_Day;
+      __detail::_Parser<> __p(__need);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ __md = month_day(__p._M_ymd.month(), __p._M_ymd.day());
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const month_day_last& __mdl)
+    {
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      __os2 << __mdl.month() << ::std::chrono::__detail::_Widen<_CharT>("/last", L"/last");
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const month_weekday& __mwd)
+    {
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      __os2 << __mwd.month();
+      if constexpr (is_same_v<_CharT, char>)
+ __os2 << '/';
+      else
+ __os2 << L'/';
+      __os2 << __mwd.weekday_indexed();
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const month_weekday_last& __mwdl)
+    {
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      __os2 << __mwdl.month();
+      if constexpr (is_same_v<_CharT, char>)
+ __os2 << '/';
+      else
+ __os2 << L'/';
+      __os2 << __mwdl.weekday_last();
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, const year_month& __ym)
+    {
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      __os2 << __ym.year();
+      if constexpr (is_same_v<_CharT, char>)
+ __os2 << '/';
+      else
+ __os2 << L'/';
+      __os2 << __ym.month();
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  year_month& __ym,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      using __format::_ChronoParts;
+      auto __need = _ChronoParts::_Year | _ChronoParts::_Month;
+      __detail::_Parser<> __p(__need);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ __ym = year_month(__p._M_ymd.year(), __p._M_ymd.month());
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const year_month_day& __ymd)
+    {
+      using _Ctx = __format::__format_context<_CharT>;
+      using _Str = basic_string_view<_CharT>;
+      _Str __s = ::std::chrono::__detail::_Widen<_CharT>("{:%F} is not a valid date", L"{:%F} is not a valid date");
+      __os << std::vformat(__ymd.ok() ? __s.substr(0, 5) : __s,
+      make_format_args<_Ctx>(__ymd));
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  year_month_day& __ymd,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      using __format::_ChronoParts;
+      auto __need = _ChronoParts::_Year | _ChronoParts::_Month
+      | _ChronoParts::_Day;
+      __detail::_Parser<> __p(__need);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ __ymd = __p._M_ymd;
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const year_month_day_last& __ymdl)
+    {
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      __os2 << __ymdl.year();
+      if constexpr (is_same_v<_CharT, char>)
+ __os2 << '/';
+      else
+ __os2 << L'/';
+      __os2 << __ymdl.month_day_last();
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const year_month_weekday& __ymwd)
+    {
+
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      _CharT __slash;
+      if constexpr (is_same_v<_CharT, char>)
+ __slash = '/';
+      else
+ __slash = L'/';
+      __os2 << __ymwd.year() << __slash << __ymwd.month() << __slash
+     << __ymwd.weekday_indexed();
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const year_month_weekday_last& __ymwdl)
+    {
+
+
+      basic_stringstream<_CharT> __os2;
+      __os2.imbue(__os.getloc());
+      _CharT __slash;
+      if constexpr (is_same_v<_CharT, char>)
+ __slash = '/';
+      else
+ __slash = L'/';
+      __os2 << __ymwdl.year() << __slash << __ymwdl.month() << __slash
+     << __ymwdl.weekday_last();
+      __os << __os2.view();
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const hh_mm_ss<_Duration>& __hms)
+    {
+      return __os << format(__os.getloc(), ::std::chrono::__detail::_Widen<_CharT>("{:L%T}", L"{:L%T}"), __hms);
+    }
+
+
+
+  template<typename _CharT, typename _Traits>
+    basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, const sys_info& __i)
+    {
+      __os << '[' << __i.begin << ',' << __i.end
+    << ',' << hh_mm_ss(__i.offset) << ',' << __i.save
+    << ',' << __i.abbrev << ']';
+      return __os;
+    }
+
+
+  template<typename _CharT, typename _Traits>
+    basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, const local_info& __li)
+    {
+      __os << '[';
+      if (__li.result == local_info::unique)
+ __os << __li.first;
+      else
+ {
+   if (__li.result == local_info::nonexistent)
+     __os << "nonexistent";
+   else
+     __os << "ambiguous";
+   __os << " local time between " << __li.first;
+   __os << " and " << __li.second;
+ }
+      __os << ']';
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration,
+    typename _TimeZonePtr>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const zoned_time<_Duration, _TimeZonePtr>& __t)
+    {
+      __os << format(__os.getloc(), ::std::chrono::__detail::_Widen<_CharT>("{:L%F %T %Z}", L"{:L%F %T %Z}"), __t);
+      return __os;
+    }
+
+
+  template<typename _CharT, typename _Traits, typename _Duration>
+    requires (!treat_as_floating_point_v<typename _Duration::rep>)
+      && ratio_less_v<typename _Duration::period, days::period>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const sys_time<_Duration>& __tp)
+    {
+      __os << std::format(__os.getloc(), ::std::chrono::__detail::_Widen<_CharT>("{:L%F %T}", L"{:L%F %T}"), __tp);
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os, const sys_days& __dp)
+    {
+      __os << year_month_day{__dp};
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration,
+    typename _Alloc = allocator<_CharT>>
+    basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  sys_time<_Duration>& __tp,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      minutes __off{};
+      if (!__offset)
+ __offset = &__off;
+      using __format::_ChronoParts;
+      auto __need = _ChronoParts::_Year | _ChronoParts::_Month
+      | _ChronoParts::_Day | _ChronoParts::_TimeOfDay;
+      __detail::_Parser_t<_Duration> __p(__need);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ {
+   if (__p._M_is_leap_second)
+     __is.setstate(ios_base::failbit);
+   else
+     {
+       auto __st = __p._M_sys_days + __p._M_time - *__offset;
+       __tp = chrono::time_point_cast<_Duration>(__st);
+     }
+ }
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const utc_time<_Duration>& __t)
+    {
+      __os << std::format(__os.getloc(), ::std::chrono::__detail::_Widen<_CharT>("{:L%F %T}", L"{:L%F %T}"), __t);
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  utc_time<_Duration>& __tp,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      minutes __off{};
+      if (!__offset)
+ __offset = &__off;
+      using __format::_ChronoParts;
+      auto __need = _ChronoParts::_Year | _ChronoParts::_Month
+      | _ChronoParts::_Day | _ChronoParts::_TimeOfDay;
+      __detail::_Parser_t<_Duration> __p(__need);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ {
+
+
+   auto __ut = utc_clock::from_sys(__p._M_sys_days) + __p._M_time
+   - *__offset;
+   __tp = chrono::time_point_cast<_Duration>(__ut);
+ }
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const tai_time<_Duration>& __t)
+    {
+      __os << std::format(__os.getloc(), ::std::chrono::__detail::_Widen<_CharT>("{:L%F %T}", L"{:L%F %T}"), __t);
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  tai_time<_Duration>& __tp,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      minutes __off{};
+      if (!__offset)
+ __offset = &__off;
+      using __format::_ChronoParts;
+      auto __need = _ChronoParts::_Year | _ChronoParts::_Month
+      | _ChronoParts::_Day | _ChronoParts::_TimeOfDay;
+      __detail::_Parser_t<_Duration> __p(__need);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ {
+   if (__p._M_is_leap_second)
+     __is.setstate(ios_base::failbit);
+   else
+     {
+       auto __st = __p._M_sys_days + __p._M_time - *__offset;
+       auto __tt = tai_clock::from_utc(utc_clock::from_sys(__st));
+       __tp = chrono::time_point_cast<_Duration>(__tt);
+     }
+ }
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const gps_time<_Duration>& __t)
+    {
+      __os << std::format(__os.getloc(), ::std::chrono::__detail::_Widen<_CharT>("{:L%F %T}", L"{:L%F %T}"), __t);
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  gps_time<_Duration>& __tp,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      minutes __off{};
+      if (!__offset)
+ __offset = &__off;
+      using __format::_ChronoParts;
+      auto __need = _ChronoParts::_Year | _ChronoParts::_Month
+      | _ChronoParts::_Day | _ChronoParts::_TimeOfDay;
+      __detail::_Parser_t<_Duration> __p(__need);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ {
+   if (__p._M_is_leap_second)
+     __is.setstate(ios_base::failbit);
+   else
+     {
+       auto __st = __p._M_sys_days + __p._M_time - *__offset;
+       auto __tt = gps_clock::from_utc(utc_clock::from_sys(__st));
+       __tp = chrono::time_point_cast<_Duration>(__tt);
+     }
+ }
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const file_time<_Duration>& __t)
+    {
+      __os << std::format(__os.getloc(), ::std::chrono::__detail::_Widen<_CharT>("{:L%F %T}", L"{:L%F %T}"), __t);
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration,
+    typename _Alloc = allocator<_CharT>>
+    inline basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  file_time<_Duration>& __tp,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      sys_time<_Duration> __st;
+      if (chrono::from_stream(__is, __fmt, __st, __abbrev, __offset))
+ __tp = chrono::time_point_cast<_Duration>(file_clock::from_sys(__st));
+      return __is;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration>
+    inline basic_ostream<_CharT, _Traits>&
+    operator<<(basic_ostream<_CharT, _Traits>& __os,
+        const local_time<_Duration>& __lt)
+    {
+      __os << sys_time<_Duration>{__lt.time_since_epoch()};
+      return __os;
+    }
+
+  template<typename _CharT, typename _Traits, typename _Duration,
+    typename _Alloc = allocator<_CharT>>
+    basic_istream<_CharT, _Traits>&
+    from_stream(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+  local_time<_Duration>& __tp,
+  basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+  minutes* __offset = nullptr)
+    {
+      using __format::_ChronoParts;
+      auto __need = _ChronoParts::_Year | _ChronoParts::_Month
+      | _ChronoParts::_Day | _ChronoParts::_TimeOfDay;
+      __detail::_Parser_t<_Duration> __p(__need);
+      if (__p(__is, __fmt, __abbrev, __offset))
+ {
+   days __d = __p._M_sys_days.time_since_epoch();
+   auto __t = local_days(__d) + __p._M_time;
+   __tp = chrono::time_point_cast<_Duration>(__t);
+ }
+      return __is;
+    }
+
+
+
+namespace __detail
+{
+  template<typename _Parsable, typename _CharT,
+    typename _Traits = std::char_traits<_CharT>,
+    typename... _OptArgs>
+    concept __parsable = requires (basic_istream<_CharT, _Traits>& __is,
+       const _CharT* __fmt, _Parsable& __tp,
+       _OptArgs*... __args)
+    { from_stream(__is, __fmt, __tp, __args...); };
+
+  template<typename _Parsable, typename _CharT,
+    typename _Traits = char_traits<_CharT>,
+    typename _Alloc = allocator<_CharT>>
+    struct _Parse
+    {
+    private:
+      using __string_type = basic_string<_CharT, _Traits, _Alloc>;
+
+    public:
+      _Parse(const _CharT* __fmt, _Parsable& __tp,
+      basic_string<_CharT, _Traits, _Alloc>* __abbrev = nullptr,
+      minutes* __offset = nullptr)
+      : _M_fmt(__fmt), _M_tp(std::__addressof(__tp)),
+ _M_abbrev(__abbrev), _M_offset(__offset)
+      { }
+
+      _Parse(_Parse&&) = delete;
+      _Parse& operator=(_Parse&&) = delete;
+
+    private:
+      using __stream_type = basic_istream<_CharT, _Traits>;
+
+      const _CharT* const _M_fmt;
+      _Parsable* const _M_tp;
+      __string_type* const _M_abbrev;
+      minutes* const _M_offset;
+
+      friend __stream_type&
+      operator>>(__stream_type& __is, _Parse&& __p)
+      {
+ if (__p._M_offset)
+   from_stream(__is, __p._M_fmt, *__p._M_tp, __p._M_abbrev,
+        __p._M_offset);
+ else if (__p._M_abbrev)
+   from_stream(__is, __p._M_fmt, *__p._M_tp, __p._M_abbrev);
+ else
+   from_stream(__is, __p._M_fmt, *__p._M_tp);
+ return __is;
+      }
+
+      friend void operator>>(__stream_type&, _Parse&) = delete;
+      friend void operator>>(__stream_type&, const _Parse&) = delete;
+    };
+}
+
+  template<typename _CharT, __detail::__parsable<_CharT> _Parsable>
+    [[nodiscard, __gnu__::__access__(__read_only__, 1)]]
+    inline auto
+    parse(const _CharT* __fmt, _Parsable& __tp)
+    { return __detail::_Parse<_Parsable, _CharT>(__fmt, __tp); }
+
+  template<typename _CharT, typename _Traits, typename _Alloc,
+    __detail::__parsable<_CharT, _Traits> _Parsable>
+    [[nodiscard]]
+    inline auto
+    parse(const basic_string<_CharT, _Traits, _Alloc>& __fmt, _Parsable& __tp)
+    {
+      return __detail::_Parse<_Parsable, _CharT, _Traits>(__fmt.c_str(), __tp);
+    }
+
+  template<typename _CharT, typename _Traits, typename _Alloc,
+    typename _StrT = basic_string<_CharT, _Traits, _Alloc>,
+    __detail::__parsable<_CharT, _Traits, _StrT> _Parsable>
+    [[nodiscard, __gnu__::__access__(__read_only__, 1)]]
+    inline auto
+    parse(const _CharT* __fmt, _Parsable& __tp,
+   basic_string<_CharT, _Traits, _Alloc>& __abbrev)
+    {
+      auto __pa = std::__addressof(__abbrev);
+      return __detail::_Parse<_Parsable, _CharT, _Traits, _Alloc>(__fmt, __tp,
+          __pa);
+    }
+
+  template<typename _CharT, typename _Traits, typename _Alloc,
+    typename _StrT = basic_string<_CharT, _Traits, _Alloc>,
+    __detail::__parsable<_CharT, _Traits, _StrT> _Parsable>
+    [[nodiscard]]
+    inline auto
+    parse(const basic_string<_CharT, _Traits, _Alloc>& __fmt, _Parsable& __tp,
+   basic_string<_CharT, _Traits, _Alloc>& __abbrev)
+    {
+      auto __pa = std::__addressof(__abbrev);
+      return __detail::_Parse<_Parsable, _CharT, _Traits, _Alloc>(__fmt.c_str(),
+          __tp, __pa);
+    }
+
+  template<typename _CharT, typename _Traits = char_traits<_CharT>,
+    typename _StrT = basic_string<_CharT, _Traits>,
+    __detail::__parsable<_CharT, _Traits, _StrT, minutes> _Parsable>
+    [[nodiscard, __gnu__::__access__(__read_only__, 1)]]
+    inline auto
+    parse(const _CharT* __fmt, _Parsable& __tp, minutes& __offset)
+    {
+      return __detail::_Parse<_Parsable, _CharT>(__fmt, __tp, nullptr,
+       &__offset);
+    }
+
+  template<typename _CharT, typename _Traits, typename _Alloc,
+    typename _StrT = basic_string<_CharT, _Traits>,
+    __detail::__parsable<_CharT, _Traits, _StrT, minutes> _Parsable>
+    [[nodiscard]]
+    inline auto
+    parse(const basic_string<_CharT, _Traits, _Alloc>& __fmt, _Parsable& __tp,
+   minutes& __offset)
+    {
+      return __detail::_Parse<_Parsable, _CharT, _Traits, _Alloc>(__fmt.c_str(),
+          __tp, nullptr,
+          &__offset);
+    }
+
+  template<typename _CharT, typename _Traits, typename _Alloc,
+    typename _StrT = basic_string<_CharT, _Traits, _Alloc>,
+    __detail::__parsable<_CharT, _Traits, _StrT, minutes> _Parsable>
+    [[nodiscard, __gnu__::__access__(__read_only__, 1)]]
+    inline auto
+    parse(const _CharT* __fmt, _Parsable& __tp,
+   basic_string<_CharT, _Traits, _Alloc>& __abbrev, minutes& __offset)
+    {
+      auto __pa = std::__addressof(__abbrev);
+      return __detail::_Parse<_Parsable, _CharT, _Traits, _Alloc>(__fmt, __tp,
+          __pa,
+          &__offset);
+    }
+
+  template<typename _CharT, typename _Traits, typename _Alloc,
+    typename _StrT = basic_string<_CharT, _Traits, _Alloc>,
+    __detail::__parsable<_CharT, _Traits, _StrT, minutes> _Parsable>
+    [[nodiscard]]
+    inline auto
+    parse(const basic_string<_CharT, _Traits, _Alloc>& __fmt, _Parsable& __tp,
+   basic_string<_CharT, _Traits, _Alloc>& __abbrev, minutes& __offset)
+    {
+      auto __pa = std::__addressof(__abbrev);
+      return __detail::_Parse<_Parsable, _CharT, _Traits, _Alloc>(__fmt.c_str(),
+          __tp, __pa,
+          &__offset);
+    }
+
+
+  template<typename _Duration>
+  template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_istream<_CharT, _Traits>&
+    __detail::_Parser<_Duration>::
+    operator()(basic_istream<_CharT, _Traits>& __is, const _CharT* __fmt,
+        basic_string<_CharT, _Traits, _Alloc>* __abbrev,
+        minutes* __offset)
+    {
+      using sentry = typename basic_istream<_CharT, _Traits>::sentry;
+      ios_base::iostate __err = ios_base::goodbit;
+      if (sentry __cerb(__is, true); __cerb)
+ {
+   locale __loc = __is.getloc();
+   auto& __tmget = std::use_facet<std::time_get<_CharT>>(__loc);
+   auto& __tmpunct = std::use_facet<std::__timepunct<_CharT>>(__loc);
+
+
+   struct _Stream_state
+   {
+     explicit
+     _Stream_state(basic_istream<_CharT, _Traits>& __i)
+     : _M_is(__i),
+       _M_flags(__i.flags(ios_base::skipws | ios_base::dec)),
+       _M_w(__i.width(0))
+     { }
+
+     ~_Stream_state()
+     {
+       _M_is.flags(_M_flags);
+       _M_is.width(_M_w);
+     }
+
+     _Stream_state(_Stream_state&&) = delete;
+
+     basic_istream<_CharT, _Traits>& _M_is;
+     ios_base::fmtflags _M_flags;
+     streamsize _M_w;
+   };
+
+   auto __is_failed = [](ios_base::iostate __e) {
+     return static_cast<bool>(__e & ios_base::failbit);
+   };
+
+
+
+   auto __read_unsigned = [&] (int __n) {
+     return _S_read_unsigned(__is, __err, __n);
+   };
+
+
+
+   auto __read_signed = [&] (int __n) {
+     return _S_read_signed(__is, __err, __n);
+   };
+
+
+   auto __read_chr = [&__is, &__err] (_CharT __c) {
+     return _S_read_chr(__is, __err, __c);
+   };
+
+   using __format::_ChronoParts;
+   _ChronoParts __parts{};
+
+   const year __bad_y = --year::min();
+   const month __bad_mon(255);
+   const day __bad_day(255);
+   const weekday __bad_wday(255);
+   const hours __bad_h(-1);
+   const minutes __bad_min(-9999);
+   const seconds __bad_sec(-1);
+
+   year __y = __bad_y, __yy = __bad_y;
+   year __iso_y = __bad_y, __iso_yy = __bad_y;
+   month __m = __bad_mon;
+   day __d = __bad_day;
+   weekday __wday = __bad_wday;
+   hours __h = __bad_h, __h12 = __bad_h;
+   minutes __min = __bad_min;
+   _Duration __s = __bad_sec;
+   int __ampm = 0;
+   int __iso_wk = -1, __sunday_wk = -1, __monday_wk = -1;
+   int __century = -1;
+   int __dayofyear = -1;
+
+   minutes __tz_offset = __bad_min;
+   basic_string<_CharT, _Traits> __tz_abbr;
+
+   if ((_M_need & _ChronoParts::_TimeOfDay)
+  && (_M_need & _ChronoParts::_Year))
+     {
+
+
+
+       __h = hours(0);
+       __parts = _ChronoParts::_TimeOfDay;
+     }
+
+
+
+   _CharT __mod{};
+   unsigned __num = 0;
+   bool __is_flag = false;
+
+   constexpr bool __is_floating
+     = treat_as_floating_point_v<typename _Duration::rep>;
+# 3194 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 3
+   while (*__fmt)
+     {
+       _CharT __c = *__fmt++;
+       if (!__is_flag)
+  {
+    if (__c == '%')
+      __is_flag = true;
+    else if (std::isspace(__c, __loc))
+      std::ws(__is);
+    else if (!__read_chr(__c)) [[unlikely]]
+      break;
+
+    continue;
+  }
+
+
+       switch (__c)
+       {
+  case 'a':
+  case 'A':
+    if (__mod || __num) [[unlikely]]
+      __err = ios_base::failbit;
+    else
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 2, __fmt);
+        if (!__is_failed(__err))
+   __wday = weekday(__tm.tm_wday);
+      }
+    __parts |= _ChronoParts::_Weekday;
+    break;
+
+  case 'b':
+  case 'h':
+  case 'B':
+    if (__mod || __num) [[unlikely]]
+      __err = ios_base::failbit;
+    else
+      {
+
+
+
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 2, __fmt);
+        if (!__is_failed(__err))
+   __m = month(__tm.tm_mon + 1);
+      }
+    __parts |= _ChronoParts::_Month;
+    break;
+
+  case 'c':
+    if (__mod == 'O' || __num) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 2 - (__mod == 'E'), __fmt);
+        if (!__is_failed(__err))
+   {
+     __y = year(__tm.tm_year + 1900);
+     __m = month(__tm.tm_mon + 1);
+     __d = day(__tm.tm_mday);
+     __h = hours(__tm.tm_hour);
+     __min = minutes(__tm.tm_min);
+     __s = seconds(__tm.tm_sec);
+   }
+      }
+    __parts |= _ChronoParts::_DateTime;
+    break;
+
+  case 'C':
+    if (!__mod) [[likely]]
+      {
+        auto __v = __read_signed(__num ? __num : 2);
+        if (!__is_failed(__err))
+   {
+     int __cmin = (int)year::min() / 100;
+     int __cmax = (int)year::max() / 100;
+     if (__cmin <= __v && __v <= __cmax)
+       __century = __v * 100;
+     else
+       __century = -2;
+   }
+      }
+    else if (__mod == 'E')
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 3, __fmt);
+        if (!__is_failed(__err))
+   __century = __tm.tm_year;
+      }
+    else [[unlikely]]
+      __err |= ios_base::failbit;
+
+    break;
+
+  case 'd':
+  case 'e':
+    if (!__mod) [[likely]]
+      {
+        auto __v = __read_unsigned(__num ? __num : 2);
+        if (!__is_failed(__err))
+   __d = day(__v);
+      }
+    else if (__mod == 'O')
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 3, __fmt);
+        if (!__is_failed(__err))
+   __d = day(__tm.tm_mday);
+      }
+    else [[unlikely]]
+      __err |= ios_base::failbit;
+    __parts |= _ChronoParts::_Day;
+    break;
+
+  case 'D':
+    if (__mod || __num) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+        auto __month = __read_unsigned(2);
+        __read_chr('/');
+        auto __day = __read_unsigned(2);
+        __read_chr('/');
+        auto __year = __read_unsigned(2);
+        if (__is_failed(__err))
+   break;
+        __y = year(__year + 1900 + 100 * int(__year < 69));
+        __m = month(__month);
+        __d = day(__day);
+        if (!year_month_day(__y, __m, __d).ok())
+   {
+     __y = __yy = __iso_y = __iso_yy = __bad_y;
+     __m = __bad_mon;
+     __d = __bad_day;
+     break;
+   }
+      }
+    __parts |= _ChronoParts::_Date;
+    break;
+
+  case 'F':
+    if (__mod) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+        auto __year = __read_signed(__num ? __num : 4);
+        __read_chr('-');
+        auto __month = __read_unsigned(2);
+        __read_chr('-');
+        auto __day = __read_unsigned(2);
+        if (__is_failed(__err))
+   break;
+        __y = year(__year);
+        __m = month(__month);
+        __d = day(__day);
+        if (!year_month_day(__y, __m, __d).ok())
+   {
+     __y = __yy = __iso_y = __iso_yy = __bad_y;
+     __m = __bad_mon;
+     __d = __bad_day;
+     break;
+   }
+      }
+    __parts |= _ChronoParts::_Date;
+    break;
+
+  case 'g':
+    if (__mod) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+        auto __val = __read_unsigned(__num ? __num : 2);
+        if (__val >= 0 && __val <= 99)
+   {
+     __iso_yy = year(__val);
+     if (__century == -1)
+       __century = 2000;
+   }
+        else
+   __iso_yy = __iso_y = __y = __yy = __bad_y;
+      }
+    __parts |= _ChronoParts::_Year;
+    break;
+
+  case 'G':
+    if (__mod) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      __iso_y = year(__read_unsigned(__num ? __num : 4));
+    __parts |= _ChronoParts::_Year;
+    break;
+
+  case 'H':
+  case 'I':
+    if (__mod == 'E') [[unlikely]]
+      __err |= ios_base::failbit;
+    else if (__mod == 'O')
+      {
+# 3416 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 3
+        __err |= ios_base::failbit;
+
+      }
+    else
+      {
+        auto __val = __read_unsigned(__num ? __num : 2);
+        if (__c == 'I' && __val >= 1 && __val <= 12)
+   {
+     __h12 = hours(__val);
+     __h = __bad_h;
+   }
+        else if (__c == 'H' && __val >= 0 && __val <= 23)
+   {
+     __h = hours(__val);
+     __h12 = __bad_h;
+   }
+        else
+   {
+     if (_M_need & _ChronoParts::_TimeOfDay)
+       __err |= ios_base::failbit;
+     break;
+   }
+      }
+    __parts |= _ChronoParts::_TimeOfDay;
+    break;
+
+  case 'j':
+    if (__mod) [[unlikely]]
+      __err |= ios_base::failbit;
+    else if (_M_need == _ChronoParts::_TimeOfDay)
+      {
+        auto __val = __read_signed(__num ? __num : 3);
+        if (!__is_failed(__err))
+   {
+     __h = days(__val);
+     __parts |= _ChronoParts::_TimeOfDay;
+   }
+      }
+    else
+      {
+        __dayofyear = __read_unsigned(__num ? __num : 3);
+
+
+      }
+    break;
+
+  case 'm':
+    if (__mod == 'E') [[unlikely]]
+      __err |= ios_base::failbit;
+    else if (__mod == 'O')
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 2, __fmt);
+        if (!__is_failed(__err))
+   __m = month(__tm.tm_mon + 1);
+      }
+    else
+      {
+        auto __val = __read_unsigned(__num ? __num : 2);
+        if (__val >= 1 && __val <= 12)
+   __m = month(__val);
+        else
+   __m = __bad_mon;
+      }
+    __parts |= _ChronoParts::_Month;
+    break;
+
+  case 'M':
+    if (__mod == 'E') [[unlikely]]
+      __err |= ios_base::failbit;
+    else if (__mod == 'O')
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 2, __fmt);
+        if (!__is_failed(__err))
+   __min = minutes(__tm.tm_min);
+      }
+    else
+      {
+        auto __val = __read_unsigned(__num ? __num : 2);
+        if (0 <= __val && __val < 60)
+   __min = minutes(__val);
+        else
+   {
+     if (_M_need & _ChronoParts::_TimeOfDay)
+       __err |= ios_base::failbit;
+     break;
+   }
+      }
+    __parts |= _ChronoParts::_TimeOfDay;
+    break;
+
+  case 'p':
+    if (__mod || __num)
+      __err |= ios_base::failbit;
+    else
+      {
+
+
+        const _CharT* __ampms[2];
+        __tmpunct._M_am_pm(__ampms);
+        int __n = 0, __which = 3;
+        while (__which != 0)
+   {
+     auto __i = __is.peek();
+     if (_Traits::eq_int_type(__i, _Traits::eof()))
+       {
+         __err |= ios_base::eofbit | ios_base::failbit;
+         break;
+       }
+     __i = std::toupper(_Traits::to_char_type(__i), __loc);
+     if (__which & 1)
+       {
+         if (__i != std::toupper(__ampms[0][__n], __loc))
+    __which ^= 1;
+         else if (__ampms[0][__n + 1] == _CharT())
+    {
+      __which = 1;
+      (void) __is.get();
+      break;
+    }
+       }
+     if (__which & 2)
+       {
+         if (__i != std::toupper(__ampms[1][__n], __loc))
+    __which ^= 2;
+         else if (__ampms[1][__n + 1] == _CharT())
+    {
+      __which = 2;
+      (void) __is.get();
+      break;
+    }
+       }
+     if (__which)
+       (void) __is.get();
+     ++__n;
+   }
+        if (__which == 0 || __which == 3)
+   __err |= ios_base::failbit;
+        else
+   __ampm = __which;
+      }
+    break;
+
+  case 'r':
+    if (__mod || __num)
+      __err |= ios_base::failbit;
+    else
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 2, __fmt);
+        if (!__is_failed(__err))
+   {
+     __h = hours(__tm.tm_hour);
+     __min = minutes(__tm.tm_min);
+     __s = seconds(__tm.tm_sec);
+   }
+      }
+    __parts |= _ChronoParts::_TimeOfDay;
+    break;
+
+  case 'R':
+  case 'T':
+    if (__mod || __num) [[unlikely]]
+      {
+        __err |= ios_base::failbit;
+        break;
+      }
+    else
+      {
+        auto __val = __read_unsigned(2);
+        if (__val == -1 || __val > 23) [[unlikely]]
+   {
+     if (_M_need & _ChronoParts::_TimeOfDay)
+       __err |= ios_base::failbit;
+     break;
+   }
+        if (!__read_chr(':')) [[unlikely]]
+   break;
+        __h = hours(__val);
+
+        __val = __read_unsigned(2);
+        if (__val == -1 || __val > 60) [[unlikely]]
+   {
+     if (_M_need & _ChronoParts::_TimeOfDay)
+       __err |= ios_base::failbit;
+     break;
+   }
+        __min = minutes(__val);
+
+        if (__c == 'R')
+   {
+     __parts |= _ChronoParts::_TimeOfDay;
+     break;
+   }
+        else if (!__read_chr(':')) [[unlikely]]
+   break;
+      }
+    [[fallthrough]];
+
+  case 'S':
+    if (__mod == 'E') [[unlikely]]
+      __err |= ios_base::failbit;
+    else if (__mod == 'O')
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 3, __fmt);
+        if (!__is_failed(__err))
+   __s = seconds(__tm.tm_sec);
+      }
+    else if constexpr (_Duration::period::den == 1
+           && !__is_floating)
+      {
+        auto __val = __read_unsigned(__num ? __num : 2);
+        if (0 <= __val && __val <= 59) [[likely]]
+   __s = seconds(__val);
+        else
+   {
+     if (_M_need & _ChronoParts::_TimeOfDay)
+       __err |= ios_base::failbit;
+     break;
+   }
+      }
+    else
+      {
+        basic_stringstream<_CharT> __buf;
+        auto __digit = _S_try_read_digit(__is, __err);
+        if (__digit != -1)
+   {
+     __buf.put(_CharT('0') + __digit);
+     __digit = _S_try_read_digit(__is, __err);
+     if (__digit != -1)
+       __buf.put(_CharT('0') + __digit);
+   }
+
+        auto __i = __is.peek();
+        if (_Traits::eq_int_type(__i, _Traits::eof()))
+   __err |= ios_base::eofbit;
+        else
+   {
+     _CharT __dp = '.';
+     if (__loc != locale::classic())
+       {
+         auto& __np = use_facet<numpunct<_CharT>>(__loc);
+         __dp = __np.decimal_point();
+       }
+     _CharT __c = _Traits::to_char_type(__i);
+     if (__c == __dp)
+       {
+         (void) __is.get();
+         __buf.put('.');
+         int __prec
+    = hh_mm_ss<_Duration>::fractional_width;
+         do
+    {
+      __digit = _S_try_read_digit(__is, __err);
+      if (__digit != -1)
+        __buf.put(_CharT('0') + __digit);
+      else
+        break;
+    }
+         while (--__prec);
+       }
+   }
+
+        if (!__is_failed(__err)) [[likely]]
+   {
+     long double __val{};
+
+     string __str = std::move(__buf).str();
+     auto __first = __str.data();
+     auto __last = __first + __str.size();
+     using enum chars_format;
+     auto [ptr, ec] = std::from_chars(__first, __last,
+          __val, fixed);
+     if ((bool)ec || ptr != __last) [[unlikely]]
+       __err |= ios_base::failbit;
+     else
+
+
+
+       {
+         duration<long double> __fs(__val);
+         if constexpr (__is_floating)
+    __s = __fs;
+         else
+    __s = chrono::round<_Duration>(__fs);
+       }
+   }
+      }
+    __parts |= _ChronoParts::_TimeOfDay;
+    break;
+
+  case 'u':
+  case 'w':
+    if (__mod == 'E') [[unlikely]]
+      __err |= ios_base::failbit;
+    else if (__mod == 'O')
+      {
+        if (__c == 'w')
+   {
+     struct tm __tm{};
+     __tmget.get(__is, {}, __is, __err, &__tm,
+          __fmt - 3, __fmt);
+     if (!__is_failed(__err))
+       __wday = weekday(__tm.tm_wday);
+   }
+        else
+   __err |= ios_base::failbit;
+      }
+    else
+      {
+        const int __lo = __c == 'u' ? 1 : 0;
+        const int __hi = __lo + 6;
+        auto __val = __read_unsigned(__num ? __num : 1);
+        if (__lo <= __val && __val <= __hi)
+   __wday = weekday(__val);
+        else
+   {
+     __wday = __bad_wday;
+     break;
+   }
+      }
+    __parts |= _ChronoParts::_Weekday;
+    break;
+
+  case 'U':
+  case 'V':
+  case 'W':
+    if (__mod == 'E') [[unlikely]]
+      __err |= ios_base::failbit;
+    else if (__mod == 'O')
+      {
+        if (__c == 'V') [[unlikely]]
+   __err |= ios_base::failbit;
+        else
+   {
+
+
+   }
+      }
+    else
+      {
+        const int __lo = __c == 'V' ? 1 : 0;
+        const int __hi = 53;
+        auto __val = __read_unsigned(__num ? __num : 2);
+        if (__lo <= __val && __val <= __hi)
+   {
+     switch (__c)
+     {
+       case 'U':
+         __sunday_wk = __val;
+         break;
+       case 'V':
+         __iso_wk = __val;
+         break;
+       case 'W':
+         __monday_wk = __val;
+         break;
+     }
+   }
+        else
+   __iso_wk = __sunday_wk = __monday_wk = -1;
+      }
+
+    break;
+
+  case 'x':
+    if (__mod == 'O' || __num) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 2 - (__mod == 'E'), __fmt);
+        if (!__is_failed(__err))
+   {
+     __y = year(__tm.tm_year + 1900);
+     __m = month(__tm.tm_mon + 1);
+     __d = day(__tm.tm_mday);
+   }
+      }
+    __parts |= _ChronoParts::_Date;
+    break;
+
+  case 'X':
+    if (__mod == 'O' || __num) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 2 - (__mod == 'E'), __fmt);
+        if (!__is_failed(__err))
+   {
+     __h = hours(__tm.tm_hour);
+     __min = minutes(__tm.tm_min);
+     __s = seconds(__tm.tm_sec);
+   }
+      }
+    __parts |= _ChronoParts::_TimeOfDay;
+    break;
+
+  case 'y':
+    if (__mod) [[unlikely]]
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 3, __fmt);
+        if (!__is_failed(__err))
+   {
+     int __cent = __tm.tm_year < 2000 ? 1900 : 2000;
+     __yy = year(__tm.tm_year - __cent);
+     if (__century == -1)
+       __century = __cent;
+   }
+      }
+    else
+      {
+        auto __val = __read_unsigned(__num ? __num : 2);
+        if (__val >= 0 && __val <= 99)
+   {
+     __yy = year(__val);
+     if (__century == -1)
+       __century = __val < 69 ? 2000 : 1900;
+   }
+        else
+   __y = __yy = __iso_yy = __iso_y = __bad_y;
+      }
+    __parts |= _ChronoParts::_Year;
+    break;
+
+  case 'Y':
+    if (__mod == 'O') [[unlikely]]
+      __err |= ios_base::failbit;
+    else if (__mod == 'E')
+      {
+        struct tm __tm{};
+        __tmget.get(__is, {}, __is, __err, &__tm,
+      __fmt - 3, __fmt);
+        if (!__is_failed(__err))
+   __y = year(__tm.tm_year);
+      }
+    else
+      {
+        auto __val = __read_unsigned(__num ? __num : 4);
+        if (!__is_failed(__err))
+   __y = year(__val);
+      }
+    __parts |= _ChronoParts::_Year;
+    break;
+
+  case 'z':
+    if (__num) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+
+
+
+        auto __i = __is.peek();
+        if (_Traits::eq_int_type(__i, _Traits::eof()))
+   {
+     __err |= ios_base::eofbit | ios_base::failbit;
+     break;
+   }
+        _CharT __ic = _Traits::to_char_type(__i);
+        const bool __neg = __ic == _CharT('-');
+        if (__ic == _CharT('-') || __ic == _CharT('+'))
+   (void) __is.get();
+
+        int_least32_t __hh;
+        if (__mod)
+   {
+
+     __hh = __read_unsigned(2);
+   }
+        else
+   {
+
+     __hh = 10 * _S_try_read_digit(__is, __err);
+     __hh += _S_try_read_digit(__is, __err);
+   }
+
+        if (__is_failed(__err))
+   break;
+
+        __i = __is.peek();
+        if (_Traits::eq_int_type(__i, _Traits::eof()))
+   {
+     __err |= ios_base::eofbit;
+     __tz_offset = minutes(__hh * (__neg ? -60 : 60));
+     break;
+   }
+        __ic = _Traits::to_char_type(__i);
+
+        bool __read_mm = false;
+        if (__mod)
+   {
+     if (__ic == ::std::chrono::__detail::_Widen<_CharT>(":", L":")[0])
+       {
+
+         (void) __is.get();
+         __read_mm = true;
+       }
+   }
+        else if (_CharT('0') <= __ic && __ic <= _CharT('9'))
+   {
+
+     __read_mm = true;
+   }
+
+        int_least32_t __mm = 0;
+        if (__read_mm)
+   {
+     __mm = 10 * _S_try_read_digit(__is, __err);
+     __mm += _S_try_read_digit(__is, __err);
+   }
+
+        if (!__is_failed(__err))
+   {
+     auto __z = __hh * 60 + __mm;
+     __tz_offset = minutes(__neg ? -__z : __z);
+   }
+      }
+    break;
+
+  case 'Z':
+    if (__mod || __num) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+        basic_string_view<_CharT> __x = ::std::chrono::__detail::_Widen<_CharT>("_/-+", L"_/-+");
+        __tz_abbr.clear();
+        while (true)
+   {
+     auto __i = __is.peek();
+     if (!_Traits::eq_int_type(__i, _Traits::eof()))
+       {
+         _CharT __a = _Traits::to_char_type(__i);
+         if (std::isalnum(__a, __loc)
+        || __x.find(__a) != __x.npos)
+    {
+      __tz_abbr.push_back(__a);
+      (void) __is.get();
+      continue;
+    }
+       }
+     else
+       __err |= ios_base::eofbit;
+     break;
+   }
+        if (__tz_abbr.empty())
+   __err |= ios_base::failbit;
+      }
+    break;
+
+  case 'n':
+    if (__mod || __num) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+        _CharT __i = __is.peek();
+        if (_Traits::eq_int_type(__i, _Traits::eof()))
+   __err |= ios_base::eofbit | ios_base::failbit;
+        else if (std::isspace(_Traits::to_char_type(__i), __loc))
+   (void) __is.get();
+        else
+   __err |= ios_base::failbit;
+      }
+    break;
+
+  case 't':
+    if (__mod || __num) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      {
+        _CharT __i = __is.peek();
+        if (_Traits::eq_int_type(__i, _Traits::eof()))
+   __err |= ios_base::eofbit;
+        else if (std::isspace(_Traits::to_char_type(__i), __loc))
+   (void) __is.get();
+      }
+    break;
+
+  case '%':
+    if (__mod || __num) [[unlikely]]
+      __err |= ios_base::failbit;
+    else
+      __read_chr('%');
+    break;
+
+  case 'O':
+  case 'E':
+    if (__mod || __num) [[unlikely]]
+      {
+        __err |= ios_base::failbit;
+        break;
+      }
+    __mod = __c;
+    continue;
+
+  default:
+    if (_CharT('1') <= __c && __c <= _CharT('9'))
+      {
+        if (!__mod) [[likely]]
+   {
+
+     auto __end = __fmt + _Traits::length(__fmt);
+     auto [__v, __ptr]
+       = __format::__parse_integer(__fmt - 1, __end);
+     if (__ptr) [[likely]]
+       {
+         __num = __v;
+         __fmt = __ptr;
+         continue;
+       }
+   }
+      }
+    __err |= ios_base::failbit;
+  }
+
+       if (__is_failed(__err)) [[unlikely]]
+  break;
+
+       __is_flag = false;
+       __num = 0;
+       __mod = _CharT();
+     }
+
+   if (__century >= 0)
+     {
+       if (__yy != __bad_y && __y == __bad_y)
+  __y = years(__century) + __yy;
+       if (__iso_yy != __bad_y && __iso_y == __bad_y)
+  __iso_y = years(__century) + __iso_yy;
+     }
+
+   bool __can_use_doy = false;
+   bool __can_use_iso_wk = false;
+   bool __can_use_sun_wk = false;
+   bool __can_use_mon_wk = false;
+
+
+   if (__y != __bad_y && __dayofyear >= 0)
+     {
+       __can_use_doy = true;
+       __parts |= _ChronoParts::_Date;
+     }
+   else if (__y != __bad_y && __wday != __bad_wday && __sunday_wk >= 0)
+     {
+       __can_use_sun_wk = true;
+       __parts |= _ChronoParts::_Date;
+     }
+   else if (__y != __bad_y && __wday != __bad_wday && __monday_wk >= 0)
+     {
+       __can_use_mon_wk = true;
+       __parts |= _ChronoParts::_Date;
+     }
+   else if (__iso_y != __bad_y && __wday != __bad_wday && __iso_wk > 0)
+     {
+
+       __can_use_iso_wk = true;
+       __parts |= _ChronoParts::_Date;
+     }
+
+   if (__is_failed(__err)) [[unlikely]]
+     ;
+   else if (__is_flag) [[unlikely]]
+     __err |= ios_base::failbit;
+   else if ((_M_need & __parts) == _M_need) [[likely]]
+     {
+# 4112 "C:/mingw64/include/c++/14.1.0/bits/chrono_io.h" 3
+       const bool __need_wday = _M_need & _ChronoParts::_Weekday;
+
+
+
+       const bool __need_time = _M_need & _ChronoParts::_TimeOfDay;
+
+       if (__need_wday && __wday != __bad_wday)
+  _M_wd = __wday;
+       else if (_M_need & _ChronoParts::_Date)
+  {
+
+
+    const bool __need_ymd = !__need_wday && !__need_time;
+
+    if ((_M_need & _ChronoParts::_Year && __y == __bad_y)
+       || (_M_need & _ChronoParts::_Month && __m == __bad_mon)
+       || (_M_need & _ChronoParts::_Day && __d == __bad_day))
+      {
+
+
+
+        if (__can_use_doy)
+   {
+     if ((0 < __dayofyear && __dayofyear <= 365)
+    || (__dayofyear == 366 && __y.is_leap()))
+       [[likely]]
+       {
+         _M_sys_days = sys_days(__y/January/1)
+           + days(__dayofyear - 1);
+         if (__need_ymd)
+    _M_ymd = year_month_day(_M_sys_days);
+       }
+     else
+       __err |= ios_base::failbit;
+   }
+        else if (__can_use_iso_wk)
+   {
+
+
+     if (__iso_wk == 53)
+       {
+
+
+         const sys_days __jan4(__iso_y/January/4);
+         weekday __wd1(__jan4 - days(3));
+         if (__wd1 != Thursday)
+    if (__wd1 != Wednesday || !__iso_y.is_leap())
+      __err |= ios_base::failbit;
+       }
+
+     if (!__is_failed(__err)) [[likely]]
+       {
+
+         sys_days __w(Thursday[1]/January/__iso_y);
+
+         __w -= Thursday - Monday;
+         __w += days(weeks(__iso_wk - 1));
+         __w += __wday - Monday;
+         _M_sys_days = __w;
+
+         if (__need_ymd)
+    _M_ymd = year_month_day(_M_sys_days);
+       }
+   }
+        else if (__can_use_sun_wk)
+   {
+
+     sys_days __wk1(__y/January/Sunday[1]);
+     _M_sys_days = __wk1 + weeks(__sunday_wk - 1)
+     + days(__wday.c_encoding());
+     _M_ymd = year_month_day(_M_sys_days);
+     if (_M_ymd.year() != __y) [[unlikely]]
+       __err |= ios_base::failbit;
+   }
+        else if (__can_use_mon_wk)
+   {
+
+     sys_days __wk1(__y/January/Monday[1]);
+     _M_sys_days = __wk1 + weeks(__monday_wk - 1)
+     + days(__wday.c_encoding() - 1);
+     _M_ymd = year_month_day(_M_sys_days);
+     if (_M_ymd.year() != __y) [[unlikely]]
+       __err |= ios_base::failbit;
+   }
+        else
+   __err |= ios_base::failbit;
+      }
+    else
+      {
+
+
+
+
+        if (_M_need & _ChronoParts::_Year)
+   {
+     if (!__y.ok()) [[unlikely]]
+       __err |= ios_base::failbit;
+   }
+        else if (__y == __bad_y)
+   __y = 1972y;
+
+        if (_M_need & _ChronoParts::_Month)
+   {
+     if (!__m.ok()) [[unlikely]]
+       __err |= ios_base::failbit;
+   }
+        else if (__m == __bad_mon)
+   __m = January;
+
+        if (_M_need & _ChronoParts::_Day)
+   {
+     if (__d < day(1) || __d > (__y/__m/last).day())
+       __err |= ios_base::failbit;
+   }
+        else if (__d == __bad_day)
+   __d = 1d;
+
+        if (year_month_day __ymd(__y, __m, __d); __ymd.ok())
+   {
+     _M_ymd = __ymd;
+     if (__need_wday || __need_time)
+       _M_sys_days = sys_days(_M_ymd);
+   }
+        else [[unlikely]]
+   __err |= ios_base::failbit;
+      }
+
+    if (__need_wday)
+      _M_wd = weekday(_M_sys_days);
+  }
+
+
+       if (__need_time)
+  {
+    if (__h == __bad_h && __h12 != __bad_h)
+      {
+        if (__ampm == 1)
+   __h = __h12 == hours(12) ? hours(0) : __h12;
+        else if (__ampm == 2)
+   __h = __h12 == hours(12) ? __h12 : __h12 + hours(12);
+        else [[unlikely]]
+   __err |= ios_base::failbit;
+      }
+
+    auto __t = _M_time.zero();
+    bool __ok = false;
+
+    if (__h != __bad_h)
+      {
+        __ok = true;
+        __t += __h;
+      }
+
+    if (__min != __bad_min)
+      {
+        __ok = true;
+        __t += __min;
+      }
+
+    if (__s != __bad_sec)
+      {
+        __ok = true;
+        __t += __s;
+        _M_is_leap_second = __s >= seconds(60);
+      }
+
+    if (__ok)
+      _M_time = __t;
+    else
+      __err |= ios_base::failbit;
+  }
+
+       if (!__is_failed(__err)) [[likely]]
+  {
+    if (__offset && __tz_offset != __bad_min)
+      *__offset = __tz_offset;
+    if (__abbrev && !__tz_abbr.empty())
+      *__abbrev = std::move(__tz_abbr);
+  }
+     }
+   else
+     __err |= ios_base::failbit;
+ }
+      if (__err)
+ __is.setstate(__err);
+      return __is;
+    }
+
+
+
+
+}
+
+
+}
+# 3361 "C:/mingw64/include/c++/14.1.0/chrono" 2 3
+# 6 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp" 2
+# 1 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 1
+# 14 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+
+# 14 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+namespace lbo_optimized {
+    template<class T, std::size_t _size = 24, std::size_t _alignment = 8>
+    class local_buffer_t {
+        static constexpr std::size_t buffer_size = _size - sizeof(T*);
+        static constexpr std::ptrdiff_t one = 1;
+        static constexpr std::ptrdiff_t not_one = ~one;
+
+    public:
+        struct vtable_t {
+            std::add_pointer_t<void(T*, void*)> _destroy;
+            std::add_pointer_t<void(void*)> _destructor;
         };
-        const vtable_t* vtable;
-    };
-    template<class Deleter>
-    struct state_1_t {
-        union {
-            [[no_unique_address]] Deleter d;
-            const std::byte padding[buffer_size - sizeof(vtable_t)];
+    private:
+
+        template<class Deleter>
+        struct vtable_impl {
+            static void destroy(T* ptr, void* deleter) {
+                (*static_cast<Deleter*>(deleter))(ptr);
+            }
+            static void destructor(void* deleter) {
+                static_cast<Deleter*>(deleter)->~Deleter();
+
+            }
+            static constexpr vtable_t vtable{destroy, destructor};
         };
-        const vtable_t vtable;
+        template<class Deleter>
+        static constexpr vtable_t vtable_v = vtable_impl<std::remove_reference_t<Deleter>>::vtable;
+
+        T* _ptr;
+        alignas(_alignment) std::byte _buffer[buffer_size];
+
+        template<class Deleter>
+        struct temp0 {
+            [[no_unique_address]] std::remove_reference_t<Deleter> d;
+            const vtable_t* vtable;
+        };
+        template<class Deleter>
+        struct temp1 {
+            [[no_unique_address]] std::remove_reference_t<Deleter> d;
+            const vtable_t vtable;
+        };
+
+        template<class Deleter>
+        struct state_0_t {
+            [[no_unique_address]] std::remove_reference_t<Deleter> d;
+            const std::byte padding[buffer_size - sizeof(temp0<Deleter>)];
+            const vtable_t* vtable;
+        };
+        template<class Deleter>
+        struct state_1_t {
+            [[no_unique_address]] std::remove_reference_t<Deleter> d;
+            const std::byte padding[buffer_size - sizeof(temp1<Deleter>)];
+            const vtable_t vtable;
+        };
+
+        template<std::size_t state>
+        void set_state() noexcept {
+            if constexpr (state == 0) {
+                _ptr = reinterpret_cast<T*>(reinterpret_cast<std::ptrdiff_t>(_ptr) & not_one);
+            }
+            else {
+                _ptr = reinterpret_cast<T*>(reinterpret_cast<std::ptrdiff_t>(_ptr) | one);
+            }
+        }
+         auto get_state() const noexcept {
+            return static_cast<std::size_t>(reinterpret_cast<std::ptrdiff_t>(_ptr) & one);
+        }
+    public:
+        template<class Deleter>
+        local_buffer_t(T* _ptr, Deleter&& deleter) : _ptr{_ptr} {
+            static_assert(alignof(T) > 1);
+            if constexpr(sizeof(state_1_t<Deleter>) == _size - sizeof(T*)) {
+                new (static_cast<void*>(_buffer)) state_1_t<Deleter>(std::forward<Deleter>(deleter), {}, vtable_v<Deleter>);
+
+                set_state<1>();
+                static_assert(
+# 89 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             __builtin_offsetof (
+# 89 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                             state_1_t<Deleter>
+# 89 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             , 
+# 89 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                             vtable
+# 89 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             ) 
+# 89 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                                                                  == buffer_size - sizeof(vtable_t));
+            }
+            else {
+
+                static_assert(sizeof(state_0_t<Deleter>) <= buffer_size);
+                new (static_cast<void*>(_buffer)) state_0_t<Deleter>(std::forward<Deleter>(deleter), {}, &vtable_v<Deleter>);
+                set_state<0>();
+                static_assert(
+# 96 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             __builtin_offsetof (
+# 96 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                             state_0_t<Deleter>
+# 96 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             , 
+# 96 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                             vtable
+# 96 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             ) 
+# 96 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                                                                  == buffer_size - sizeof(vtable_t*));
+            }
+        }
+        T* get() const noexcept {
+            return reinterpret_cast<T*>(reinterpret_cast<std::ptrdiff_t>(_ptr) & not_one);
+        }
+        const vtable_t& vtable() noexcept {
+            const auto state = get_state();
+            const auto* vtable_0 = static_cast<state_0_t<std::default_delete<T>>*>(static_cast<void*>(static_cast<std::byte*>(_buffer)))->vtable;
+            const auto* vtable_1 = &static_cast<state_1_t<std::default_delete<T>>*>(static_cast<void*>(static_cast<std::byte*>(_buffer)))->vtable;
+            return *reinterpret_cast<vtable_t*>((state == 0) * reinterpret_cast<std::ptrdiff_t>(vtable_0) + state * reinterpret_cast<std::ptrdiff_t>(vtable_1));
+
+            if(get_state()) {
+                return static_cast<state_1_t<std::default_delete<T>>*>(static_cast<void*>(static_cast<std::byte*>(_buffer)))->vtable;
+            }
+            return *(static_cast<state_0_t<std::default_delete<T>>*>(static_cast<void*>(static_cast<std::byte*>(_buffer)))->vtable);
+        }
+        void* deleter() noexcept {
+            return reinterpret_cast<void*>(_buffer);
+        }
+        template<class Deleter>
+        void set_deleter(Deleter deleter) noexcept {
+            if constexpr(sizeof(state_1_t<Deleter>) == _size - sizeof(T*)) {
+                new (static_cast<void*>(_buffer)) state_1_t<Deleter>(std::forward<Deleter>(deleter), {}, vtable_v<Deleter>);
+                set_state<1>();
+                static_assert(
+# 121 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             __builtin_offsetof (
+# 121 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                             state_1_t<Deleter>
+# 121 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             , 
+# 121 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                             vtable
+# 121 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             ) 
+# 121 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                                                                  == buffer_size - sizeof(vtable_t));
+            }
+            else {
+                static_assert(sizeof(state_0_t<Deleter>) <= buffer_size);
+                new (static_cast<void*>(_buffer)) state_0_t<Deleter>(std::forward<Deleter>(deleter), {}, &vtable_v<Deleter>);
+                set_state<0>();
+                static_assert(
+# 127 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             __builtin_offsetof (
+# 127 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                             state_0_t<Deleter>
+# 127 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             , 
+# 127 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                             vtable
+# 127 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h" 3 4
+                             ) 
+# 127 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+                                                                  == buffer_size - sizeof(vtable_t*));
+            }
+        }
     };
 
-    template<std::size_t state>
-    void set_state() noexcept {
-        if constexpr (state == 0) {
-            _ptr = reinterpret_cast<T*>(reinterpret_cast<std::ptrdiff_t>(_ptr) & not_one);
-        }
-        else {
-            _ptr = reinterpret_cast<T*>(reinterpret_cast<std::ptrdiff_t>(_ptr) | one);
-        }
-    }
-     auto get_state() const noexcept {
-        return static_cast<std::size_t>(reinterpret_cast<std::ptrdiff_t>(_ptr) & one);
-    }
-public:
-    template<class Deleter>
-    local_buffer_t(T* _data, Deleter&& deleter, const vtable_t* vtable) : _ptr{_data} {
-        static_assert(alignof(T) > 1);
-        if constexpr(sizeof(state_1_t<Deleter>) == _size - sizeof(T*)) {
-            new (static_cast<void*>(_buffer)) state_1_t<Deleter>({std::forward<Deleter>(deleter)}, *vtable);
-            set_state<1>();
-            static_assert(
-# 51 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp" 3 4
-                         __builtin_offsetof (
-# 51 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp"
-                         state_1_t<Deleter>
-# 51 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp" 3 4
-                         , 
-# 51 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp"
-                         vtable
-# 51 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp" 3 4
-                         ) 
-# 51 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp"
-                                                              == buffer_size - sizeof(vtable_t));
-        }
-        else {
-            static_assert(sizeof(state_0_t<Deleter>) <= buffer_size);
-            new (static_cast<void*>(_buffer)) state_0_t<Deleter>({std::forward<Deleter>(deleter)}, vtable);
-            set_state<0>();
-            static_assert(
-# 57 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp" 3 4
-                         __builtin_offsetof (
-# 57 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp"
-                         state_0_t<Deleter>
-# 57 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp" 3 4
-                         , 
-# 57 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp"
-                         vtable
-# 57 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp" 3 4
-                         ) 
-# 57 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp"
-                                                              == buffer_size - sizeof(vtable_t*));
-        }
-    }
-    T* get() const noexcept {
-        return reinterpret_cast<T*>(reinterpret_cast<std::ptrdiff_t>(_ptr) & not_one);
-    }
-    const vtable_t& vtable() noexcept {
-        if(get_state() == 1) {
-            return static_cast<state_1_t<std::default_delete<T>>*>(static_cast<std::byte*>(_buffer))->vtable;
-        }
-        return *(static_cast<state_0_t<std::default_delete<T>>*>(static_cast<std::byte*>(_buffer))->vtable);
-    }
-    void* deleter() noexcept {
-        return reinterpret_cast<void*>(_buffer);
-    }
-};
+    template<class T>
+    class smartptr_te {
+# 171 "C:/Users/Herman/CLionProjects/type_erasure/smartptr_te.h"
+        local_buffer_t<T> _buffer;
+        using vtable_t = typename decltype(_buffer)::vtable_t;
 
-template<class T>
-class smartptr_te {
-# 114 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp"
-    struct vtable_t {
-        std::add_pointer_t<void(T*, void*)> _destroy;
-        std::add_pointer_t<void(void*)> _destructor;
+        T* get() const noexcept {
+            return _buffer.get();
+        }
+        const vtable_t& _vtable() noexcept {
+            return _buffer.vtable();
+        }
+        void* _deleter() noexcept {
+            return _buffer.deleter();
+        }
+
+    public:
+        template<class Deleter>
+        smartptr_te(T* _ptr, Deleter&& _deleter) :
+            _buffer (_ptr, std::forward<Deleter>(_deleter)) {
+            static_assert(std::is_nothrow_move_constructible_v<Deleter>);
+        }
+
+        ~smartptr_te() {
+            const auto& vtable = _vtable();
+            vtable._destroy(get(), _deleter());
+            vtable._destructor(_deleter());
+        }
+        template<class Deleter>
+        void set_deleter(Deleter&& deleter) {
+            static_assert(std::is_nothrow_move_constructible_v<Deleter>);
+            _vtable()._destructor(_deleter());
+            _buffer.set_deleter(std::forward<Deleter>(deleter));
+        }
     };
 
-    template<class Deleter>
-    struct vtable_impl {
-        static void destroy(T* ptr, void* deleter) {
-            (*static_cast<Deleter*>(deleter))(ptr);
-        }
-        static void destructor(void* deleter) {
-            static_cast<Deleter*>(deleter)->~Deleter();
+}
 
+namespace lbo_original {
+    template<std::size_t _size = 16, std::size_t _alignment = 8>
+    class local_buffer_t {
+        alignas(_alignment) std::byte _buffer[_size];
+    public:
+        template<class Deleter>
+        local_buffer_t(Deleter&& deleter) {
+            new (static_cast<void*>(_buffer)) Deleter{std::forward<Deleter>(deleter)};
+            static_assert(sizeof(Deleter) <= _size);
+            static_assert(std::is_nothrow_move_constructible_v<Deleter>);
         }
-        static constexpr vtable_t vtable{destroy, destructor};
+
+        void* get() noexcept {
+            return reinterpret_cast<void*>(_buffer);
+        }
+
+        template<class Deleter>
+        void set(Deleter&& deleter) noexcept {
+            new (static_cast<void*>(_buffer)) Deleter{std::forward<Deleter>(deleter)};
+        }
     };
-    template<class Deleter>
-    static constexpr vtable_t vtable = vtable_impl<std::remove_reference_t<Deleter>>::vtable;
 
 
+    template<class T>
+    class smartptr_te {
+        struct vtable_t {
+            std::add_pointer_t<void(T*, void*)> _destroy;
+            std::add_pointer_t<void(void*)> _destructor;
+        };
 
+        template<class Deleter>
+        struct vtable_impl {
+            static void destroy(T* ptr, void* deleter) {
+                (*static_cast<Deleter*>(deleter))(ptr);
+            }
+            static void destructor(void* deleter) {
+                static_cast<Deleter*>(deleter)->~Deleter();
+            }
+            static constexpr vtable_t vtable{destroy, destructor};
+        };
+        template<class Deleter>
+        static constexpr vtable_t vtable = vtable_impl<std::remove_reference_t<Deleter>>::vtable;
 
+        T* _ptr;
+        const vtable_t* _vtable;
+        local_buffer_t<> _buffer;
 
-    local_buffer_t<T, vtable_t> _buffer;
-    T* get() const noexcept {
-        return _buffer.get();
-    }
-    const vtable_t& _vtable() noexcept {
-        return _buffer.vtable();
-    }
-    void* _deleter() noexcept {
-        return _buffer.deleter();
-    }
+        void* _deleter() noexcept {
+            return _buffer.get();
+        }
 
-public:
-    template<class Deleter>
-    smartptr_te(T* _ptr, Deleter&& _deleter) :
-        _buffer (_ptr, std::forward<Deleter>(_deleter), &vtable<Deleter>) {
-        static_assert(std::is_nothrow_move_constructible_v<Deleter>);
-    }
-    ~smartptr_te() {
-        _vtable()._destroy(get(), _deleter());
-        _vtable()._destructor(_deleter());
-    }
-    template<class Deleter>
-    void set_deleter() {
-        static_assert(std::is_nothrow_move_constructible_v<Deleter>);
-        _vtable->_destructor(_deleter);
-        _deleter = new Deleter{std::forward<Deleter>(_deleter)};
-        _vtable = &vtable<Deleter>;
-    }
-    auto& operator=(const smartptr_te& rhs) noexcept {
+    public:
+        template<class Deleter>
+        smartptr_te(T* _ptr, Deleter&& _deleter) :
+        _ptr(_ptr), _vtable(&vtable<Deleter>), _buffer(std::forward<Deleter>(_deleter)) {
+            static_assert(std::is_nothrow_move_constructible_v<Deleter>);
+        }
 
-    }
-    auto& operator=(smartptr_te&& rhs) noexcept {
+        ~smartptr_te() {
+            _vtable->_destroy(_ptr, _deleter());
+            _vtable->_destructor(_deleter());
+        }
+        template<class Deleter>
+        void set_deleter(Deleter&& deleter) {
+            static_assert(std::is_nothrow_move_constructible_v<Deleter>);
+            _vtable->_destructor(_deleter());
+            _buffer.set(std::forward<Deleter>(deleter));
+            _vtable = &vtable<Deleter>;
+        }
+    };
+}
+# 7 "C:/Users/Herman/CLionProjects/type_erasure/main.cpp" 2
 
+template<class F, class... Args>
+auto time_func(F&& func, Args&&... args) {
+    const auto start{std::chrono::steady_clock::now()};
+    auto _{func(std::forward<Args>(args)...)};
+    const auto finish{std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> ret{finish - start};
+    return ret;
+}
+
+int test1() noexcept {
+    struct d : decltype([](void* ptr) {
+        delete static_cast<int*>(ptr);
+    }) {};
+    for(int i = 0; i < 1'000'000; i++) {
+        if(std::rand() % 2)
+            lbo_optimized::smartptr_te<int> p1(new int{}, std::default_delete<int>{});
+        else
+            lbo_optimized::smartptr_te<int> p1(new int{}, d{});
     }
-};
+    return 0;
+}
+int test2() noexcept {
+    struct d : decltype([](void* ptr) {
+        delete static_cast<int*>(ptr);
+    }) {};
+    for(int i = 0; i < 1'000'000; i++) {
+        if(std::rand() % 2)
+            lbo_original::smartptr_te<int> p1(new int{}, std::default_delete<int>{});
+        else
+            lbo_original::smartptr_te<int> p1(new int{}, d{});
+    }
+    return 0;
+}
 
 int main() {
 
@@ -91573,13 +102615,12 @@ int main() {
 
     struct my_deleter : decltype([](void* ptr) {
         delete static_cast<int*>(ptr);
-        std::cout << "destroy called!";
+        std::cout << "destroy called!\n";
     }) {};
 
-    std::cout << std::is_empty_v<my_deleter> << std::endl;
 
-    smartptr_te p1(new int{42}, std::default_delete<int>{});
-    smartptr_te p2(new int{42}, my_deleter{});
+    std::cout << time_func(test1) << '\n';
+    std::cout << time_func(test2) << '\n';
 
     return 0;
 }
